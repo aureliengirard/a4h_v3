@@ -1,0 +1,15 @@
+<div class="partners-block">
+    {% for collection in collections %}
+    {% if collection.template_suffix == 'ngo' and collection.all_products_count > 0 %}
+
+        {% assign collection_image = collection.image %}
+        {% assign collection_image_fr = collection.metafields.c_f.Logo_fr %}
+
+        <a href="{{ collection.url }}">
+            <!-- <img class="en" class="scale" src="{% if language == "ly76391" %}{% if collection_image_fr %}{{ collection_image_fr }}{% else %}{{ collection_image | collection_img_url: '275x112' }}{% endif %}{% else %}{{ collection_image | collection_img_url: '275x112' }}{% endif %}" alt="{{ tag | escape }}"> -->
+            <img class="en" class="scale" src="{{ collection_image | collection_img_url: '275x112' }}" alt="{{ collection | escape }}">
+            <img class="fr" class="scale" src="{% if collection_image_fr %}{{ collection_image_fr }}{% else %}{{ collection_image | collection_img_url: '275x112' }}{% endif %}" alt="{{ tag | escape }}">
+  		</a>
+        {% endif %}
+    {% endfor %}
+</div>

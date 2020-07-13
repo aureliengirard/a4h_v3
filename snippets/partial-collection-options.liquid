@@ -1,0 +1,40 @@
+{% if collection_filters != 'false' %}
+    <button id="filter-toggler" onclick="FiltersToggler();FiltersActive();" class="filter__option filter-toggler only-xs">
+        <span>Filters</span>
+        {% include 'icon-check' %}
+        {% include 'icon-filters' %}
+    </button>
+{% endif %}
+
+<select id="sort-by" class="sort-select filter__option{% if collection_filters == 'false' %} filter__option--full_width{% endif %}">
+    <option disabled="" selected="" value="">Sort by...</option>
+    <option value="price-ascending">Price: Low to High</option>
+    <option value="price-descending">Price: High to Low</option>
+    <option value="title-ascending">Title : A-Z</option>
+    <option value="title-descending">Title : Z-A</option>
+    <option value="created-ascending">Oldest to Newest</option>
+    <option value="created-descending">Newest to Oldest</option>
+</select>
+
+<script type="text/javascript">
+
+// Sort By Filter
+
+    Shopify.queryParams = {};
+    if (location.search.length) {
+        for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+            aKeyValue = aCouples[i].split('=');
+            if (aKeyValue.length > 1) {
+                Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+            }
+        }
+    }
+
+    jQuery('#sort-by')
+    .val('{{ collection.sort_by | default: collection.default_sort_by | escape }}')
+    .bind('change', function() {
+        Shopify.queryParams.sort_by = jQuery(this).val();
+        location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
+    });
+
+</script>

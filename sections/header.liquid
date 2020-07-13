@@ -1,0 +1,64 @@
+<nav class="header">
+    <div class="nav__left-container">
+        <a class="logo" href="/">{{ settings.header_logo | img_tag }}</a>
+
+        {% include 'partial-country-switcher' %}
+    </div>
+    <input class="menu-btn" type="checkbox" id="menu-btn">
+    <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+    <ul class="menu">
+        {% for link in linklists[section.settings.main_linklist].links %}
+        {%- assign child_list_handle = link.title | handleize -%}
+        {% if menus[child_list_handle].links != blank %}
+        <li class="site-nav--has-submenu{% if link.active %} site-nav--active{% endif %}">
+            <a href="{{ link.url }}" class="site-nav__link">
+                {{ link.title }}
+                {% include 'icon-arrow-down' %}
+            </a>
+            <ul class="site-nav__submenu">
+                {% for childlink in menus[child_list_handle].links %}
+                <li {% if childlink.active %}class="site-nav--active"{% endif %}>
+                    <a href="{{ childlink.url }}" class="site-nav__link">{{ childlink.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% else %}
+        <li {% if link.active %}class="site-nav--active"{% endif %}>
+            <a href="{{ link.url }}" class="site-nav__link">{{ link.title }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <li class="pass_mob only-xs"><a href="/pages/join" class="join-button">Join</a></li>
+    </ul>
+    <span class="join-cntn">
+        <a href="/cart" class="cart-icon">{% include 'Menu cart' %}</a>
+        <a class="pass_desk join-button" href="/pages/join" class="join-button">Join</a>
+    </span>
+</nav>
+
+<script type="text/javascript">
+  $(function()
+  {
+    $('.menu-btn').change(function()
+    {
+        $('.header').toggleClass('active')
+      if ($(this).is(':checked')) {
+      };
+    });
+  });
+</script>
+
+{% schema %}
+{
+    "name": "Header",
+    "settings": [
+    {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Menu",
+        "default": "main-menu"
+    }
+    ]
+}
+{% endschema %}

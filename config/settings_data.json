@@ -1,0 +1,132 @@
+{
+  "current": {
+    "header_logo": "shopify:\/\/shop_images\/logo_white.png",
+    "header_logo_max_width": 105,
+    "is_ngo_list_select": false,
+    "ngo_list_for_search": "Canadian Cancer Society,Children's Wish Foundation,CNIB,Fillactive FitSpirit,Grizzly Bear Foundation,Habitat For Humanity Greater Vancouver,Les Petits Frères,Oxfam - Québec,United Way Lower Mainland,Zénitud'Art",
+    "price_list_for_search": "0 - 500,500 - 1000,1000 - 5000,5000 +",
+    "homepage_hero_image": "shopify:\/\/shop_images\/iStock_-_cut_2.jpg",
+    "shop_hero_image": "shopify:\/\/shop_images\/paintings-in-side-room-1839919_-_cut_5e16bb65-c6ba-4d70-9a26-955ef5c48c1a.jpg",
+    "ngo_hero_image": "",
+    "artists_hero_image": "shopify:\/\/shop_images\/hero-artist-page.jpg",
+    "concept_hero_image": "",
+    "about_hero_image": "shopify:\/\/shop_images\/hero_about_a4h_1920.jpg",
+    "enterprise_hero_image": "shopify:\/\/shop_images\/hero_enterprise_a4h_1920.jpg",
+    "join_hero_image": "shopify:\/\/shop_images\/hero_contact_a4h_1920.jpg",
+    "ci_message": "¡Nos encantaría saber de usted!",
+    "ci_phone_number": "(+1) 833-977-1222",
+    "ci_email_address": "contact@artforhumans.org",
+    "ci_physical_address": "Montreal, QC",
+    "ci_twitter": "https:\/\/twitter.com\/ArtForHumansorg",
+    "ci_instagram": "https:\/\/www.instagram.com\/artforhumansorg\/",
+    "ci_facebook": "https:\/\/www.facebook.com\/artforhumansorg\/",
+    "favicon": "shopify:\/\/shop_images\/Asset_3_4x.png",
+    "ngo_filters": "",
+    "price_filters": "Todos,Hasta $10 000,$10 000 - 20 000,$20 000 - 40 000,$40 000 - 100 000,$100 000 y más",
+    "checkout_header_image": "",
+    "checkout_logo_image": "",
+    "checkout_logo_position": "left",
+    "checkout_logo_size": "medium",
+    "checkout_body_background_image": "",
+    "checkout_body_background_color": "#fff",
+    "checkout_input_background_color_mode": "white",
+    "checkout_sidebar_background_image": "",
+    "checkout_sidebar_background_color": "#fafafa",
+    "checkout_heading_font": "Raleway",
+    "checkout_body_font": "Open Sans",
+    "checkout_accent_color": "#0091ad",
+    "checkout_button_color": "#ffcc00",
+    "checkout_error_color": "#ff6d6d",
+    "ngo_list_for_search_": "",
+    "price_list_for_search_": "Hasta $10 000,$10 000 - 20 000,$20 000 - 40 000,$40 000 - 100 000,$100 000 y más",
+    "hero": "",
+    "type_base_size": "16px",
+    "color_primary": "#000",
+    "color_body_text": "#000",
+    "social_sharing_blog": true,
+    "share_facebook": true,
+    "share_twitter": true,
+    "share_pinterest": true,
+    "social_twitter_link": "",
+    "social_facebook_link": "",
+    "social_pinterest_link": "",
+    "social_instagram_link": "",
+    "social_snapchat_link": "",
+    "social_tumblr_link": "",
+    "social_youtube_link": "",
+    "social_vimeo_link": "",
+    "cart_notes_enable": true,
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "main_linklist": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "footer_linklist": "footer",
+          "show_payment_icons": false
+        }
+      },
+      "1508710620923": {
+        "type": "index-section",
+        "settings": {
+          "collection": "featured-items"
+        }
+      },
+      "product": {
+        "type": "product",
+        "settings": {}
+      }
+    },
+    "content_for_index": [
+      "1508710620923"
+    ]
+  },
+  "presets": {
+    "Default": {
+      "sections": {
+        "collection-list": {
+          "type": "collection-list",
+          "blocks": {
+            "collection-list-0": {
+              "type": "collection",
+              "settings": {}
+            },
+            "collection-list-1": {
+              "type": "collection",
+              "settings": {}
+            },
+            "collection-list-2": {
+              "type": "collection",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "collection-list-0",
+            "collection-list-1",
+            "collection-list-2"
+          ],
+          "settings": {}
+        },
+        "featured-collection": {
+          "type": "featured-collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        },
+        "featured-product": {
+          "type": "featured-product",
+          "settings": {}
+        }
+      },
+      "content_for_index": [
+        "collection-list",
+        "featured-collection",
+        "featured-product"
+      ]
+    }
+  }
+}

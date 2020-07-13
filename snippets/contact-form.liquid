@@ -1,0 +1,78 @@
+<section class="contact-form bg--gray" id="contact-form">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="headings__section">
+                <h2>{{ settings.ci_title }}</h2>
+                <p>{{ settings.ci_message }}</p>
+            </div>
+
+            <div class="contact-form-container">
+                <div class="contact-form-info">
+                    <div class="info-item">
+                        <div class="info-icon">{% include 'Phone' %}</div>
+                        <div class="info-item-data">
+                            <span>{{ settings.ci_phone_number }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">{% include 'mail' %}</div>
+                        <div class="info-item-data">
+                            <span>{{ settings.ci_email_address }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">{% include 'location' %}</div>
+                        <div class="info-item-data">
+                            <span>{{ settings.ci_physical_address }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item hover">
+                        <div class="info-icon">{% include 'social' %}</div>
+                        <div class="contact-form-info-social-icons">
+                            <a href="https://www.instagram.com/artforhumansorg/" target="_blank" class="contact-form-icon-container">{% include 'icon-instagram' %}</a>
+
+                            <a href="https://twitter.com/ArtForHumansorg" target="_blank" class="contact-form-icon-container">{% include 'icon-twitter' %}</a>
+                            <a href="https://www.facebook.com/artforhumansorg/" target="_blank"  class="contact-form-icon-container">{% include 'icon-facebook' %}</a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+        <div class="col-lg-6">
+            {% form 'contact' %}
+            <div class="contact-form-input-container">
+                <input type="text"
+                    name="contact[name]"
+                    id="ContactFormName"
+                    placeholder="{{ 'contact.form.name' | t }}"
+                    value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                >
+
+                <input type="email"
+                    name="contact[email]"
+                    id="ContactFormEmail"
+                    placeholder="{{ 'contact.form.email' | t }}"
+                    value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocapitalize="off"
+                >
+                <textarea rows="10"
+                    name="contact[body]"
+                    id="ContactFormMessage"
+                    placeholder="{{ 'contact.form.message' | t }}"
+                ></textarea>
+                {{ form.errors | default_errors }}
+                {% if form.posted_successfully? %}
+                    <p class="form-success">
+                      {{ 'contact.form.post_success' | t }}
+                    </p>
+                {% endif %}
+            </div>
+            <div class="btn-container-right">
+                <input type="submit" class="generic-btn" value="{{ 'contact.form.send' | t }}">
+            </div>
+            {% endform %}
+        </div>
+    </div>
+</section>

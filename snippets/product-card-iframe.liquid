@@ -1,0 +1,21 @@
+{% if product.type == "mw_hidden_cart_fee" %}{% continue %}{% endif %}
+{% assign variant_titles = product.variants | map: 'title' %}
+<a href="{{ product.url }}" target="_blank" class="product-item iframe-product-item">
+  <div class="overlay">
+      {% include 'View' %}
+      <span><ly-as-16184398>VIEW</ly-as-16184398></span>
+  </div>
+  <div class="img-container">{{ product.featured_image.src | img_url: '480x480' }}</div>
+  <div class="product-details">
+    <span class="artist"><h3>{{ product.vendor }}</h3></span>
+    <span class="title">{{ product.title }}</span>
+    <span class="type">{{ product.type }}</span>
+    <span class="price">
+        {% if product.available %}
+            {{ product.price | money }} - {% if  product.metafields["c_f"]["donation"] == 'Full' or product.metafields["c_f"]["donation"] == 'full' %}<ly-as-16184399>Full</ly-as-16184399>{% else %}<ly-as-16184400>Split</ly-as-16184400>{% endif %}
+        {% else %}
+            <ly-as-16184401>SOLD OUT</ly-as-16184401>
+        {% endif %}
+    </span>
+  </div>
+</a>

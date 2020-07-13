@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-12">
+        <h2 class="center">{{ section.settings.title }}</h2>
+        <div class="row collection-items {{section.settings.large-box}}-featured">
+            {% for block in section.blocks %}
+
+                {% assign collection = collections[block.settings.collection] %}
+                {% include 'partial-collection-card' %}
+
+            {% endfor %}
+        </div>
+        {% if section.settings.link %}
+            <div class="btn-container-center">
+                <a class="generic-btn centered" href="{{ section.settings.link }}">{{ section.settings.linktext }}</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Featured Collections",
+    "class": "featured__collection",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Hello world"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA text",
+            "default": "Explore"
+        },
+        {
+           "type":      "select",
+           "id":        "large-box",
+           "label":     "2/3 Block",
+           "options": [
+             { "value": "first", "label": "First" },
+             { "value": "last", "label": "Last" },
+             { "value": "none", "label": "All Equal" }
+           ],
+           "default":   "first"
+       }
+    ],
+    "blocks": [
+        {
+            "name": "Collection",
+            "type": "collection",
+            "settings": [
+                {
+                    "id": "collection",
+                    "type": "collection",
+                    "label": "Collection"
+                }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Featured Collections",
+        "category": "Collection"
+      }
+    ]
+}
+{% endschema %}

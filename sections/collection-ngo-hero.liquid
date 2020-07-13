@@ -1,0 +1,41 @@
+{% comment %}
+    Collection NGO Hero Section
+{% endcomment %}
+
+    <div class="bg--img" style="background-image: url({{ collection.metafields.global.Collection_cover }})"></div>
+    <div class="overlay"></div>
+    <div class="row-100">
+        <div class="col-md-12">
+            <h1>{{ section.settings.title }}</h1>
+            <p>{{ section.settings.subtitle-1 }} {{collection.title}} {{ section.settings.subtitle-2 }}</p>
+        </div>
+    </div>
+
+
+{% schema %}
+{
+    "name": "Collection NGOs Hero",
+    "tag": "section",
+    "class": "hero hero--2 hero--with-profile",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "All NGOs Collections Title",
+          "default": "Buy art for good"
+        },
+        {
+          "id": "subtitle-1",
+          "type": "text",
+          "label": "Pre NGOs Name Subtitle",
+          "default": "Support"
+          },
+          {
+            "id": "subtitle-2",
+            "type": "text",
+            "label": "Post NGOs Name Subtitle",
+            "default": "through your purchase"
+          }
+    ]
+}
+{% endschema %}

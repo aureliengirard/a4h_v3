@@ -1,0 +1,7 @@
+<a class="collection-item price-range lazyload" href="{{ collection.url }}"  style="background-image: url('{% if collection.image %}{{ collection.image | img_url: 'x460' }}{% endif %}')">
+    <div class="overlay"></div>
+    <div class="collection-item__content">
+        <h4>Discover Artworks</h4>
+        <h3>{{ collection.title }}</h3>
+    </div>
+</a>

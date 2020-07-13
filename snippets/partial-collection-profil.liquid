@@ -1,0 +1,40 @@
+<section class="profile {{ bg_color }}">
+    <div class="row">
+        <div class="col-md-9 profile-bio">
+            <div class="img-container {{type}}">
+                <div class="img-inner-container">
+                    <img alt="{{ collection.title }}" src="{{ collection.image | img_url: '270x270' }}">
+                </div>
+            </div>
+            <div class="profile-name-location">
+                <h1 class="name">{{ collection.title }}</h1>
+                <span class="location">{{ collection.metafields.global.Location }}</span>
+            </div>
+        </div>
+        <div class="col-md-3 social-media">
+            {% if collection.metafields.global.Email %}
+            <a href="mailto:{{ collection.metafields.global.Email }}">{% include 'mail' %}</a>
+            {% endif %}
+            {% if collection.metafields.global.Website  %}
+            <a target="_self" href="{{ collection.metafields.global.Website  }}">{% include 'www' %}</a>
+            {% endif %}
+            {% if collection.metafields.global.Instagram %}
+            <a target="_self" href="{{ collection.metafields.global.Instagram }}" rel=”nofollow”>{% include 'icon-instagram' %}</a>
+            {% endif %}
+            {% if collection.metafields.global.Twitter %}
+            <a target="_self" href="{{ collection.metafields.global.Twitter }}" rel=”nofollow”>{% include 'icon-twitter' %}</a>
+            {% endif %}
+            {% if collection.metafields.global.Facebook  %}
+            <a target="_self" href="{{ collection.metafields.global.Facebook }}" rel=”nofollow”>{% include 'icon-facebook' %}</a>
+            {% endif %}
+            {% if collection.metafields.global.Pinterest %}
+            <a target="_self" href="{{ collection.metafields.global.Pinterest }}" rel=”nofollow”>{% include 'icon-pinterest' %}</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {{ collection.description }}
+        </div>
+    </div>
+</section>

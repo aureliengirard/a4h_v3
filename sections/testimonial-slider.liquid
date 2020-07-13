@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-12 heading__section">
+        <h2 class="center">{{section.settings.title}}</h2>
+    </div>
+    <div class="col-12">
+        <div id="what-they-say-carousel">
+            {% for block in section.blocks %}
+
+                <div class="quote">
+
+                    {% assign collection = collections[block.settings.collection] %}
+                    {{block.settings.quote}}
+                    <p class="quote__meta"><span class="quote__author">{{block.settings.author}}</span> - <span class="quote__author-title"></span>{{block.settings.author-title}}</p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% javascript %}
+
+        $("#what-they-say-carousel").slick({
+            nextArrow: "<button type='button' class='slick-next'>&#155;</button>",
+            prevArrow: "<button type='button' class='slick-prev'>&#139;</button>"
+        });
+
+{% endjavascript %}
+
+{% schema %}
+{
+    "name": "Testimonials Slider",
+    "class": "slider testimonials-slider",
+    "tag": "section",
+    "max_blocks": 10,
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Hello world"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Testimonial",
+            "type": "Testimonial",
+            "settings": [
+                {
+                    "id": "quote",
+                    "type": "richtext",
+                    "label": "Quote"
+                },
+                {
+                    "id": "author",
+                    "type": "text",
+                    "label": "Author"
+                },
+                {
+                    "id": "author-title",
+                    "type": "text",
+                    "label": "Author Title"
+                }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials slider",
+        "category": "Slider"
+      }
+    ]
+}
+{% endschema %}

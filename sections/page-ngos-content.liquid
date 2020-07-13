@@ -1,0 +1,50 @@
+{% comment %}
+    Section build to artits page content
+{% endcomment %}
+
+<div class="row">
+    <div class="col-12">
+        <h2>{{section.settings.title}}</h2>
+        {{section.settings.content}}
+    </div>
+
+    {% if section.settings.link %}
+    <div class="col-12">
+        <div class="btn-container-center">
+            <a class="generic-btn" href="{{section.settings.link}}">{{section.settings.linktext}}</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Content NGOs",
+    "class": "bg--gray",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Lorem Ipsum"
+        },
+        {
+          "id": "content",
+          "type": "richtext",
+          "label": "Section Content"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA text",
+            "default": "Explore"
+        }
+    ]
+}
+{% endschema %}

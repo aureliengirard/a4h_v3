@@ -1,0 +1,63 @@
+<section  class="hero" style="background-image: url({{ settings.enterprise_hero_image | img_url: '1920x' }})">
+    <div class="overlay"></div>
+    <div class="row-100">
+        <div class="col-md-8">
+        <h1>Boost your social corporate responsibility.</h1>
+        <h3>You have the means to support charities through the purchase of art.</h3>
+        </div>
+    </div>
+</section>
+
+<section class="enterprise-game">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="center">A Threefold Positive Impact</h2>
+        </div>
+    </div>
+    <div class="row game">
+        <div class="col-md-4 game-item">
+            {% include 'Art office' %}
+            <h3>Bring art to the office</h3>
+            <p>Art pieces help create a pleasant working environment, stimulate your teams creativity, and to enhance your company rapport.</p>
+            <a href="/collections/all">Art Pieces</a>
+        </div>
+        <div class="col-md-4 game-item">
+            {% include 'Well being' %}
+            <h3>Contribute to social well-being</h3>
+            <p>Proceeds of your purchased artwork go directly to the charity of your choice.</p>
+            <a href="/pages/ngos">Charities</a>
+        </div>
+        <div class="col-md-4 game-item">
+            {% include 'Tax deduction' %}
+            <h3>Benefit from tax deduction</h3>
+            <p>On top of contributing to society, you are able to take advantage of certain tax benefits with the purchase of art.</p>
+            <a target="_blank" href="https://www.rcgt.com/en/insights/works-of-art-and-taxes/">Learn more</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 btn-container-center">
+            <a class="generic-btn centered" href="/collections/all">Shop</a>
+        </div>
+    </div>
+</section>
+
+{% include 'partial-testimonials-slider' %}
+
+<section class="">
+    <div class="row">
+        <div class="col-12">
+            <h2>Support us as a Patron or an Ambassador</h2>
+            <p>Art For Humans is a game changer, contributing to a cultural shift.</p>
+            <p>Do you want to create history? Help us bring millions of new customers into our virtuous circle? Share the joy of brightening this world one piece of art at a time?</p>
+            <p>If you answered yes to either of these questions, then you are in the right place.</p>
+            <p>To become a patron, an ambassador, or to be part of our partnership program, please enter in contact with us.</p>
+        	<p>We’d love to meet you and define together a commitment tailored to your expectations.</p>
+
+            <div class="btn-container-center">
+                <a class="generic-btn" href="#contact-form">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'contact-form' %}

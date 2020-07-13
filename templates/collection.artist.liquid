@@ -1,0 +1,41 @@
+{% assign template_type = collection-artist %}
+
+{% section 'collection-artist-hero' %}
+
+{% include 'partial-collection-profil', bg_color: '', type: 'artist' %}
+
+<section class="collection">
+    <div class="row collection__header">
+
+        <div class="col-lg-6 col-sm-12">
+            {% if language == 'ly79532' %}
+                <h2 >Œuvres de {{collection.title}}</h2>
+            {% else %}
+                <h2 >{{collection.title}}'s Art Pieces</h2>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-6 col-sm-12 collection__options">
+            {% include 'partial-collection-options', collection_filters: 'false' %}
+        </div>
+
+    </div>
+
+    <div class="row collection__wrapper">
+        {% paginate collection.products by 6 %}
+            <div id="myDIV" class="collection-items__wrapper">
+                <div class="col-12 collection-items">
+                    {% for product in collection.products %}
+                        {% include 'product-card' %}
+                    {% endfor %}
+                </div>
+                {% if paginate.pages > 1 %}
+                    <div class="pagination-container">{{ paginate | default_pagination: next: '>>', previous: '<<' }}</div>
+                {% endif %}
+            </div>
+        {% endpaginate %}
+    </div>
+
+</section>
+
+{% section 'featured-artists' %}

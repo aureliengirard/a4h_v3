@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-12">
+        <h2>{{ section.settings.title }}</h2>
+        <div class="collection-items featured-items">
+            {% for block in section.blocks %}
+
+                {% assign product = all_products[block.settings.product] %}
+                {% include 'product-card' %}
+
+            {% endfor %}
+        </div>
+        {% if section.settings.link %}
+            <div class="btn-container-center">
+                <a class="generic-btn centered" href="{{ section.settings.link }}">{{ section.settings.linktext }}</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Featured Art Pieces",
+    "class": "collection",
+    "tag": "section",
+    "max_blocks": 4,
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Hello world"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA text",
+            "default": "Explore"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Art Piece",
+            "type": "art-piece",
+            "settings": [
+                {
+                    "id": "product",
+                    "type": "product",
+                    "label": "Art Piece"
+                }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Featured Art Pieces",
+        "category": "Product"
+      }
+    ]
+}
+{% endschema %}

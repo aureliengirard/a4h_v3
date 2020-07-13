@@ -1,0 +1,37 @@
+{% comment %}
+    Section build to display all NGOs
+{% endcomment %}
+
+<div class="row">
+
+    <div class="col-12 headings__section">
+        <h2>{{ section.settings.title }}</h2>
+        <p>{{ section.settings.subtitle }}</p>
+    </div>
+
+    <div class="col-12">
+        {% include 'partner-block' %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "NGOs Listing",
+    "class": "partners",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Registered Charities"
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "label": "Subtitle",
+          "default": "Discover the charities we are fortunate enough to be partnered with:"
+        }
+    ]
+}
+{% endschema %}

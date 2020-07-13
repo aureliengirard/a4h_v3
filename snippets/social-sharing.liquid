@@ -1,0 +1,28 @@
+<!-- /snippets/social-sharing.liquid -->
+<div class="social-sharing">
+
+  {% if settings.share_facebook %}
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ langify_shop_url | append: share_permalink }}">
+      {% include 'icon-facebook' %}
+      <span aria-hidden="true">{% comment %}ly_i18n_replace_for_[ 'general.social.share_on_facebook' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.social.share_on_facebook' | t }}{% endcapture %}{% include 'ly-static-string' with '14225935' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+      <span class="visually-hidden">{% comment %}ly_i18n_replace_for_[ 'general.social.alt_text.share_on_facebook' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.social.alt_text.share_on_facebook' | t }}{% endcapture %}{% include 'ly-static-string' with '14225936' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+    </a>
+  {% endif %}
+
+  {% if settings.share_twitter %}
+    <a target="_blank" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ langify_shop_url | append: share_permalink }}">
+      {% include 'icon-twitter' %}
+      <span aria-hidden="true">{% comment %}ly_i18n_replace_for_[ 'general.social.share_on_twitter' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.social.share_on_twitter' | t }}{% endcapture %}{% include 'ly-static-string' with '14225937' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+      <span class="visually-hidden">{% comment %}ly_i18n_replace_for_[ 'general.social.alt_text.share_on_twitter' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.social.alt_text.share_on_twitter' | t }}{% endcapture %}{% include 'ly-static-string' with '14225938' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+    </a>
+  {% endif %}
+
+  {% if settings.share_pinterest %}
+    <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ langify_shop_url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}">
+      {% include 'icon-pinterest' %}
+      <span aria-hidden="true">{% comment %}ly_i18n_replace_for_[ 'general.social.share_on_pinterest' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.social.share_on_pinterest' | t }}{% endcapture %}{% include 'ly-static-string' with '14225939' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+      <span class="visually-hidden">{% comment %}ly_i18n_replace_for_[ 'general.social.alt_text.share_on_pinterest' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.social.alt_text.share_on_pinterest' | t }}{% endcapture %}{% include 'ly-static-string' with '14225940' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+    </a>
+  {% endif %}
+
+</div>

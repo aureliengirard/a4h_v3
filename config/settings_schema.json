@@ -1,0 +1,163 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "A4H",
+    "theme_version": "0.1.0",
+    "theme_author": "A4H",
+    "theme_support_email": "contact@artforhumans.org",
+    "theme_documentation_url": "https:\/\/www.shopify.com"
+  },
+  {
+    "name": "Settings",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "header_logo",
+        "label": "Header Logo"
+      },
+      {
+        "type": "range",
+        "id": "header_logo_max_width",
+        "min": 75,
+        "max": 150,
+        "step": 5,
+        "unit": "px",
+        "label": "Custom logo width",
+        "default": 75
+      },
+      {
+        "type": "checkbox",
+        "id": "is_ngo_list_select",
+        "default": false,
+        "label": "NGO list as autocomplete. If false, will be a dropdown."
+      },
+      {
+        "type": "text",
+        "id": "ngo_list_for_search",
+        "label": "Comma separated list of NGOs"
+      },
+      {
+        "type": "text",
+        "id": "price_list_for_search",
+        "label": "Comma separated list of Price Ranges. eg: 10-50, 50-100"
+      }
+    ]
+  },
+  {
+    "name": "Hero Images",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "homepage_hero_image",
+        "label": "Homepage Hero Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_hero_image",
+        "label": "Shop Hero Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "ngo_hero_image",
+        "label": "Non-Profits Hero Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "artists_hero_image",
+        "label": "Artists Hero Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "concept_hero_image",
+        "label": "Concept Hero Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "about_hero_image",
+        "label": "About Hero Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "enterprise_hero_image",
+        "label": "Enterprise Hero Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "join_hero_image",
+        "label": "Join Hero Image"
+      }
+    ]
+  },
+  {
+    "name": "Contact Info",
+    "settings": [
+      {
+        "type": "text",
+        "id": "ci_title",
+        "label": "Contact Form Title",
+        "default": "Contact Us"
+      },
+      {
+        "type": "text",
+        "id": "ci_message",
+        "label": "Contact Form Subtitle"
+      },
+      {
+        "type": "text",
+        "id": "ci_phone_number",
+        "label": "Phone Number"
+      },
+      {
+        "type": "text",
+        "id": "ci_email_address",
+        "label": "Email"
+      },
+      {
+        "type": "text",
+        "id": "ci_physical_address",
+        "label": "Address"
+      },
+      {
+        "type": "text",
+        "id": "ci_twitter",
+        "label": "Twitter Link"
+      },
+      {
+        "type": "text",
+        "id": "ci_instagram",
+        "label": "Instagram Link"
+      },
+      {
+        "type": "text",
+        "id": "ci_facebook",
+        "label": "Facebook Link"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px"
+      }
+    ]
+  },
+  {
+    "name": "Filters",
+    "settings": [
+      {
+        "type": "text",
+        "id": "ngo_filters",
+        "label": "Comma separated list of NGOs"
+      },
+      {
+        "type": "text",
+        "id": "price_filters",
+        "label": "Comma separated list of Price Ranges. eg: 10-50, 50-100"
+      }
+  ]
+  }
+]

@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-12 headings__section">
+        <h2 class="alt-h2">{{ section.settings.title }}</h2>
+        <p>{{ section.settings.subtitle }}</p>
+    </div>
+
+    {% include 'partial-artist-section', limit_count: {{section.settings.limit_count}}, template_type: {{ template_type }} %}
+
+    {% if section.settings.link != '' %}
+    <div class="col-12 headings__section">
+        <div class="btn-container-center">
+            <a class="generic-btn centered" href="{{ section.settings.link }}">{{ section.settings.linktext }}</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Featured Artists",
+    "class": "featured__collection bg--gray",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "A4H Artist Community"
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "label": "Subtitle",
+          "default": "Discover the artists who share our vision:"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA text",
+            "default": "Explore"
+        },
+        {
+            "id": "limit_count",
+            "type": "text",
+            "label": "# of Artists to display",
+            "default": "6"
+        }
+    ]
+}
+{% endschema %}

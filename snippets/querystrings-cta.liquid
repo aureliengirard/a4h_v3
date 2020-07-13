@@ -1,0 +1,43 @@
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+   replace:'\/','/' | 
+   replace:'%20',' ' | 
+   replace:'\u0026','&'
+-%}
+{% assign debug = false %}
+{%- for i in (1..1) -%}
+  {%- unless pageUrl contains "?" -%}{% break %}{%- endunless -%}
+
+  {%- unless pageUrl contains "cache=false" -%}{% break %}{%- endunless -%}
+
+  {%- assign pageQuerystring = pageUrl | split:'?' | last -%}
+
+  {%- assign parts = pageQuerystring | split:'&' -%}
+
+  {%- for part in parts -%}
+
+    {%- assign keyAndValue = part | split:'=' -%}
+
+    {%- if keyAndValue.size > 1 -%}
+      {%- if debug -%}
+      <!-- 
+        key: {{ keyAndValue[0] }}<br>
+        value: {{ keyAndValue[1] }}
+      -->
+      {% endif %}
+      {% if keyAndValue[0] == "ngo" %}
+        <div class="btn-container-right">
+              <a class="generic-btn centered" href="/collections/{{ keyAndValue[1] }}" target="_blank"><ly-as-16223342>Discover all artworks</ly-as-16223342></a>
+        </div>
+      {% endif %}
+    {%- else -%}
+     {%- if debug -%}
+      <!-- 
+        value: {{ keyAndValue }}
+      -->
+      {%- endif -%}
+    {%- endif -%}
+
+  {%- endfor -%}
+{%- endfor -%}

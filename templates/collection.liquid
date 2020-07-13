@@ -1,0 +1,48 @@
+{%- assign ngos = settings.ngo_list_for_search | split: ',' -%}
+{%- assign prices = settings.price_list_for_search | split: ',' -%}
+
+<section  class="hero" style="background-image: url({{ settings.shop_hero_image | img_url: '1920x' }})">
+    <div class="overlay"></div>
+    <div class="row-100">
+        <div class="col-md-8">
+            <h1>DO GOOD FOR SOCIETY THROUGH MEANINGFUL PURCHASES.</h1>
+            <h3>We provide you with the means to contribute to your charity of choice.</h3>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+</section>
+
+<section class="collection">
+    <div class="row collection__header">
+
+        <div class="col-lg-6 col-sm-12">
+            <h2>{{ collection.title }}</h2>
+        </div>
+
+        <div class="col-lg-6 col-sm-12 collection__options">
+            {% include 'partial-collection-options' %}
+        </div>
+
+    </div>
+
+    <div class="row collection__wrapper">
+        {% include 'partial-collection-filters' %} 
+   		{% paginate collection.products by 100 %}
+          <div class="collection-items__wrapper">
+              <div class="col-12 collection-items" data-masonry="{ "itemSelector": ".product-item", "columnWidth": 200 }">
+                  {% for product in collection.products %}
+                  {% if product.available and product.handle != 'art-lover-service-fee' %}
+                  {% include 'partial-product-card', type: collection %}
+                  {% endif %}
+                  {% endfor %}
+              </div>
+          {% if paginate.pages > 1 %}
+           <div class="pagination-container">{{ paginate | default_pagination: next: '>>', previous: '<<' }}</div>
+          {% endif %}
+      		</div>
+        {% endpaginate %}
+        </div>
+</section>
+
+{% section 'featured-artists' %}

@@ -1,0 +1,47 @@
+<div class="row search-bar-wrapper">
+    <div class="col-12">
+        <form id="advanced-search" class="search-bar" >
+            <div>
+                <label for="search_type_select">CATEGORÍA DE ARTE</label>
+                <select id="search_type_select">
+                    <option disabled selected value>Seleccione una categoría de arte...</option>
+                    {% for product_type in shop.types %}
+                    {% if product_type != 'mw_hidden_cart_fee' && product_type!='' %}
+                    <option value="{{ product_type }}">{{ product_type }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    <option value>SHOW ALL</option>
+                </select>
+            </div>
+            <div>
+                <label for="search_ngo_select">Charity</label>
+                {% if settings.is_ngo_list_select %}
+                <input id="search_ngo_select" class="awesomplete" placeholder="Select a charity..." data-list="{{ ngos | join: ", " }}" />
+                {% else %}
+                <select id="search_ngo_select">
+                    <option disabled selected value>Select a charity...</option>
+                    {% for ngo in ngos %}
+                    <option value="{{ ngo }}">{{ ngo }}</option>
+                    {% endfor %}
+                    <option value>SHOW ALL</option>
+                </select>
+                {% endif %}
+            </div>
+            <div>
+                <label for="search_vendor_select">Artistas</label>
+                <input id="search_vendor_select" class="awesomplete" placeholder="Select an artist..." data-list="{{ shop.vendors | join: ", " }}" />
+            </div>
+            <div>
+                <label for="search_price_range_select">PRECIO</label>
+                <select id="search_price_range_select">
+                    <option disabled selected value>Seleccione un rango de precios...</option>
+                    {% for price_range in prices %}
+                    <option value="{{ price_range }}">{{ price_range }}</option>
+                    {% endfor %}
+                    <option value>SHOW ALL</option>
+                </select>
+            </div>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</div>

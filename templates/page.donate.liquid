@@ -1,0 +1,57 @@
+<section class="hero" style="background-image: url({{ 'donate_img.jpg' | asset_img_url: 'master' }});">
+    <div class="overlay"></div>
+    <div class="row-100">
+        <div class="col-md-8 donate-title">
+            <h1>CREATE HISTORY. CONTRIBUTE TO A CULTURAL SHIFT.</h1>
+            <h3>100% of your donation will go towards the expansion of our virtuous circle.</h3>
+            <span><em>* We can't issue tax receipts as we are not a registered charity</em></span>
+        </div>
+        <div class="col-md-3 donate-form">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+
+                <img src="https://cdn.shopify.com/s/files/1/2192/4275/t/4/assets/pw-logo.png" width="100px" style="margin:10px auto; text-align:center"/>
+                <input type="hidden" name="cmd" value="_s-xclick" />
+                <input type="hidden" name="hosted_button_id" value="E2JK9HV22HRMN" />
+                <input type="hidden" name="item_name " value="DONATION A4H">
+
+                {% comment %}
+                <b>Enter an amount to give:</b>
+                <br>
+                <span class="prepend">$</span><input name="amount" class="donate-input"type="number" value="60.00"/><span class="append">CAD</span>
+                <div class="custom-select">
+                    <div class="option o-once active" val="0">Once</div><div class="option o-month" val="1">Monthly</div>
+                </div>
+                <input type="hidden" name="cmd" value="_donations" />
+                <input type="hidden" name="item_name " value="DONATION A4H">
+                <input type="hidden" name="business" value="6V2GVTRN33WK6">
+                <input type="hidden" name="img_url" value="https://cdn.shopify.com/s/files/1/2192/4275/t/4/assets/pw-logo.png">
+                <input type="hidden" name="cpp_logo_image" value="https://cdn.shopify.com/s/files/1/2192/4275/t/4/assets/pw-logo.png">
+                <input type="hidden" name="cpp_header_image" value="https://cdn.shopify.com/s/files/1/2192/4275/t/4/assets/pw-logo.png">
+                <input type="hidden" name="currency_code" value="CAD">
+                <input type="hidden" name="tax" value="0">
+                <input type="hidden" name="return" value="https://artforhumans.org/pages/donate">
+                <input type="hidden" name="cancel_return" value="https://artforhumans.org/pages/donate">
+                <input type="hidden" name="src" value="1" />
+                <input type="hidden" name="srt" value="12" />
+                <input type="hidden" name="set_customer_limit" value="max_limit_own " />
+                {% endcomment %}
+                <a class="generic-btn donate-submit" href="#">DONATE</a>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    $(document).ready(function() {
+        $('.option').click(function () {
+            $('.option').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('.donate-submit').click(function (e) {
+            e.preventDefault();
+            $(this).parents('form').submit();
+        });
+    });
+</script>

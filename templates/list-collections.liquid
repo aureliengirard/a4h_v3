@@ -1,0 +1,24 @@
+{% comment %}
+  This page represents the /collections and /products pages.
+{% endcomment %}
+
+<h1>{{ langify_title }}</h1>
+
+{% for collection in collections %}
+  {% unless collection.handle == 'frontpage' %}
+    <a href="{{ collection.url }}" title="{% comment %}ly_i18n_replace_for_[ 'collections.general.link_title' | t: title: title ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.general.link_title' | t: title: title }}{% endcapture %}{% include 'ly-static-string' with '14226160' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = title  %}{% assign ly_template = ly_template | replace: '[[title]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+      {% if collection.image != blank %}
+        {% comment %}ly_code_replace_for_[ collection | img_url: '480x480' | img_tag: collection.title ]_begin{% endcomment %}{% include 'ly-title' with collection %}{{ collection | img_url: '480x480' | img_tag: ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+      {% elsif collection.products.first != blank %}
+        {% comment %}ly_code_replace_for_[ collection.products.first | img_url: '480x480' | img_tag: collection.title ]_begin{% endcomment %}{% include 'ly-title' with collection %}{{ collection.products.first | img_url: '480x480' | img_tag: ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+      {% else %}
+        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+      {% endif %}
+    </a>
+
+    <p>
+      <a href="{{ collection.url }}" title="{% comment %}ly_i18n_replace_for_[ 'collections.general.link_title' | t: title: title ]_begin{% endcomment %}{% capture ly_template %}{{ 'collections.general.link_title' | t: title: title }}{% endcapture %}{% include 'ly-static-string' with '14226160' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = title  %}{% assign ly_template = ly_template | replace: '[[title]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">{% comment %}ly_code_replace_for_[ collection.title ]_begin{% endcomment %}{% include 'ly-title' with collection %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+    </p>
+  {% endunless %}
+{% endfor %}

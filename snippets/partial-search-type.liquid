@@ -1,0 +1,24 @@
+{% if collection.url contains 'vendor' %}
+{% else %}
+    <section class="filter-by__wrapper filter-by-type__wrapper bg--gray">
+        <div class="row filter-by filter-by-type">
+            <a class="filter{% if collection.url contains 'all' %} active{% endif %}" href="/collections/all">
+                <div class="filter__icon"></div>
+                <div class="filter__label">
+                    All
+                </div>
+            </a>
+            {% for type in shop.types %}
+                {% assign type_string = type | replace: " ", "+" %}
+                {% if type != 'mw_hidden_cart_fee' %}
+                    <a class="filter{% if collection.url contains type_string %} active{% endif %}" href="/collections/types?q={{ type_string }}">
+                        <div class="filter__icon"></div>
+                        <div class="filter__label">
+                            {{ type }}
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

@@ -1,0 +1,52 @@
+{% layout 'theme.iframe' %}
+
+<section class="iframe-collection">
+  <script>
+    $(document).ready(() => {
+		$("#iframe-carousel").slick({
+          infinite: true,
+          speed: 300,
+          centerMode: false,
+          variableWidth: true,
+          nextArrow: "<button type='button' class='slick-next'>&#155;</button>",
+          prevArrow: "<button type='button' class='slick-prev'>&#139;</button>",
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+            }
+          }
+        ]
+    	});
+    });
+  </script>
+
+  {% paginate collection.products by 12 %}
+    <div id="iframe-carousel" class="collection-iframe-items">
+      {% for product in collection.products %}
+        {% if product.available %}
+      		{% if product.type == "mw_hidden_cart_fee" %}{% continue %}{% endif %}
+
+      		{% include 'product-card-iframe' %}
+      
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endpaginate %}
+ {% include 'querystrings-cta' %}
+</section>
