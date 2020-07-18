@@ -23,104 +23,142 @@
 
 {% endfor %}
 
-<section class="single__product">
+<section class="single-product__header">
     <div class="row">
         <div class="col-md-6 product__images">
             <div class="product__images__featured">
-                <img id="product-image" data-mfp-src="{{ featured_image | img_url: '720x720' }}" src="{{ featured_image | img_url: '720x720' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
+                <img id="product-image" data-mfp-src="{{ featured_image | img_url: '624x624' }}" src="{{ featured_image | img_url: '624x624' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
             </div>
 
             {%- if product.images.size > 1 -%}
                 <div class="product__images-thumbnail">
                     {% for image in product.images %}
-                    <a class="preview-thumbnail" href="{{ image.src | img_url: '720x720' }}" data-product-single-thumbnail>
-                        <img class="gallery-img" data-mfp-src="{{ image.src | img_url: '720x720' }}" src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+                    <a class="preview-thumbnail" href="{{ image.src | img_url: '624x624' }}" data-product-single-thumbnail>
+                        <img class="gallery-img" data-mfp-src="{{ image.src | img_url: '624x624' }}" src="{{ image.src | img_url: '140x140' }}" alt="{{ image.alt | escape }}">
                     </a>
                     {% endfor %}
                 </div>
             {%- endif -%}
 
         </div>
-        <div class="col-md-6 product__meta bg--white">
+        <div class="col-md-6 product__metas bg--white">
 
-            <h3 class="vendor">{{ artist.title }}</h3>
+            <h3 class="product__vendor"><a href="{{ artist.url }}">{{ artist.title }}</a></h3>
             <h1 class="product__title">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</h1>
 
-            <div class="price">
-                {%- if current_variant.available -%}
-                {{ current_variant.price | money }}
-                {%- else -%}
-                SOLD OUT
+            <div class="product__meta">
+                <span class="meta--details">{{product.metafields.product.artwork_details}}</span>
+                <span class="meta--sizes-in-inches">{{product.metafields.accentuate.dimensions_in_inches}}</span>
+                <span class="meta--sizes-in-cm">{{product.metafields.accentuate.dimensions_in_cm}}</span>
+            </div>
+
+            <div class="product__price">
+                {%- if product.available -%}
+                    {%- if product.metafields.product.hidden_price == 'true' -%}
+                        Variable price magic
+                    {%- else -%}
+                        {{ product.price | money }}
+                    {%- endif -%}
                 {%- endif -%}
             </div>
 
-            {%- if current_variant.available -%}
-                <div class="price__impact">
+            {%- if current_variant.available and product.metafields.product.hidden_price == 'false' -%}
+                <div class="product__price-impact">
                     {{ section.settings.impact }} {{ current_variant.price | times: 0.9 | money }}
                 </div>
             {%- endif -%}
 
-            <div class="shipping-info">
+            <div class="product__shipping-info">
                 <span>Ships from David Zwirner, New York, NY, USA</span>
                 <span>Shipping: $190 domestic; $419 worldwide</span>
             </div>
 
-            {% capture "form_classes" -%}
-            product-form product-form-{{ section.id }}
-            {%- unless section.settings.show_variant_labels %} product-form--hide-variant-labels {% endunless %}
-            {%- if section.settings.enable_payment_button and product.has_only_default_variant %} product-form--payment-button-no-variants {%- endif -%}
-            {%- if current_variant.available == false %} product-form--variant-sold-out {%- endif -%}
-            {%- endcapture %}
+            <div class="product__add-to-cart">
 
-            {% form 'product', product, class:form_classes, novalidate: 'novalidate', data-product-form: '' %}
+                <div class="impact-select__wrapper">
+                    <h4>Choose your impact:</h4>
 
-                <div class="product-form__controls-group product-form__controls-group--submit">
-                    <div class="product-form__item product-form__item--submit
-                    {%- if section.settings.enable_payment_button %} product-form__item--payment-button {%- endif -%}
-                    {%- if product.has_only_default_variant %} product-form__item--no-variants {%- endif -%}"
-                    >
-                        <button type="submit" name="add"
-                        {% unless current_variant.available %} aria-disabled="true"{% endunless %}
-                        aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
-                        class="btn product-form__cart-submit{% if section.settings.enable_payment_button %} btn--secondary-accent{% endif %}"
-                        {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
-                        data-add-to-cart>
+                    <div class="impact-logos impact-select">
+
+                        {% assign sdg = product.collections | sort: "title" %}
+
+                        {% for collection in sdg %}
+
+                        {% assign template_type = collection.template_suffix | strip %}
+
+                        {% if template_type == 'ungoals' %}
+
+                        {%- for image in collection.metafields.accentuate.choice_logo -%}
+                            <img class="impact-logo" src="{{ image.cloudinary_src | append: 'w_100,h_100' }}" alt="{{ collection.title }}"/>
+                        {%- endfor -%}
+
+                        {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+                    <p>
+                        {% if product.metafields.product.hidden_price == 'true' %}90% of the transation{% else %}The {{ current_variant.price | times: 0.9 | money }} collected{% endif %} will be forwarded to one of our partner NGOs according to the artist's choice.</p>
+                </div>
+
+                <form class="action cart__form" action="/cart/add" method="post" enctype="multipart/form-data">
+
+                    <select id="variant-select" name="id" data-product-select  style="display:none;">
+                        {% for variant in product.variants %}
+                        <option class="{{ variant.title | handleize }}" value="{{ variant.id }}">{{ variant.title }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="buy-button-container right-align">
+                        <button
+                            class="generic-btn"
+                            type="submit"
+                            name="add"
+                            data-add-to-cart
+                            {% unless current_variant.available %}disabled="disabled"{% endunless %}>
                             <span data-add-to-cart-text>
-                                {% unless current_variant.available %}
-                                {{ 'products.product.sold_out' | t }}
-                                {% else %}
+                                {% if current_variant.available %}
                                 {{ 'products.product.add_to_cart' | t }}
-                                {% endunless %}
-                            </span>
-                            <span class="hide" data-loader>
-                                {% include 'icon-spinner' %}
+                                {% else %}
+                                {{ 'products.product.sold_out' | t }}
+                                {% endif %}
                             </span>
                         </button>
-                        {% if section.settings.enable_payment_button %}
-                            {{ form | payment_button }}
-                        {% endif %}
                     </div>
-                </div>
-            {% endform %}
+                </form>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="about">
+<section class="single-product__about">
     <div class="row">
-        <div class="col-lg-6">
-            <div class="about__artist">
-                <h2>About {{ artist.title }}</h2>
-                <a href="{{artist.url}}">Artist Profile</a>
-                <p><strong>Born:</strong> {{artist.metafields.artist.born}}</p>
-                <p><strong>Studio:</strong> {{artist.metafields.artist.studio}}</p>
-                <p>
-                    {{ artist.description | prepend: "<strong>Short Bio: </strong>" }}
-                </p>
+        <div class="col-lg-6-full">
+            <div class="about about__artist">
+                <div class="title-has-cta">
+                    <h2>About {{ artist.title }}</h2>
+                    {% include 'partial-cta'  with { cta_label: "<span>Artist </span>Profile", cta_url: artist.url }  %}
+                </div>
+                <div class="artist__meta">
+                    <p><strong>Born:</strong> {{artist.metafields.artist.born}}</p>
+                    <p><strong>Studio:</strong> {{artist.metafields.artist.studio}}</p>
+                    <p>
+                        {{ artist.description | prepend: "<strong>Short Bio: </strong>" }}
+                    </p>
+                </div>
+                <div class="visibility-insights artist__visibility">
+                    <h4>Artist Visibility Insights</h4>
+                    <p>- Worldwide Ranking: 597</p>
+                    <p>- Days of Exhibition in 2019: 1334</p>
+                    <div class="visibility-insights__graph">
+
+                        {% include 'partial-dummy-graph'  %}
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="about__art-piece">
+        <div class="col-lg-6-full">
+            <div class="about about__art-piece">
                 <h2>About the Piece</h2>
                 <table class="product-datas__table">
                     <tbody>
@@ -140,56 +178,63 @@
                             <th>Shipping</th>
                             <td>Learn more</td>
                         </tr>
-                        <tr>
-                            <th>Tax Legislation</th>
-                            <td>Select your country</td>
-                        </tr>
 
                     </tbody>
                 </table>
             </div>
 
-            <div class="about__gallery">
-
-                <h2>About {{ gallery.title }}</h2>
-                <a href="{{gallery.urll}}">Gallery Profile</a>
+            <div class="about about__gallery">
+                <div class="title-has-cta">
+                    <h2>About {{ gallery.title }}</h2>
+                    {% include 'partial-cta'  with { cta_label: "Gallery<span> Profile</span>", cta_url: gallery.url }  %}
+                </div>
                 <p>{{gallery.description}}</p>
             </div>
 
-            <div class="about__impact bg--gray">
-                <h2>Your Impact</h2>
-                <p>
-                    {{ current_variant.price | times: 0.9 | money }} of your purchase will directly support one of the following goals:
-                </p>
+            <div class="about about__impact bg--gray d-lg-flex">
+                <div class="impact-logos__wrapper">
+                    <h2>Your Impact</h2>
 
-                <div class="impact-logos">
+                    <p>
+                        {{ current_variant.price | times: 0.9 | money }} of your purchase will directly support one of the following goals:
+                    </p>
 
-                    {% assign sdg = product.collections | sort: "title" %}
+                    <div class="impact-logos">
 
-                    {% for collection in sdg %}
+                        {% assign sdg = product.collections | sort: "title" %}
+
+                        {% for collection in sdg %}
 
                         {% assign template_type = collection.template_suffix | strip %}
 
                         {% if template_type == 'ungoals' %}
 
-                            {% for image in collection.metafields.accentuate.choice_logo %}
-                              <img class="impact-logo" src="{{ image.cloudinary_src | append: 'w_115,h_115' }}" alt="{{ collection.title }}"/>
-                            {% endfor %}
+                        {% for image in collection.metafields.accentuate.choice_logo %}
+                        <img class="impact-logo" src="{{ image.cloudinary_src | append: 'w_160,h_160' }}" alt="{{ collection.title }}"/>
+                        {% endfor %}
 
                         {% endif %}
 
-                    {% endfor %}
+                        {% endfor %}
+                        <img class="impact-logo all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
+
+                    </div>
+                </div>
+                <div class="all-impact-logos">
+                    <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="collection collection__featured collection__artist">
+<section id="collection-artist" class="collection single-product__collections collection__featured collection__artist">
     <div class="row">
         <div class="col-12">
-            <h2>Other Works by {{ artist.title }}</h2>
-            <a class="cta" href="{{ artist.url }}">View All</a>
+            <div class="title-has-cta">
+                <h2><span>Other </span>Works by {{ artist.title }}</h2>
+                {% include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: artist.url }  %}
+            </div>
             <div class="collection-items featured-items">
                 {% for product in artist.products %}
 
@@ -201,17 +246,86 @@
     </div>
 </section>
 
-<section class="collection collection__featured collection__artist">
+<section id="collection-gallery" class="collection single-product__collections collection__featured">
     <div class="row">
         <div class="col-12">
-            <h2>Other Works From {{ gallery.title }}</h2>
-            <a class="cta" href="{{ gallery.url }}">View All</a>
+            <div class="title-has-cta">
+                <h2><span>Other </span>Works From {{ gallery.title }}</h2>
+                {% include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: gallery.url }  %}
+            </div>
             <div class="collection-items featured-items">
                 {% for product in gallery.products %}
 
                     {% include 'partial-product-card' %}
 
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="collection-artist" class="collection single-product__collections collection__featured collection__related-artist">
+    <div class="row">
+        <div class="col-12">
+            <div class="title-has-cta">
+                <h2>Related Artists</h2>
+                {% include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } %}
+            </div>
+            <div class="collection-items featured-items">
+
+                {% assign related_artists = artist.metafields.accentuate.related_artist | split: '|' %}
+                {% for related_artist in related_artists %}
+
+                    {% include 'partial-artist-card' with { collection: collections[related_artist] } %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="tag-artist" class="tags single-product__tags">
+    {% assign impact-tags = "Climate,Communities,Consumption,Education,Energy,Gender,Health,Hunger,Industry,Inequality,Land,Life Below Water,Partnerships,Peace and Justice,Poverty,Water,Work" | split:"," %}
+    <div class="row">
+        <div class="col-12">
+            <h2>Related Tags</h2>
+            <div class="tags__wrapper">
+                <div class="tags-catgerogy">
+                    <div class="tags-catgerogy__title">
+                        {% include 'icon-art-tags' %}<span> Art</span>
+                    </div>
+                    <div class="tags-catgerogy__list">
+                        {% for tag in product.tags %}
+                            {% if impact-tags contains tag %}
+                            {% else %}
+                                <a class="tag-item" href="#">{{ tag }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="tags-catgerogy">
+                    <div class="tags-catgerogy__title">
+                        {% include 'icon-impact-tags' %}<span> Impact</span>
+                    </div>
+                    <div class="tags-catgerogy__list">
+                        {% assign sdg = product.collections | sort: "title" %}
+
+                        {% for collection in sdg %}
+                            {% assign template_type = collection.template_suffix | strip %}
+                            {% if template_type == 'ungoals' %}
+                                <a class="tag-item" href="{{ collection.url }}">{{ collection.title }}</a>
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% for tag in product.tags %}
+                            {% if impact-tags contains tag %}
+                            {% else %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -229,7 +343,7 @@ for (var i = 0, len = thumbnails.length; i < len; i++) {
     });
 }
 $(document).ready(function() {
-    if ($('.product__images__thumbnail a').length>1) {
+    if ($('.product__images-thumbnail a').length>1) {
         $('#product-image').click(function() {
             $('.gallery-img:first').click()[0];
         });

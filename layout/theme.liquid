@@ -15,8 +15,6 @@
 
     {% comment %} Force OG:IMG fr {% endcomment %}
 
-  {% assign collection_image_fr = collection.metafields.c_f.Logo_fr %}
-
   {% if settings.favicon != blank %}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
   {% endif %}
@@ -82,16 +80,13 @@
 
 
   <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
-  <!--[if lt IE 9]><script src="{{ 'vendor.js' | asset_url }}"></script><![endif]-->
-  <!--[if lt IE 9]><script src="{{ 'theme.js' | asset_url }}"></script><![endif]-->
+  <!--[if lt IE 9]>{{ 'vendor.js' | asset_url | script_tag }}</script><![endif]-->
+  <!--[if lt IE 9]>{{ 'theme.js' | asset_url | script_tag }}<![endif]-->
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" async></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
   <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
   {{ 'lazysizes.min.js' | asset_url | script_tag }}
-
-  {% include 'mw_fees_objects' %}
 
 </body>
 

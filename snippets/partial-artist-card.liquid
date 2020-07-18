@@ -1,61 +1,20 @@
-{% if product.type == "mw_hidden_cart_fee" %}{% continue %}{% endif %}
-{% assign template_type = "" %}
-{% assign gallery_name = "" %}
-{% assign gallery_url = "" %}
-{% assign ungoals_name = "" %}
-{% assign artist_name = "" %}
-{% assign artist_url = "" %}
+{% assign artworks = "" %}
 
-{% for collection in product.collections %}
-
-    {% assign template_type = collection.template_suffix | strip %}
-
-    {% if template_type == 'gallery' %}
-        {% assign gallery_name = collection.title %}
-        {% assign gallery_url = collection.url %}
-    {% elsif template_type == 'ungoals' %}
-        {% assign ungoals_name = collection.title %}
-    {% elsif template_type == 'artist' %}
-        {% assign artist_name = collection.title %}
-        {% assign artist_url = collection.url %}
-    {% endif %}
-
+{% for product in collection.products%}
+    {% assign artworks = forloop.length %}
 {% endfor %}
 
-<article price="{{product.price}}" type="{{product.type}}" href="{{ product.url }}" class="product-item">
-    <a href="{{product.url}}" class="img-container">
+<article class="card-item artist-item">
+    <a href="{{collection.url}}">
+    <div class="img-container">
         <div class="img-inner-container">
-            {{ product.featured_image.src | img_url: '480x480' | img_tag: product.title }}
+            {{ collection.image | img_url: '480x480' | img_tag: collection.title }}
         </div>
-    </a>
-    <div class="product-details">
-        <div class="product__price">
-            <a href="{{product.url}}">
-            {%- if product.available -%}
-                {%- if product.metafields.product.hidden_price == 'true' -%}
-                    Do something crazy with $$$
-                {%- else -%}
-                    {{ product.price | money }}
-                {%- endif -%}
-            {%- else -%}
-            SOLD OUT
-            {%- endif -%}
-            </a>
-        </div>
-        <h4 class="product__artist">{%- if artist_name != "" -%} <a href="{{ artist_url }}">{{ artist_name }}</a>{%- else -%}{{ product.vendor }}{%- endif -%}</h4>
-        <div class="product__title"><a href="{{product.url}}">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</a></div>
-        <div class="product__gallery"><a href="{{ gallery_url }}">{{ gallery_name }}</a></div>
-        <div class="product__un-goals">
-            {%- for collection in product.collections -%}
-            {% assign template_type = collection.template_suffix | strip %}
-            {%- if template_type == 'ungoals' -%}
-            <a href="{{ collection.url }}" class="un-goals">{{- collection.title -}}</a><span class="separator">, </span>
-            {%- else -%}
-            {%- endif -%}
-            {%- endfor -%}
-        </div>
-
-
-
     </div>
+    <div class="card-details artist-details">
+        <h4 class="card__artist">{{ collection.title }}</h4>
+        <div class="card__origin">{{ collection.metafields.artist.born }}</div>
+        <div class="card__artworks">{{artworks}} artworks</div>
+    </div>
+</a>
 </article>

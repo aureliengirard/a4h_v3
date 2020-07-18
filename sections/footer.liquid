@@ -1,123 +1,87 @@
 <footer>
-        <div>
-            <h4>{{ section.settings.column-1-title }}</h4>
+    <section class="footer__primary">
+        <div class="row">
+            <div class="col-lg-3">
+                <h4>{{ settings.column-1-title }}</h4>
 
-            {% for link in linklists[section.settings.column-1-menu].links %}
-                <a href="{{ link.url }}">{{ link.title }}</a>
-            {% endfor %}
+                <div class="footer__menu">
+                    {% for link in linklists[settings.column-1-menu].links %}
+                        <a class="footer__link" href="{{ link.url }}">{{ link.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h4>{{ settings.column-2-title }}</h4>
+                <div class="footer__menu">
+                    {% for link in linklists[settings.column-2-menu].links %}
+                        <a class="footer__link" href="{{ link.url }}">{{ link.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h4>{{ settings.column-3-title }}</h4>
+
+                <div class="footer__menu">
+                    {% for link in linklists[settings.column-3-menu].links %}
+                        <a class="footer__link" href="{{ link.url }}">{{ link.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h4>{{ settings.column-3-title }}</h4>
+                <div class="footer__newsletter">
+
+                    <form class="newsletter-form"
+                        action="//hvduc.us11.list-manage.com/subscribe/post?u=355ea7b2b4b03bc8640b8efdd&id=86fecc3357"
+                        method="post"
+                        id="mc-embedded-subscribe-form"
+                        name="mc-embedded-subscribe-form"
+                        target="_blank"
+                        _lpchecked="1">
+                        <input type="email"
+                        value
+                        placeholder="{{ settings.newsletter-placeholder }}"
+                        name="EMAIL"
+                        class="newsletter-input-form-control"
+                        id="mail"
+                        aria-label="Your email...">
+                        <button id="subscribe" type="submit"></button>
+                    </form>
+                </div>
+                <div class="footer__menu">
+                    {% for link in linklists[settings.column-4-menu].links %}
+                        <a class="footer__link" href="{{ link.url }}">{{ link.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-        <div>
-            <h4>{{ section.settings.column-2-title }}</h4>
-
-            {% for link in linklists[section.settings.column-2-menu].links %}
-                <a href="{{ link.url }}">{{ link.title }}</a>
-            {% endfor %}
+    </section>
+    <section class="footer__secondary">
+        <div class="row">
+            <div class="col-lg-3 footer__copyright">
+                <img src="{{ settings.footer_icon | img_url: '32x' }}" alt="{{shop.name}}" width="32px" height="32px">
+                <span>© {{shop.name}} {{ 'now' | date: "%Y" }}</span>
+            </div>
+            <div class="col-lg-6 footer__menu footer-secondary__menu">
+                {% for link in linklists[settings.secondary-footer-menu].links %}
+                        {% if forloop.first == true %}
+                            <a class="footer__link footer-secondary__link" href="{{ link.url }}">{{ link.title }}</a>
+                        {% else %}
+                            <span>  •  </span>
+                            <a class="footer__link footer-secondary__link" href="{{ link.url }}">{{ link.title }}</a>
+                        {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-lg-3 footer__social social__icons">
+                <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_facebook }}">{% include 'icon-social-facebook' %}</a></div>
+                <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_instagram }}">{% include 'icon-social-instagram' %}</a></div>
+                <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_twitter }}">{% include 'icon-social-twitter' %}</a></div>
+                <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_linkedin }}">{% include 'icon-social-linkedin' %}</a></div>
+                <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_weibo }}">{% include 'icon-social-weibo' %}</a></div>
+            </div>
         </div>
-        <div>
-            <h4>{{ section.settings.column-3-title }}</h4>
-            <p>{{ section.settings.newsletter-txt }}</p>
-            <form class="newsletter-form"
-                action="//hvduc.us11.list-manage.com/subscribe/post?u=355ea7b2b4b03bc8640b8efdd&id=86fecc3357"
-                method="post"
-                id="mc-embedded-subscribe-form"
-                name="mc-embedded-subscribe-form"
-                target="_blank"
-                _lpchecked="1">
-            <input type="email"
-                value
-                placeholder="{{ section.settings.newsletter-placeholder }}"
-                name="EMAIL"
-                class="newsletter-input-form-control"
-                id="mail"
-                aria-label="Your email...">
-            <button id="subscribe" type="submit"></button>
-        </form>
-    </div>
+    </section>
 </footer>
-<footer class="second-footer">
-    <div class="terms">
-        <img src="https://cdn.shopify.com/s/files/1/2192/4275/files/a4h_alone.png?1295168935730466647" alt="Virtuous circle">
-    </div>
-    <div class="terms">
-        <span>© {{shop.name}} {{ 'now' | date: "%Y" }}</span>
-    </div>
-    <div class="social-icons">
-        <div><a target="_blank" href="{{ section.settings.instagram }}" style="color: #2f2f28; margin: 0;">{% include 'icon-instagram' %}</a></div>
-        <div><a target="_blank" href="{{ section.settings.twitter }}" style="color: #2f2f28; margin: 0;">{% include 'icon-twitter' %}</a></div>
-        <div><a target="_blank" href="{{ section.settings.facebook }}" style="color: #2f2f28; margin: 0;">{% include 'icon-facebook' %}</a></div>
-    </div>
-</footer>
-
-{% schema %}
-{
-    "name": "Footer",
-    "settings": [
-    {
-        "type": "text",
-        "id": "column-1-title",
-        "label": "1rst Col Title",
-        "default": "Art For Humans (A4H)"
-    },
-    {
-        "type": "link_list",
-        "id": "column-1-menu",
-        "label": "1rst Col Menu",
-        "default": "footer"
-    },
-    {
-        "type": "text",
-        "id": "column-2-title",
-        "label": "2nd Col Title",
-        "default": "Join the community"
-    },
-    {
-        "type": "link_list",
-        "id": "column-2-menu",
-        "label": "Second Column Menu",
-        "default": "footer"
-    },
-    {
-        "type": "text",
-        "id": "column-3-title",
-        "label": "3rd Col Title",
-        "default": "Newsletter"
-    },
-    {
-        "type": "text",
-        "id": "newsletter-txt",
-        "label": "Newsletter Text",
-        "default": "Susbscribe to our monthly newsletter"
-    },
-    {
-        "type": "text",
-        "id": "newsletter-placeholder",
-        "label": "Newsletter Placeholder",
-        "default": "Your email..."
-    },
-    {
-        "type": "link",
-        "id": "instagram",
-        "label": "instagram URL",
-        "default": "https://www.instagram.com/artforhumansorg/"
-    },
-    {
-        "type": "link",
-        "id": "twitter",
-        "label": "Second Column Menu",
-        "default": "https://twitter.com/ArtForHumansorg"
-    },
-    {
-        "type": "link",
-        "id": "facebook",
-        "label": "Second Column Menu",
-        "default": "https://www.facebook.com/artforhumansorg/"
-    },
-    {
-        "type": "checkbox",
-        "id": "show_payment_icons",
-        "label": "Show payment icons",
-        "default": false
-    }
-    ]
-}
-{% endschema %}

@@ -22,18 +22,18 @@
 
 {% endfor %}
 
-<article price="{{product.price}}" type="{{product.type}}" href="{{ product.url }}" class="product-item">
+<article price="{{product.price}}" type="{{product.type}}" href="{{ product.url }}" class="card-item product-item">
     <a href="{{product.url}}" class="img-container">
         <div class="img-inner-container">
             {{ product.featured_image.src | img_url: '480x480' | img_tag: product.title }}
         </div>
     </a>
-    <div class="product-details">
+    <div class="card-details product-details">
         <div class="product__price">
             <a href="{{product.url}}">
             {%- if product.available -%}
                 {%- if product.metafields.product.hidden_price == 'true' -%}
-                    Do something crazy with $$$
+                    Variable price magic
                 {%- else -%}
                     {{ product.price | money }}
                 {%- endif -%}
@@ -42,10 +42,10 @@
             {%- endif -%}
             </a>
         </div>
-        <h4 class="product__artist">{%- if artist_name != "" -%} <a href="{{ artist_url }}">{{ artist_name }}</a>{%- else -%}{{ product.vendor }}{%- endif -%}</h4>
-        <div class="product__title"><a href="{{product.url}}">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</a></div>
-        <div class="product__gallery"><a href="{{ gallery_url }}">{{ gallery_name }}</a></div>
-        <div class="product__un-goals">
+        <h4 class="card__artist">{%- if artist_name != "" -%} <a href="{{ artist_url }}">{{ artist_name }}</a>{%- else -%}{{ product.vendor }}{%- endif -%}</h4>
+        <div class="card__title"><a href="{{product.url}}">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</a></div>
+        <div class="card__gallery"><a href="{{ gallery_url }}">{{ gallery_name }}</a></div>
+        <div class="card__un-goals">
             {%- for collection in product.collections -%}
             {% assign template_type = collection.template_suffix | strip %}
             {%- if template_type == 'ungoals' -%}
@@ -56,8 +56,6 @@
             {%- endif -%}
             {%- endfor -%}
         </div>
-
-
 
     </div>
 </article>
