@@ -1,6 +1,16 @@
-{% section 'collection-ngo-hero' %}
 
-{% include 'partial-collection-profil', bg_color: '', type: 'ngo' %}
+<section>
+    <div class="row">
+        {% include 'partial-collection-menu', bg_color: '', type: 'ngo' %}
+
+        <div class="col-lg-9">
+
+        </div>
+    </div>
+
+
+</section>
+
 
 <section class="collection">
     <div class="row collection__header">
@@ -19,9 +29,7 @@
           <div class="collection-items__wrapper">
               <div class="col-12 collection-items">
                   {% for product in collection.products %}
-                      {% if product.available and product.handle != 'art-lover-service-fee' %}
-                        {% include 'product-card', type: ngo %}
-                      {% endif %}
+                    {% include 'partial-product-card' %}
                   {% endfor %}
               </div>
           {% if paginate.pages > 1 %}
