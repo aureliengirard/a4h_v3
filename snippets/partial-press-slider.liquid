@@ -1,0 +1,118 @@
+
+{% assign exhibitions_image = collection.metafields.exhibitions.thumbnail %}
+{% assign exhibitions_location_name = collection.metafields.exhibitions.location_name %}
+{% assign exhibitions_location_city = collection.metafields.exhibitions.location_city %}
+{% assign exhibitions_location_title = collection.metafields.exhibitions.title %}
+{% assign exhibitions_start_date = collection.metafields.exhibitions.start_date %}
+{% assign exhibitions_end_date = collection.metafields.exhibitions.end_date %}
+{% assign exhibitions_link = collection.metafields.accentuate.link %}
+
+{% assign exhibitions_loop = "" %}
+
+{%- capture loop_indexes -%}
+    {%- for location in collection.metafields.exhibitions.location_name -%}
+        {{- forloop.index0 -}}
+        {%- if forloop.last == false %}::{% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+{%- assign loop_index = loop_indexes | strip -%}
+{%- assign loop_in = loop_index | split: '::'  -%}
+
+<div class="slider-items__wrppaer">
+    <div class="slider-items">
+
+        {%- for loop in loop_in -%}
+
+            {%- assign loop_strip = loop | strip  -%}
+
+            {% comment %} Opening Card Item {% endcomment %}
+            <div class="card-item media-item">
+
+                {% comment %} Opening Card Link {% endcomment %}
+                {%- for item in exhibitions_link -%}
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip -%}
+                        {%- if items != "" -%}
+                        <a href="{{item}}">
+                        {%- endif -%}
+                    {%- else -%}{% continue %}{%- endif -%}
+                {%- endfor -%}
+
+                {% comment %} Card Image {% endcomment %}
+                <div class="card-header">
+                    {% for images in exhibitions_image %}
+                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                        {%- if loop_sub == loop_strip -%}
+                            {% for image in images %}
+                            <img src="{{ image.cloudinary_src | append: 'w_380,h_280' }}" alt="{{ image.alt }}"/>
+                            {% endfor %}
+
+                        {%- else -%}{% continue %}{%- endif -%}
+                    {% endfor %}
+                </div>
+
+                {% comment %}Card Content Begining {% endcomment %}
+                <div class="card-meta">
+                    <span class="meta__location">
+                        {% comment %}Event Gallery Location{% endcomment %}
+                        {%- for item in exhibitions_location_name -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip -%}
+                                {{item}},
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+
+                        {% comment %}Event Location City{% endcomment %}
+                        {%- for item in exhibitions_location_city -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip -%}
+                                {{item}}
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+                    </span>
+
+                    {% comment %}Event Title{% endcomment %}
+                    {%- for item in exhibitions_location_title -%}
+                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                        {%- if loop_sub == loop_strip -%}
+                            <h4>{{item}}</h4>
+                        {%- else -%}{% continue %}{%- endif -%}
+                    {%- endfor -%}
+
+                    <span class="meta__date">
+                        {%- for item in exhibitions_start_date -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip -%}
+                                {{item}}
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+
+                        {%- for item in exhibitions_end_date -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip -%}
+                                {%- if items != "" -%}
+                                    - {{item}}
+                                {%- endif -%}
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+                    </span>
+
+                {% comment %}Closing Card Content{% endcomment %}
+                </div>
+
+            {% comment %}Closing Card Link {% endcomment %}
+            {%- for item in exhibitions_link -%}
+                {%- assign loop_sub =  forloop.index0 | strip  -%}
+                {%- if loop_sub == loop_strip -%}
+                    {%- if items != "" -%}
+                    </a>
+                    {%- endif -%}
+                {%- else -%}{% continue %}{%- endif -%}
+
+            {%- endfor -%}
+            {% comment %} Closing Card Item {% endcomment %}
+            </div>
+        {%- endfor -%}
+
+    </div>
+</div>

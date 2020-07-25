@@ -1,0 +1,35 @@
+{%- assign impact-tags = "Climate,Communities,Consumption,Education,Energy,Gender,Health,Hunger,Industry,Inequality,Land,Life Below Water,Partnerships,Peace and Justice,Poverty,Water,Work" | split:"," -%}
+
+{% capture un_goal_list %}
+    {%- for collection in collections -%}
+
+        {%- assign template_type = collection.template_suffix | strip -%}
+
+        {%- if template_type == 'ungoals' -%}
+        {{collection.title}}|{{collection.url}}
+        {% if forloop.last == false %}::{% endif%}
+
+            {%- assign ungoals = collection -%}
+        {%- endif -%}
+
+    {%- endfor -%}
+{% endcapture %}
+
+{% assign un_goal_single = un_goal_list | split: '::'%}
+
+{% capture collection_list %}
+    {%- for collection in collections -%}
+
+        {%- assign template_type = collection.template_suffix | strip -%}
+
+        {%- if template_type != 'ungoals' -%}
+        {{collection.title}}|{{collection.url}}
+        {% if forloop.last == false %}::{% endif%}
+
+            {%- assign ungoals = collection -%}
+        {%- endif -%}
+
+    {%- endfor -%}
+{% endcapture %}
+
+{% assign collection_single = collection_list | split: '::'%}
