@@ -136,6 +136,13 @@ $xxxl: 1920px;
     -ms-animation: $values;
 }
 
+@mixin column($values){
+    -webkit-column-count: $values;
+    -moz-column-count: $values;
+    column-count: $values;
+}
+
+
 // keyframes
 
 @keyframes fadeIn {
@@ -179,14 +186,16 @@ $xxxl: 1920px;
 // GRID SYSTEM
 $col-gutter: 2.5%;
 $col-width: 100%;
+$grid-sm: 1050px;
+$grid-lg: 1280px;
 
 section > [class*="row"]{
-    max-width: 1050px;
+    max-width: $grid-sm;
     margin-left: auto;
     margin-right: auto;
 
     @include respond-above($xl){
-        width: 1280px;
+        width: $grid-lg;
         max-width: 90%
     }
 
@@ -386,6 +395,7 @@ html {
     line-height: 1.3;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
 }
 
 /* Sections
@@ -450,17 +460,27 @@ h1 {
     line-height: 1.15;
     font-weight: 700;
 
-    @include respond-below($xxxl) {
+    @include respond-below($xxl) {
         font-size: 2em;
     }
 
     @include respond-below($md) {
         font-size: 1.5em;
     }
+
+    .collection__menu & {
+        font-size: (48 / $base)+em;
+        line-height: 1;
+        font-weight: 400;
+        font-family: $nunito;
+        text-transform: capitalize;
+    }
+
+
 }
 
 h2 {
-    font-size: (36 / $base)+em;
+    font-size: (32 / $base)+em;
     font-weight: 700;
     margin: 0 0 $gutter 0;
     line-height: (63 / 36);
@@ -480,7 +500,7 @@ h2 {
 }
 
 h3 {
-    font-size: 1.375em;
+    font-size: (20.5 / $base)+em;
     margin: 0 0 $gutter 0;
 
     @include respond-below($md){
@@ -510,24 +530,21 @@ h5 {
 }
 
 p {
-        font-size: 1em;
-        margin: 1em 0;
+    font-size: 1em;
+    margin: 1em 0;
+    line-height: 1.5;
 
-        @include respond-below($lg){
-            line-height: (24/14);
-        }
+    @include respond-below($lg){
+        line-height: (24/14);
+    }
 
-        @include respond-above($xxxl){
-            font-size: 1.125em;
-        }
+    &:nth-child(1){
+        margin-top: 0;
+    }
 
-        &:nth-child(1){
-            margin-top: 0;
-        }
-
-        &:nth-last-child(1){
-            margin-bottom: 0;
-        }
+    &:nth-last-child(1){
+        margin-bottom: 0;
+    }
 }
 
 a{
@@ -1132,6 +1149,15 @@ textarea {
     }
 }
 
+.ml-auto{
+    margin-left: auto;
+}
+
+// Section Style top border
+.tb{
+    border: 1px solid $gray;
+}
+
 
 /*================ Icons ================*/
 .icon {
@@ -1394,6 +1420,11 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
     }
 }
 
+.anchor{
+    top: -($spacing * 15);
+    position: absolute;
+}
+
 /* Buttons
 ========================================================================== */
 [class*="-btn"]{
@@ -1504,8 +1535,8 @@ table {
     tbody {
 
         td, th {
-            padding-top: .25em;
-            padding-bottom: .25em;
+            padding-top: .5em;
+            padding-bottom: .5em;
             @extend %td;
         }
 
@@ -1519,6 +1550,18 @@ table {
 
         tr {
 
+            &:nth-child(1){
+                td, th {
+                    padding-top: 0;
+                }
+            }
+
+            &:nth-last-child(1){
+                td, th {
+                    padding-bottom: 0;
+                }
+            }
+
         }
     }
 }
@@ -1529,19 +1572,20 @@ table {
 // NAVIGATION
 nav {
     padding: 0px;
-    position: absolute;
+    position: fixed;
     width: 100%;
     z-index: 3;
     top: 0;
     left: 0;
     right: 0;
+    background-color: rgba(255,255,255,1);
     overflow: hidden;
     transition: all .25s ease-in-out;
     height: $spacing-xxl;
 
 
     [class*="row"]{
-        width: 1500px;
+        width: 1400px;
         margin: auto;
 
         @include respond-above($xl){
@@ -1566,11 +1610,11 @@ nav {
     }
 
     @include respond-above($xl) {
-        padding: $spacing-xxl 5%;
+        padding: $spacing-xxl*.75 5%;
     }
 
     @include respond-above($xxl) {
-        padding: $spacing-xxl $spacing-xxl*1.5;
+        padding: $spacing-xxl*.75 $spacing-xxl*1.5;
     }
 
 
@@ -1634,7 +1678,7 @@ nav {
                 }
 
                 @include respond-above($xl) {
-                    padding: $spacing*2 $spacing*2.25;
+                    padding: $spacing*1.875 $spacing*2.25;
                 }
             }
 
@@ -1648,6 +1692,12 @@ nav {
         padding: 0;
         display: inline-block;
         width: {{ settings.header_logo_max_width }}px;
+
+        img{
+            display: block;
+            height: auto;
+            width: 100%;
+        }
 
         @include respond-below($lg) {
             padding: 15px;
@@ -1868,9 +1918,13 @@ footer {
     }
 
     .footer__social{
+        @include justify-content(flex-end);
+
         @include respond-below($lg){
             order: 2;
             margin: $spacing*2 auto $spacing;
+            text-align: center;
+            @include justify-content(center);
         }
     }
 
@@ -1924,12 +1978,16 @@ main section{
         padding-top: $spacing-xxl * 1.4;
 
         @include respond-above($lg){
-            padding-top: $spacing-xxl * 3.5;
+            padding-top: $spacing-xxl * 2.75;
         }
     }
 
     // Product page - main section
     &.single-product__header {
+
+        .row{
+            @include align-items(flex-end)
+        }
 
         .product__images {
             //@include flexbox;
@@ -1952,9 +2010,9 @@ main section{
             .product__images__featured {
                 @include flexbox;
                 width:100%;
-                height: calc(100vw  #{$spacing * 4});
+                //height: calc(100vw  #{$spacing * 4});
                 @include respond-above($lg){
-                    height: 624px;
+                    height: 450px;
                 }
 
                 img {
@@ -1966,7 +2024,6 @@ main section{
         }
 
         .product__metas {
-            padding-top: $spacing * 3;
             font-family: $raleway !important;
 
             @include respond-above($lg){
@@ -2178,8 +2235,8 @@ main section{
 
         .about__artist{
             height: 100%;
-            @include flexbox;
-            @include flex-flow(wrap);
+            //@include flexbox;
+            //@include flex-flow(wrap);
 
             @include respond-below($lg){
                 padding-top: $spacing * 3;
@@ -2256,6 +2313,28 @@ main section{
         }
     }
 
+    &.single-product__tags{
+
+        .tags__wrapper{
+            .tags-catgerogy{
+
+                @include respond-above($lg){
+                    @include flexbox;
+                    @include align-items(center);
+                }
+            }
+
+            .tags-catgerogy__title{
+
+                svg{
+                    @include respond-above($md){
+                        margin-right: $spacing-xxl/2;
+                    }
+                }
+            }
+        }
+    }
+
     &.collection{
 
         .collection-items {
@@ -2263,9 +2342,9 @@ main section{
             //@include justify-content(space-between);
             @include flex-flow(row wrap);
             width: 100%;
+            @include justify-content(space-between);
 
             @include respond-below($lg){
-                @include justify-content(space-between);
             }
 
             @include respond-above($lg) {
@@ -2300,62 +2379,24 @@ main section{
         }
     }
 
-    &.tags{
-
-        .tags__wrapper{
-            .tags-catgerogy{
-                line-height: $spacing-xxl/2;
-                margin: $spacing-xxl/2 0;
-
-                @include respond-above($lg){
-                    @include flexbox;
-                    @include align-items(center);
-                }
-            }
-
-            .tags-catgerogy__title{
-                font-weight: 700;
-                @include inline-flex;
+    &.artist__hero{
+        .row{
+            @include respond-above($lg){
                 @include align-items(center);
-
-                @include respond-below($lg){
-                    margin-bottom: $spacing;
-                }
-
-                @include respond-above($lg){
-                    flex: 0 0 $spacing-xxl*3;
-                    min-width: $spacing-xxl*3;
-                }
-
-                svg{
-                    width: $spacing-xxl/2;
-                    height: auto;
-                    margin-right: $spacing;
-
-                    @include respond-above($md){
-                        margin-right: $spacing-xxl/2;
-                    }
-                }
-            }
-
-            .tags-catgerogy__list{
-
-                @include respond-above($lg){
-                    display: inherit;
-                    flex: 0 0 calc(100% - #{$spacing-xxl * 3});
-                    min-width: calc(100% - #{$spacing-xxl * 3});
-                }
             }
         }
+    }
+
+    &.artists-list__wrapper{
+
+
     }
 }
 
 /* COMPONENTS & ELEMENTS
 ========================================================================== */
 
-
-/* CTA
-========================================================================== */
+// CTA
 .cta{
     @include flexbox;
     @include align-items(center);
@@ -2436,7 +2477,7 @@ main section{
     border: none;
     position: relative;
     margin: 2.5% 0;
-    width:m#{a}x(470px, 40%);
+    width:m#{i}n(470px, 42.5%);
 
     a{
         color: inherit;
@@ -2608,6 +2649,74 @@ main section{
     }
 }
 
+//Single media items
+.media-item{
+    max-width: 380px;
+
+    .card-meta{
+        padding: $gutter $gutter;
+
+        span,h4 {
+            text-align: center;
+            display: block;
+        }
+
+        h4{
+            margin: $spacing 0;
+        }
+
+        .meta__location{
+            font-weight: 400;
+        }
+
+        .meta__date{
+            font-style: italic;
+            font-weight: 200;
+        }
+    }
+}
+
+// TAG
+.tags{
+
+    .tags__wrapper{
+        .tags-catgerogy{
+            line-height: $spacing-xxl/2;
+            margin: $spacing-xxl/2 0;
+        }
+
+        .tags-catgerogy__title{
+            font-weight: 700;
+            @include inline-flex;
+            @include align-items(center);
+
+            @include respond-below($lg){
+                margin-bottom: $spacing;
+            }
+
+            @include respond-above($lg){
+                flex: 0 0 $spacing-xxl*3;
+                min-width: $spacing-xxl*3;
+            }
+
+            svg{
+                width: $spacing-xxl/2;
+                height: auto;
+                margin-right: $spacing;
+            }
+        }
+
+        .tags-catgerogy__list{
+
+            @include respond-above($lg){
+                display: inherit;
+                flex: 0 0 calc(100% - #{$spacing-xxl * 3});
+                min-width: calc(100% - #{$spacing-xxl * 3});
+            }
+        }
+    }
+}
+
 .tag-item{
     display: inline-block;
     margin: $spacing/2 $spacing/2 $spacing/2 0;
@@ -2624,6 +2733,8 @@ main section{
     }
 }
 
+
+// SDG LOGOS
 .impact-logos{
 
     .impact-logo{
@@ -2741,17 +2852,17 @@ main section{
     @include flexbox;
     @include flex-direction(row);
     @include align-items(center);
-    @include justify-content(flex-end);
-
-    @include respond-below($lg){
-        text-align: center;
-        @include justify-content(center);
-    }
 
     .social__icon{
         margin: 3px 11px;
         border-radius: 8px;
         color: $dark-gray;
+
+        &:nth-child(1){
+            @include respond-above($lg){
+                margin-left: 0;
+            }
+        }
 
         @include respond-below($lg){
             width: 30px ;
@@ -2768,8 +2879,85 @@ main section{
                 fill: $yellow;
             }
         }
+
+        svg{
+            height: 20px;
+            width: auto;
+        }
     }
 }
+
+
+.collection__menu{
+    *{
+        transition: all .15s ease-in;
+    }
+
+    ul{
+        padding-left: 0;
+        list-style: none;
+        margin-top: $spacing-xxl * 1.5;
+    }
+
+    li{
+        margin: $spacing*2 0;
+        font-family: $raleway;
+        font-weight: 400;
+        text-transform: uppercase;
+
+        a{
+            display: inline;
+            padding-bottom: 2px
+        }
+
+        &:hover,
+        &.active{
+            font-weight: 700;
+
+            a{
+                border-bottom: 2px solid $yellow;
+            }
+        }
+    }
+}
+
+.static-menu{
+    position: fixed;
+    max-width: $grid-lg * .225;
+    z-index: 101;
+    background-color: rgba(255,255,255,1);
+    top: $spacing-xxl * 1.4;
+
+    @include respond-above($lg){
+        top: $spacing-xxl * 2.75;
+    }
+}
+
+.artists-list{
+
+    @include respond-above($lg){
+        @include column(3);
+        column-gap: $spacing-xxl;
+        padding: $spacing*2 $spacing*2.5 0 $spacing-xxl*1.5;
+    }
+
+    .artists-list__item{
+        display: block;
+        font-weight: 400;
+        line-height: $spacing*2.5;
+        height: $spacing*2.5;
+        margin: 0 0 $spacing*3 0;
+
+        a{
+            font-weight: 700;
+
+            &:hover{
+                color: $yellow;
+            }
+        }
+    }
+}
+
 
 // SEARCH BAR
 .search-bar-wrapper{
@@ -3240,27 +3428,52 @@ main section{
 }
 
 
-// SCALE
-.scale {
-    transform: scale(1);
-    position: relative;
-    max-height: 7em;
+/* SLIDERS
+========================================================================== */
 
-    &:hover{
-        transform: scale(1.1);
+.slick-slider{
+
+    .slick--prev {
+        transform: rotate(180deg);
+    }
+
+    .slick--prev,
+    .slick--next{
+        cursor: pointer;
+        flex: 0 0 15px;
+        margin: auto 0;
+        align-self: center;
+    }
+
+    .slick-track{
+        @include flexbox;
+        @include align-items(center);
+        @include justify-content(space-between);
+    }
+
+    .slick-list{
+        flex: 0 0 #{calc(100% - 30px)};
+        margin-left: $gutter;
+        margin-right: $gutter;
+
+    }
+
+    .slick-slide{
+        //max-width: 128px;
     }
 }
 
+.slider-items__wrppaer{
 
-// JOIN FORM
-.pxFormGenerator{
-    width: 100%;
-    max-width: 800px;
-
-    iframe{
-        min-height: 500px;
+    .slider-items{
+        @include flexbox;
     }
+
+
 }
+
+
+
 
 
 

@@ -1,3 +1,45 @@
 <div class="col-lg-3 static-menu collection__menu">
     <h1 class="collection__title">{{collection.title}}</h1>
+    <ul class="collection__menu">
+        {%- if template.suffix == "artist" -%}
+            <li class="collection-nav__item active"><a href="#career-highlights">Career Highlights</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "gallery" -%}
+            <li class="collection-nav__item active"><a href="#overview">Overview</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "gallery" or template.suffix == "artist" -%}
+            <li class="collection-nav__item"><a href="#curated-artworks">Curated artworks</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "gallery" -%}
+            <li class="collection-nav__item"><a href="#represented-artists">Represented artists</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "gallery" -%}
+            <li class="collection-nav__item"><a href="#selected-exhibitions">Selected exhibitions</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "gallery" -%}
+            <li class="collection-nav__item"><a href="#selected-press">Selected press</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "gallery" -%}
+            <li class="collection-nav__item"><a href="#contact">Contact</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "artist" -%}
+            <li class="collection-nav__item"><a href="#un-commitment">Un Commitment</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "artist" -%}
+            <li class="collection-nav__item"><a href="#biography">Biography</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "artist" -%}
+            <li class="collection-nav__item"><a href="#major-exhibitions">Major Exhibitions</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "artist" -%}
+            <li class="collection-nav__item"><a href="#major-media">Major Media</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "artist" -%}
+            <li class="collection-nav__item"><a href="#market-data">Market Data</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "artist" -%}
+            <li class="collection-nav__item"><a href="#related-artists">Related Artists</a></li>
+        {%- endif -%}
+    </ul>
+
 </div>

@@ -26,6 +26,8 @@
   {% include 'schema-json' %}
 
   {{'theme.scss.css' | asset_url | stylesheet_tag }}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet" />
 
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -50,7 +52,6 @@
 
   </script>
 
-
   {{ content_for_header }}
 
 </head>
@@ -64,20 +65,25 @@
   {% section 'header' %}
 
   <main role="main" id="MainContent" class="{{ page-language }}">
+
+
+
     {{ content_for_layout }}
   </main>
 
   {% section 'footer' %}
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" defer="defer"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" async></script>
-  {{ 'lazysizes.min.js' | asset_url | script_tag }}
-  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+ <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.2/awesomplete.min.js" async></script> -->
+ {{ 'lazysizes.min.js' | asset_url | script_tag }}
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-  <script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">window.dojoRequire(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"c6adaaaded2733dd81bb2a35e","lid":"60e591e83a","uniqueMethods":true}) })</script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet"/>
+  <!--<script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>-->
+  <!--<script type="text/javascript" src="//downloads.mailchimp.com/js/signup-forms/popup/unique-methods/embed.js" data-dojo-config="usePlainJson: true, isDebug: false"></script><script type="text/javascript">window.dojoRequire(["mojo/signup-forms/Loader"], function(L) { L.start({"baseUrl":"mc.us18.list-manage.com","uuid":"c6adaaaded2733dd81bb2a35e","lid":"60e591e83a","uniqueMethods":true}) })</script>-->
+
+  <script src="{{ 'sliders.js' | asset_url }}" defer="defer"></script>
 
   <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
   <!--[if lt IE 9]>{{ 'vendor.js' | asset_url | script_tag }}</script><![endif]-->

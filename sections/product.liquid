@@ -1,42 +1,44 @@
+{%- include 'global-assets' -%}
+
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 {%- assign artist_handle = product.vendor | handleize -%}
 {%- assign active_product = product.title -%}
 
 
-{% assign template_type = "" %}
-{% assign gallery = "" %}
-{% assign ungoals = "" %}
-{% assign artist = "" %}
+{%- assign template_type = "" -%}
+{%- assign gallery = "" -%}
+{%- assign ungoals = "" -%}
+{%- assign artist = "" -%}
 
-{% for collection in product.collections %}
+{%- for collection in product.collections -%}
 
-    {% assign template_type = collection.template_suffix | strip %}
+    {%- assign template_type = collection.template_suffix | strip -%}
 
-    {% if template_type == 'gallery' %}
-        {% assign gallery = collection %}
-    {% elsif template_type == 'ungoals' %}
-        {% assign ungoals = collection %}
-    {% elsif template_type == 'artist' %}
-        {% assign artist = collection %}
-    {% endif %}
+    {%- if template_type == 'gallery' -%}
+        {%- assign gallery = collection -%}
+    {%- elsif template_type == 'ungoals' -%}
+        {%- assign ungoals = collection -%}
+    {%- elsif template_type == 'artist' -%}
+        {%- assign artist = collection -%}
+    {%- endif -%}
 
-{% endfor %}
+{%- endfor -%}
 
 <section class="single-product__header">
     <div class="row">
         <div class="col-md-6 product__images">
             <div class="product__images__featured">
-                <img id="product-image" data-mfp-src="{{ featured_image | img_url: '624x624' }}" src="{{ featured_image | img_url: '624x624' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
+                <img id="product-image" data-mfp-src="{{ featured_image | img_url: '800x800' }}" src="{{ featured_image | img_url: '450x450' }}" alt="{{ product.title | escape }}" data-product-featured-image>
             </div>
 
             {%- if product.images.size > 1 -%}
                 <div class="product__images-thumbnail">
-                    {% for image in product.images %}
-                    <a class="preview-thumbnail" href="{{ image.src | img_url: '624x624' }}" data-product-single-thumbnail>
-                        <img class="gallery-img" data-mfp-src="{{ image.src | img_url: '624x624' }}" src="{{ image.src | img_url: '140x140' }}" alt="{{ image.alt | escape }}">
+                    {%- for image in product.images -%}
+                    <a class="preview-thumbnail" href="{{ image.src | img_url: '800x800' }}" data-product-single-thumbnail>
+                        <img class="gallery-img" data-mfp-src="{{ image.src | img_url: '800x800' }}" src="{{ image.src | img_url: '100x100' }}" alt="{{ image.alt | escape }}">
                     </a>
-                    {% endfor %}
+                    {%- endfor -%}
                 </div>
             {%- endif -%}
 
@@ -44,7 +46,7 @@
         <div class="col-md-6 product__metas bg--white">
 
             <h3 class="product__vendor"><a href="{{ artist.url }}">{{ artist.title }}</a></h3>
-            <h1 class="product__title">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</h1>
+            <h1 class="product__title">{{ product.title }}{%- if product.metafields.product.date -%}, {{ product.metafields.product.date | date: "%Y" }}{%- endif -%}</h1>
 
             <div class="product__meta">
                 <span class="meta--details">{{product.metafields.product.artwork_details}}</span>
@@ -80,13 +82,13 @@
 
                     <div class="impact-logos impact-select">
 
-                        {% assign sdg = product.collections | sort: "title" %}
+                        {%- assign sdg = product.collections | sort: "title" -%}
 
-                        {% for collection in sdg %}
+                        {%- for collection in sdg -%}
 
-                        {% assign template_type = collection.template_suffix | strip %}
+                        {%- assign template_type = collection.template_suffix | strip -%}
 
-                        {% if template_type == 'ungoals' %}
+                        {%- if template_type == 'ungoals' -%}
 
                         {%- for image in collection.metafields.accentuate.choice_logo -%}
                         <div class="impact-logo sdg-{{collection.handle}}">
@@ -94,21 +96,21 @@
                         </div>
                         {%- endfor -%}
 
-                        {% endif %}
+                        {%- endif -%}
 
-                        {% endfor %}
+                        {%- endfor -%}
 
                     </div>
                     <p>
-                        {% if product.metafields.product.hidden_price == 'true' %}90% of the transation{% else %}The {{ current_variant.price | times: 0.9 | money }} collected{% endif %} will be forwarded to one of our partner NGOs according to the artist's choice.</p>
+                        {%- if product.metafields.product.hidden_price == 'true' -%}90% of the transation{%- else -%}The {{ current_variant.price | times: 0.9 | money }} collected{%- endif -%} will be forwarded to one of our partner NGOs according to the artist's choice.</p>
                 </div>
 
                 <form class="action cart__form" action="/cart/add" method="post" enctype="multipart/form-data">
 
                     <select id="variant-select" name="id" data-product-select  style="display:none;">
-                        {% for variant in product.variants %}
+                        {%- for variant in product.variants -%}
                         <option class="{{ variant.title | handleize }}" value="{{ variant.id }}">{{ variant.title }}</option>
-                        {% endfor %}
+                        {%- endfor -%}
                     </select>
 
                     <div class="buy-button-container right-align">
@@ -117,13 +119,13 @@
                             type="submit"
                             name="add"
                             data-add-to-cart
-                            {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+                            {%- unless current_variant.available -%}disabled="disabled"{%- endunless -%}>
                             <span data-add-to-cart-text>
-                                {% if current_variant.available %}
+                                {%- if current_variant.available -%}
                                 {{ 'products.product.add_to_cart' | t }}
-                                {% else %}
+                                {%- else -%}
                                 {{ 'products.product.sold_out' | t }}
-                                {% endif %}
+                                {%- endif -%}
                             </span>
                         </button>
                     </div>
@@ -139,22 +141,21 @@
             <div class="about about__artist">
                 <div class="title-has-cta">
                     <h2>About {{ artist.title }}</h2>
-                    {% include 'partial-cta'  with { cta_label: "<span>Artist </span>Profile", cta_url: artist.url }  %}
+                    {%- include 'partial-cta'  with { cta_label: "<span>Artist </span>Profile", cta_url: artist.url }  -%}
                 </div>
                 <div class="artist__meta">
                     <p><strong>Born:</strong> {{artist.metafields.artist.born}}</p>
                     <p><strong>Studio:</strong> {{artist.metafields.artist.studio}}</p>
+                    <p><strong>Short Bio: </strong></p>
                     <p>
-                        {{ artist.description | prepend: "<strong>Short Bio: </strong>" }}
+                        {{- artist.description | truncate: 530 -}}
                     </p>
-                </div>
-                <div class="visibility-insights artist__visibility">
                     <h4>Artist Visibility Insights</h4>
                     <p>- Worldwide Ranking: 597</p>
                     <p>- Days of Exhibition in 2019: 1334</p>
                     <div class="visibility-insights__graph">
 
-                        {% include 'partial-dummy-graph'  %}
+                        {%- include 'partial-dummy-graph'  -%}
                     </div>
                 </div>
             </div>
@@ -188,9 +189,9 @@
             <div class="about about__gallery">
                 <div class="title-has-cta">
                     <h2>About {{ gallery.title }}</h2>
-                    {% include 'partial-cta'  with { cta_label: "Gallery<span> Profile</span>", cta_url: gallery.url }  %}
+                    {%- include 'partial-cta'  with { cta_label: "Gallery<span> Profile</span>", cta_url: gallery.url }  -%}
                 </div>
-                <p>{{gallery.description}}</p>
+                <p>{{ gallery.description | truncate: 530 }}</p>
             </div>
 
             <div class="about about__impact bg--gray d-lg-flex">
@@ -203,21 +204,21 @@
 
                     <div class="impact-logos">
 
-                        {% assign sdg = product.collections | sort: "title" %}
+                        {%- assign sdg = product.collections | sort: "title" -%}
 
-                        {% for collection in sdg %}
+                        {%- for collection in sdg -%}
 
-                        {% assign template_type = collection.template_suffix | strip %}
+                        {%- assign template_type = collection.template_suffix | strip -%}
 
-                        {% if template_type == 'ungoals' %}
+                        {%- if template_type == 'ungoals' -%}
 
-                        {% for image in collection.metafields.accentuate.choice_logo %}
+                        {%- for image in collection.metafields.accentuate.choice_logo -%}
                         <img class="impact-logo" src="{{ image.cloudinary_src | append: 'w_160,h_160' }}" alt="{{ collection.title }}"/>
-                        {% endfor %}
+                        {%- endfor -%}
 
-                        {% endif %}
+                        {%- endif -%}
 
-                        {% endfor %}
+                        {%- endfor -%}
                         <img class="impact-logo all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
 
                     </div>
@@ -235,97 +236,90 @@
         <div class="col-12">
             <div class="title-has-cta">
                 <h2><span>Other </span>Works by {{ artist.title }}</h2>
-                {% include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: artist.url }  %}
+                {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: artist.url }  -%}
             </div>
             <div class="collection-items featured-items">
-                {% for product in artist.products %}
+                {%- for product in artist.products -%}
 
-                    {% include 'partial-product-card' %}
+                    {%- include 'partial-product-card' -%}
 
-                {% endfor %}
+                {%- endfor -%}
             </div>
         </div>
     </div>
 </section>
 
-<section id="collection-gallery" class="collection single-product__collections collection__featured">
+<section id="collection-gallery" class="collection single-product__collections collection__featured tb">
     <div class="row">
         <div class="col-12">
             <div class="title-has-cta">
                 <h2><span>Other </span>Works From {{ gallery.title }}</h2>
-                {% include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: gallery.url }  %}
+                {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: gallery.url }  -%}
             </div>
             <div class="collection-items featured-items">
-                {% for product in gallery.products %}
+                {%- for product in gallery.products -%}
 
-                    {% include 'partial-product-card' %}
+                    {%- include 'partial-product-card' -%}
 
-                {% endfor %}
+                {%- endfor -%}
             </div>
         </div>
     </div>
 </section>
 
-<section id="collection-artist" class="collection single-product__collections collection__featured collection__related-artist">
+<section id="related-artist" class="collection single-product__collections collection__featured collection__related-artist tb">
     <div class="row">
         <div class="col-12">
             <div class="title-has-cta">
                 <h2>Related Artists</h2>
-                {% include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } %}
+                {%- include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } -%}
             </div>
             <div class="collection-items featured-items">
 
-                {% assign related_artists = artist.metafields.accentuate.related_artist | split: '|' %}
-                {% for related_artist in related_artists %}
+                {%- assign related_artists = artist.metafields.accentuate.related_artist | split: '|' -%}
+                {%- for related_artist in related_artists -%}
 
-                    {% include 'partial-artist-card' with { collection: collections[related_artist] } %}
+                    {%- include 'partial-artist-card' with { collection: collections[related_artist] } -%}
 
-                {% endfor %}
+                {%- endfor -%}
             </div>
         </div>
     </div>
 </section>
 
-<section id="tag-artist" class="tags single-product__tags">
-    {% assign impact-tags = "Climate,Communities,Consumption,Education,Energy,Gender,Health,Hunger,Industry,Inequality,Land,Life Below Water,Partnerships,Peace and Justice,Poverty,Water,Work" | split:"," %}
+<section id="tag-artist" class="tags single-product__tags tb">
     <div class="row">
         <div class="col-12">
             <h2>Related Tags</h2>
             <div class="tags__wrapper">
                 <div class="tags-catgerogy">
                     <div class="tags-catgerogy__title">
-                        {% include 'icon-art-tags' %}<span> Art</span>
+                        {%- include 'icon-art-tags' -%}<span> Art</span>
                     </div>
                     <div class="tags-catgerogy__list">
-                        {% for tag in product.tags %}
-                            {% if impact-tags contains tag %}
-                            {% else %}
+                        {%- for tag in product.tags -%}
+                            {%- if impact-tags contains tag -%}
+                            {%- else -%}
                                 <a class="tag-item" href="#">{{ tag }}</a>
-                            {% endif %}
-                        {% endfor %}
+                            {%- endif -%}
+                        {%- endfor -%}
                     </div>
                 </div>
 
                 <div class="tags-catgerogy">
                     <div class="tags-catgerogy__title">
-                        {% include 'icon-impact-tags' %}<span> Impact</span>
+                        {%- include 'icon-impact-tags' -%}<span> Impact</span>
                     </div>
                     <div class="tags-catgerogy__list">
-                        {% assign sdg = product.collections | sort: "title" %}
+                        {%- assign sdg = product.collections | sort: "title" -%}
 
-                        {% for collection in sdg %}
-                            {% assign template_type = collection.template_suffix | strip %}
-                            {% if template_type == 'ungoals' %}
+                        {%- for collection in sdg -%}
+                            {%- assign template_type = collection.template_suffix | strip -%}
+                            {%- if template_type == 'ungoals' -%}
                                 <a class="tag-item" href="{{ collection.url }}">{{ collection.title }}</a>
-                            {% endif %}
+                            {%- endif -%}
 
-                        {% endfor %}
-
-                        {% for tag in product.tags %}
-                            {% if impact-tags contains tag %}
-                            {% else %}
-                            {% endif %}
-                        {% endfor %}
+                        {%- endfor -%}
                     </div>
                 </div>
             </div>

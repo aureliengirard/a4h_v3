@@ -139,7 +139,7 @@ slate.cart = {
  *
  * @namespace utils
  */
-/*
+
 slate.utils = {
 
   /**
@@ -213,7 +213,6 @@ slate.utils = {
     return (value == null || value !== value) ? defaultValue : value
   }
 };
-*/
 
 /**
  * Rich Text Editor
@@ -992,6 +991,12 @@ $('.impact-select .impact-logo').click(function() {
     $('.impact-select .impact-logo.active').removeClass('active');
     $(this).addClass('active');
 });
+
+$('.collection-nav__item').click(function() {
+    $('.collection-nav__item.active').removeClass('active');
+    $(this).addClass('active');
+});
+
 
 const thumbnails = document.getElementsByClassName('preview-thumbnail');
 const previewImg = document.getElementById('product-image');
