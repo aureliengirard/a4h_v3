@@ -66,7 +66,7 @@
 
             {%- if current_variant.available and product.metafields.product.hidden_price == 'false' -%}
                 <div class="product__price-impact">
-                    {{ section.settings.impact }} {{ current_variant.price | times: 0.9 | money }}
+                    {{ section.settings.impact }} {{ current_variant.price | times: 0.1 | money }}
                 </div>
             {%- endif -%}
 
@@ -86,23 +86,24 @@
 
                         {%- for collection in sdg -%}
 
-                        {%- assign template_type = collection.template_suffix | strip -%}
+                            {%- assign template_type = collection.template_suffix | strip -%}
 
-                        {%- if template_type == 'ungoals' -%}
+                            {%- if template_type == 'ungoals' -%}
 
-                        {%- for image in collection.metafields.accentuate.choice_logo -%}
-                        <div class="impact-logo sdg-{{collection.handle}}">
-                            <img class="{{collection.handle}}" src="{{ image.cloudinary_src | append: 'w_100,h_100' }}" alt="{{ collection.title }}"/>
-                        </div>
-                        {%- endfor -%}
+                                {%- for image in collection.metafields.accentuate.choice_logo -%}
+                                <div class="impact-logo sdg-{{collection.handle}}">
+                                    <img class="{{collection.handle}}" src="{{ image.cloudinary_src | append: 'w_100,h_100' }}" alt="{{ collection.title }}"/>
+                                </div>
+                                {%- endfor -%}
 
-                        {%- endif -%}
+                            {%- endif -%}
 
                         {%- endfor -%}
 
                     </div>
                     <p>
-                        {%- if product.metafields.product.hidden_price == 'true' -%}90% of the transation{%- else -%}The {{ current_variant.price | times: 0.9 | money }} collected{%- endif -%} will be forwarded to one of our partner NGOs according to the artist's choice.</p>
+                        {%- if product.metafields.product.hidden_price == 'true' -%}10% of the transation{%- else -%}The {{ current_variant.price | times: 0.1 | money }} collected{%- endif -%} will be forwarded to one of our partner NGOs according to the artist's choice.
+                    </p>
                 </div>
 
                 <form class="action cart__form" action="/cart/add" method="post" enctype="multipart/form-data">
@@ -199,7 +200,7 @@
                     <h2>Your Impact</h2>
 
                     <p>
-                        {{ current_variant.price | times: 0.9 | money }} of your purchase will directly support one of the following goals:
+                        {{ current_variant.price | times: 0.1 | money }} of your purchase will directly support one of the following goals:
                     </p>
 
                     <div class="impact-logos">

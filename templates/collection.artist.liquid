@@ -10,7 +10,7 @@
     <div class="row">
         {%- include 'partial-collection-menu', bg_color: '', type: 'ngo' -%}
 
-        <div class="col-lg-9 ml-auto gallery__about">
+        <div class="col-lg-9 ml-auto artist__about">
 
             <div class="row">
                 <div class="col-lg-6">
@@ -30,7 +30,7 @@
                                     {%- include 'icon-art-tags' -%}<span> Art</span>
                                 </div>
                                 <div class="tags-catgerogy__list">
-                                    {%- for tag in collection.all_tags -%}
+                                    {%- for tag in collection.all_tags | sort -%}
                                         {%- if impact-tags contains tag -%}
                                             {% continue %}
                                         {%- else -%}
@@ -46,9 +46,9 @@
                                 </div>
                                 <div class="tags-catgerogy__list">
 
-                                    {%- for tag in collection.all_tags -%}
-                                        {% for un_goal in un_goal_single %}
-                                            {% assign un_goal_vals = un_goal | split: '|' %}
+                                    {%- for tag in collection.all_tags | sort -%}
+                                        {% for un_goal in un_goal_single | sort  %}
+                                            {% assign un_goal_vals = un_goal | split: '|' | sort %}
                                             {%- if un_goal_vals[0] contains tag -%}
                                                 <a class="tag-item" href="{{- un_goal_vals[1] -}}">{{un_goal_vals[0]}}</a>
                                             {%- else -%}
@@ -87,24 +87,23 @@
     </div>
 </section>
 
-<section class="">
+<section class="artist__highlights">
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Career Highlights</h2>
-            <p class="artist__education"><strong>Education: </strong>{{ collection.metafields.artist.education -}}</p>
-            <p class="artist__education"><strong>Major Solo Shows: </strong> </p>
-            <p class="artist__education"><strong>Major Group Shows: </strong> </p>
-            <p class="artist__education"><strong>Major Institutions Collections: </strong> </p>
-            <p class="artist__education"><strong>Major Media: </strong> </p>
+            <div class="artist__highlights--wrapper">
+
+                {% include 'partial-exhibitions-highlights' %}
+            </div>
 
         </div>
     </div>
 </section>
 
-<section class="collection gallery__collection">
+<section class="collection artist__collection">
     <div id="curated-artworks" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Curated  Artworks</h2>
             <div class="collection-items__wrapper">
                 <div class="col-12 collection-items">
@@ -117,14 +116,65 @@
     </div>
 </section>
 
-<section class="gallery__artists artists-list__wrapper">
+<section class="collection__un-commitment artist__un-commitment">
     <div id="un-commitment" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <div class="title-has-cta">
-                <h2>Sustainable Development Commitment</h2>
+                <h2>Artist's support to the UN-Goals</h2>
                 {%- include 'partial-cta'  with { cta_label: "<span>Learn about </span>UN-Goals", cta_url: "/un-goals/" }  -%}
             </div>
+            <blockquote>
+                <p>“This situation right now in the United States with Trump makes you want to just burn it all down and start over…. I don’t censor myself. If you’re sending out a political message, it has only one interpretation. But  when I do an automatic drawing, it’s open to many interpretations.”</p>
+                <p class="author">- {{ collection.title }}</p>
+
+            </blockquote>
+
+            <p><strong>{{ collection.title }}</strong> a in coordination with his galleries <strong>Gallery Name 1</strong>, <strong>Gallery Name 2</strong>, has decided to support the 2030 UN Sustainable Development Goals:</p>
+
+            {%- capture un_collections -%}
+            {%- for collection in collections | sort -%}
+
+                {%- assign template_type = collection.template_suffix | strip -%}
+                {%- assign ungoals = "" -%}
+
+                {%- if template_type == 'ungoals' -%}
+                    |{{ collection.title | replace: ".", "::" }}::{% assign img = collection.metafields.accentuate.desktop_alt_logo | first %}{{- img.cloudinary_src | append: 'w_145' -}}::{{ collection.url }}
+                {%- else -%}
+                    {%- continue -%}
+                {%- endif -%}
+
+            {%- endfor -%}
+            {%- endcapture -%}
+
+            <div class="impact-logos">
+
+            {%- assign sortedposts = un_collections | split: '|' | sort -%}
+            {%- for post in sortedposts -%}
+                {%- assign postitems = post | split: '::' -%}
+                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                {%- if un_id < 10 and un_id > 0 -%}
+                <a href="{{- postitems[3] -}}">
+                    <img src="{{- postitems[2] -}}" alt="{{postitems[1]}}">
+                </a>
+                {%- else -%} {%- continue -%} {%- endif -%}
+
+            {%- endfor -%}
+            {% assign sortedposts = un_collections | split: '|' | sort %}
+            {% for post in sortedposts %}
+                {% assign postitems = post | split: '::' %}
+                {% assign un_id = postitems[0] | strip | plus: 0 %}
+                {%- if un_id > 9 -%}
+                <a href="{{- postitems[3] -}}">
+                    <img src="{{postitems[2]}}" alt="{{postitems[1]}}">
+                </a>
+                {%- else -%} {%- continue -%} {% endif %}
+
+            {% endfor %}
+
+            <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
+            </div>
+
         </div>
     </div>
 </section>
@@ -132,28 +182,29 @@
 <section class="gallery__artists artists-list__wrapper">
     <div id="biography" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Biography</h2>
             {{ collection.description }}
         </div>
     </div>
 </section>
 
-<section class="gallery__artists artists-list__wrapper">
+<section class="collection__exhibitions artist__exhibitions">
     <div id="major-exhibitions" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Major Exhibitions</h2>
+            {% include 'partial-exhibitions-lists' %}
         </div>
     </div>
 </section>
 
-<section class=" ">
+<section class="collection__press artist__press">
     <div id="major-press" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Major Press</h2>
-
+            {% include 'partial-press-slider' %}
         </div>
     </div>
 </section>
@@ -161,7 +212,7 @@
 <section class="">
     <div id="market-data" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Market Data</h2>
             <div class="visibility-insights__graph">
 
@@ -171,10 +222,10 @@
     </div>
 </section>
 
-<section class="collection collection__featured collection__related-artist tb">
+<section class="collection collection__featured collection__related-artist">
     <div id="related-artist" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <div class="title-has-cta">
                 <h2>Related Artists</h2>
                 {%- include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } -%}

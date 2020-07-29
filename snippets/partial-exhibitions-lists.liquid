@@ -1,0 +1,288 @@
+
+{% assign exhibitions_year = collection.metafields.exhibition.date %}
+{% assign exhibitions_title = collection.metafields.exhibition.exhibitions_infos %}
+{% assign exhibitions_location = collection.metafields.accentuate.location %}
+{% assign exhibitions_featured = collection.metafields.exhibitions.title %}
+{% assign exhibitions_link = collection.metafields.accentuate.url %}
+{% assign exhibitions_type = collection.metafields.exhibition.type %}
+
+{% assign exhibitions_type_split = exhibitions_type | split: "| " %}
+
+{% assign solo_show = "Solo Shows" %}
+{% assign group_show = "Groups Shows" %}
+{% assign biennales = "Major Biennales" %}
+{% assign institutions_collections = "Major Institutions Collections" %}
+
+{% assign exhibitions_loop = "" %}
+
+{%- capture loop_indexes -%}
+    {%- for location in exhibitions_type -%}
+        {{- forloop.index0 -}}
+        {%- if forloop.last == false %}::{% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- assign loop_index = loop_indexes | strip -%}
+{%- assign loop_in = loop_index | split: '::'  -%}
+
+<div class="exhibitions-lists">
+    {%- if exhibitions_type contains solo_show -%}
+    <div id="solo-shows" class="exhibitions-list__cat">
+        <h3>Solo Shows</h3>
+        <ul class="exhibitions-list">
+            {%- for loop in loop_in -%}
+            <li class="single-event__item">
+                {%- assign loop_strip = loop | strip  -%}
+                {%- assign solo_show_validation = false -%}
+                {%- assign link_validation = false -%}
+
+                {%- for item in exhibitions_type -%}
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip -%}
+                            {%- if item == solo_show -%}{%- assign solo_show_validation = true -%}{%- endif -%}
+                    {%- else -%}
+                        {%- continue -%}
+                    {%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_link -%}
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                            {%- if item == solo_show -%}{%- assign link_validation = true -%}{%- endif -%}
+                    {%- else -%}
+                        {%- continue -%}
+                    {%- endif -%}
+                {%- endfor -%}
+
+                {%- if solo_show_validation == true -%}
+
+                    {%- for item in exhibitions_link -%}
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <a href="{{item}}">
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                    {%- endfor -%}
+
+                {%- endif -%}
+
+                {%- for item in exhibitions_year -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__year">{{item}}. </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_title -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__title">{{item}}, </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_location -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__location">{{item}}</span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- if solo_show_validation == true -%}
+            </a>
+            {%- endif -%}
+
+            </li>
+            {%- endfor -%}
+        </ul>
+    </div>
+    {%- else -%}
+    {%- endif -%}
+
+    {%- if exhibitions_type contains group_show -%}
+    <div id="group-shows" class="exhibitions-list__cat">
+        <h3>Groups Shows</h3>
+        <ul class="exhibitions-list">
+            {%- for loop in loop_in -%}
+            <li class="single-event__item">
+                {%- assign loop_strip = loop | strip  -%}
+                {%- assign solo_show_validation = false -%}
+
+                {%- for item in exhibitions_type -%}
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip -%}
+                            {%- if item == group_show -%}{%- assign solo_show_validation = true -%}{%- endif -%}
+                    {%- else -%}
+                        {%- continue -%}
+                    {%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_year -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__year">{{item}}. </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_title -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__title">{{item}}, </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_location -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__location">{{item}}</span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+            </li>
+            {%- endfor -%}
+        </ul>
+    </div>
+    {%- else -%}
+    {%- endif -%}
+
+    {%- if exhibitions_type contains biennales -%}
+    <div id="major-biennales" class="exhibitions-list__cat">
+        <h3>Major Biennales</h3>
+        <ul class="exhibitions-list">
+            {%- for loop in loop_in -%}
+            <li class="single-event__item">
+                {%- assign loop_strip = loop | strip  -%}
+                {%- assign solo_show_validation = false -%}
+
+                {%- for item in exhibitions_type -%}
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip -%}
+                            {%- if item == biennales -%}{%- assign solo_show_validation = true -%}{%- endif -%}
+                    {%- else -%}
+                        {%- continue -%}
+                    {%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_year -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__year">{{item}}. </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_title -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__title">{{item}}, </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_location -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__location">{{item}}</span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+            </li>
+            {%- endfor -%}
+        </ul>
+    </div>
+    {%- else -%}
+    {%- endif -%}
+
+    {%- if exhibitions_type contains institutions_collections -%}
+    <div id="major-institutions-collections" class="exhibitions-list__cat">
+        <h3>Major Institutions Collections</h3>
+        <ul class="exhibitions-list">
+            {%- for loop in loop_in -%}
+            <li class="single-event__item">
+                {%- assign loop_strip = loop | strip  -%}
+                {%- assign solo_show_validation = false -%}
+
+                {%- for item in exhibitions_type -%}
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip -%}
+                            {%- if item == institutions_collections -%}{%- assign solo_show_validation = true -%}{%- endif -%}
+                    {%- else -%}
+                        {%- continue -%}
+                    {%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_year -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__year">{{item}}. </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_title -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__title">{{item}}, </span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- for item in exhibitions_location -%}
+
+                    {%- assign loop_sub =  forloop.index0 | strip  -%}
+                    {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+                        {%- if item != "" -%}
+                            <span class="meta__location">{{item}}</span>
+                        {%- endif -%}
+
+                    {%- else -%}{%- continue -%}{%- endif -%}
+                {%- endfor -%}
+
+            </li>
+            {%- endfor -%}
+        </ul>
+    </div>
+    {%- else -%}
+    {%- endif -%}
+</div>

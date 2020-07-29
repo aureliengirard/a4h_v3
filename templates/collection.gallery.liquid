@@ -10,13 +10,19 @@
 
             <div class="row">
                 <div class="col-lg-6">
-                    <h2>About</h2>
+                    <div class="row gallery__social">
+                        <div class="col-lg-6">
+
+                            <h2>About</h2>
+                        </div>
+                            {% include 'partial-social-links' %}
+                    </div>
                     {{ collection.description }}
                 </div>
                 <div class="col-lg-6">
                     <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
-                    <p>{{collection.metafields.accentuate.international_locations}}</p>
 
+                    <h4 class="meta__locations">{% include 'icon-locations' %}<span>{{collection.metafields.accentuate.international_locations}}</span></h4>
                 </div>
             </div>
 
@@ -27,7 +33,7 @@
 <section class="collection gallery__collection">
     <div id="curated-artworks" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Curated  Artworks</h2>
             <div class="collection-items__wrapper">
                 <div class="col-12 collection-items">
@@ -46,7 +52,7 @@
 <section class="gallery__artists artists-list__wrapper">
     <div id="represented-artists" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Represented Artists</h2>
             <div class="artists-list">
                 {% assign represented-artist = "Raymond Pettibon,Tomma Abts,Isa Genzken,Njideka Akunyili Crosby,Anni Albers,Josef Albers,Francis Alÿs,Harold Ancart,Mamma Andersson,Diane Arbus,Lucas Arruda,Ruth Asawa,Michaël Borremans,Carol Bove,R. Crumb,Noah Davis,Raoul De Keyser,Roy DeCarava,Philip-Lorca diCorcia,Stan Douglas,Marlene Dumas,Marcel Dzama,William Eggleston,Dan Flavin,Suzan Frecon,Isa Genzken,Felix Gonzalez-Torres,Donald Judd,On Kawara,Toba Khedoori" | split:"," %}
@@ -76,32 +82,33 @@
     </div>
 </section>
 
-<section class="collection gallery__exhibitions">
+<section class="collection__exhibitions gallery__exhibitions">
     <div id="selected-exhibitions" class="anchor"></div>
         <div class="row">
-            <div class="col-lg-9 ml-auto">
+            <div class="col-lg-9 ml-auto col-tb">
                 <h2>Selected Exhibitions</h2>
-                {% include 'partial-press-slider' %}
+                {% include 'partial-exhibition-slider' %}
             </div>
         </div>
     </div>
 </section>
 
-<section class="collection gallery__press">
+<section class="collection__press gallery__press">
     <div id="selected-press" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Selected Press</h2>
-
+            {% include 'partial-press-slider' %}
         </div>
     </div>
 </section>
 
-<section class="collection gallery__contact">
+<section class="collection__contact gallery__contact">
     <div id="contact" class="anchor"></div>
     <div class="row">
-        <div class="col-lg-9 ml-auto">
+        <div class="col-lg-9 ml-auto col-tb">
             <h2>Contact Information</h2>
+            {% include 'partial-gallery-locations' %}
         </div>
     </div>
 </section>

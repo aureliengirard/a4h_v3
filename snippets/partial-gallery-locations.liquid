@@ -1,0 +1,71 @@
+
+{% assign address_city = collection.metafields.accentuate.city %}
+{% assign address_postal_address = collection.metafields.gallery.postal_address %}
+{% assign address_phone_number = collection.metafields.gallery.phone_number %}
+
+
+{% assign exhibitions_loop = "" %}
+
+{%- capture loop_indexes -%}
+    {%- for location in address_city -%}
+        {{- forloop.index0 -}}
+        {%- if forloop.last == false %}::{% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+{%- assign loop_index = loop_indexes | strip -%}
+{%- assign loop_in = loop_index | split: '::'  -%}
+
+<div class="address-items__wrppaer">
+    <div class="address-items row">
+
+        {%- for loop in loop_in -%}
+
+            {%- assign loop_strip = loop | strip  -%}
+
+            {% comment %} Opening Card Item {% endcomment %}
+            <div class="card-item address-item col-md-6">
+
+                {% comment %}Card Content Begining {% endcomment %}
+                <div class="card-meta">
+                    <span class="meta__city">
+                        {% comment %}Event Gallery Location{% endcomment %}
+                        {%- for item in address_city -%}
+                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                        {%- if loop_sub == loop_strip -%}
+                        <h4>{{item}}</h4>
+                        {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+
+                    </span>
+
+                    <span class="meta__address">
+                        {% comment %}Event Gallery Location{% endcomment %}
+                        {%- for item in address_postal_address -%}
+                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                        {%- if loop_sub == loop_strip -%}
+                        {{item}}
+                        {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+                    </span>
+
+                    <span class="meta__phone">
+                        {% comment %}Event Gallery Location{% endcomment %}
+                        {%- for item in address_phone_number -%}
+                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                        {%- if loop_sub == loop_strip -%}
+                        {{item}}
+                        {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+                    </span>
+
+
+
+                {% comment %}Closing Card Content{% endcomment %}
+                </div>
+
+            {% comment %} Closing Card Item {% endcomment %}
+            </div>
+        {%- endfor -%}
+
+    </div>
+</div>

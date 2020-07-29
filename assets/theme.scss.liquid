@@ -184,7 +184,7 @@ $xxxl: 1920px;
 }
 
 // GRID SYSTEM
-$col-gutter: 2.5%;
+$col-gutter: 3.5%;
 $col-width: 100%;
 $grid-sm: 1050px;
 $grid-lg: 1280px;
@@ -512,7 +512,7 @@ h3 {
 h4 {
     font-size: 1em;
     font-weight: 700;
-    margin: 0 0 $gutter 0;
+    margin: $gutter/2 0;
     line-height: (27 / 18);
 
     @include respond-below($md){
@@ -553,6 +553,24 @@ a{
 
     &:visited{
         color: $black;
+    }
+}
+
+blockquote{
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 1em 0 2em;
+    font-style: italic;
+    font-family: $raleway;
+
+    p{
+        &:nth-last-child(n + 2){
+            margin-bottom: .25em;
+        }
+    }
+
+    .author{
+        margin-top: .25em;
     }
 }
 
@@ -1156,6 +1174,21 @@ textarea {
 // Section Style top border
 .tb{
     border: 1px solid $gray;
+}
+
+.col-tb{
+    position: relative;
+
+    &:before{
+        content: "";
+        position: absolute;
+        width: calc(100% + $spacing-xxl);
+        left: ($spacing-xxl / 2) * -1;
+        right: ($spacing-xxl / 2) * -1;
+        top: $spacing-xxl * -1;
+        height: 1px;
+        background-color: $gray;
+    }
 }
 
 
@@ -2379,16 +2412,61 @@ main section{
         }
     }
 
-    &.artist__hero{
-        .row{
+
+
+    &.collection__hero{
+        .row .row{
             @include respond-above($lg){
                 @include align-items(center);
             }
         }
+
+        .gallery__social{
+            @include respond-above($lg){
+                margin-bottom: $gutter;
+
+                h2{
+                    margin-bottom: 0
+                }
+
+                .social__icons{
+                    @include justify-content(flex-end);
+                }
+            }
+        }
+
+        .meta__locations{
+            text-align: center;
+            font-family: $nunito;
+            @include flexbox;
+            @include justify-content(center);
+
+            svg{
+                margin: $spacing * -1.25 0;
+                height: $gutter * 2;
+                width: auto;
+            }
+
+            span{
+                margin: auto 0;
+            }
+        }
     }
 
-    &.artists-list__wrapper{
+    &.collection__un-commitment{
 
+        .impact-logos{
+            @include flexbox;
+            @include flex-flow(wrap);
+            @include justify-content(space-between);
+
+            img{
+                display: block;
+                margin: $spacing 0;
+                width: 145px;
+                height: 145px;
+            }
+        }
 
     }
 }
@@ -2649,12 +2727,35 @@ main section{
     }
 }
 
+.card-item{
+
+    .meta__phone,
+    .meta__date{
+        font-weight: 200;
+        margin-bottom: auto;
+        font-style: italic;
+    }
+}
+
 //Single media items
 .media-item{
-    max-width: 380px;
+    max-width: 400px;
+
+    .card-header{
+        img{
+            margin: auto;
+        }
+    }
 
     .card-meta{
         padding: $gutter $gutter;
+        min-height: $gutter * 6;
+        @include flexbox;
+        @include flex-flow(wrap);
+
+        & > *{
+            width: 100%;
+        }
 
         span,h4 {
             text-align: center;
@@ -2662,16 +2763,82 @@ main section{
         }
 
         h4{
-            margin: $spacing 0;
+            margin: auto 0 !important;
         }
 
         .meta__location{
             font-weight: 400;
+            margin-top: auto;
         }
 
         .meta__date{
-            font-style: italic;
-            font-weight: 200;
+            margin-bottom: auto;
+        }
+
+
+    }
+}
+
+
+//Single Adress Item
+.address-items{
+
+    @include respond-above($xl){
+        padding-right:$spacing-xxl*4;
+    }
+
+    @include respond-above($lg){
+        padding-right:$spacing-xxl*2;
+    }
+}
+
+.address-item{
+    .card-meta{
+
+        @include respond-above($lg){
+            padding:$spacing-xxl;
+        }
+
+        span{
+            text-align: center;
+            display: block;
+
+            &:nth-child(2){
+                margin: 1em 0;
+            }
+        }
+
+        h4{
+            margin-bottom: 0;
+        }
+    }
+}
+
+.highlights__item{
+    @include inline-flex;
+    width: 100%;
+
+    svg{
+        height: $spacing * 3;
+        width: auto;
+        margin: .5em 0;
+        flex: 0 0 $spacing * 4;
+
+        g{
+            fill: $yellow;
+        }
+    }
+
+    p{
+        margin: .5em 0;
+        padding-left: $spacing * 1.5;
+        flex: 0 0 calc(100% - #{$spacing * 4});
+
+        .divider{
+
+            &:last-of-type{
+                display: none;
+            }
         }
     }
 }
@@ -2954,6 +3121,45 @@ main section{
             &:hover{
                 color: $yellow;
             }
+        }
+    }
+}
+
+.exhibitions-lists{
+
+    h3{
+        font-family: $nunito;
+        font-weight: 400;
+    }
+
+    ul{
+        padding-left: $gutter * 2;
+
+        li{
+            list-style: none;
+            margin: 1em 0;
+        }
+    }
+
+    .meta__location{
+        font-weight: 200;
+        margin-bottom: auto;
+        font-style: italic;
+    }
+
+    .meta__year{
+        font-weight: 700;
+    }
+
+    .meta__title{
+        font-weight: 400;
+    }
+
+    .exhibitions-list__cat{
+        margin: $spacing-xxl 0;
+
+        &:nth-last-child(1){
+            margin-bottom: 0;
         }
     }
 }
@@ -3434,13 +3640,17 @@ main section{
 .slick-slider{
 
     .slick--prev {
-        transform: rotate(180deg);
+        transform: rotate(180deg) translateY(#{$gutter * 2});
+    }
+
+    .slick--next{
+        transform: translateY(#{-$gutter * 2});
     }
 
     .slick--prev,
     .slick--next{
         cursor: pointer;
-        flex: 0 0 15px;
+        flex: 0 0 50px;
         margin: auto 0;
         align-self: center;
     }
@@ -3451,11 +3661,19 @@ main section{
         @include justify-content(space-between);
     }
 
-    .slick-list{
-        flex: 0 0 #{calc(100% - 30px)};
-        margin-left: $gutter;
-        margin-right: $gutter;
+    .slick-arrow{
 
+        & +.slick-list{
+            flex: 0 0 #{calc(100% - 100px)};
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+    }
+
+    .slick-list{
+        flex: 0 0 100%;
+        padding-left: 50px;
+        padding-right: 50px;
     }
 
     .slick-slide{

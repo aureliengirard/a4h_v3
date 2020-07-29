@@ -1,16 +1,16 @@
 
-{% assign press_image = collection.metafields.press.image %}
-{% assign press_credit = collection.metafields.press.credits %}
-{% assign press_source = collection.metafields.press.source %}
-{% assign press_title = collection.metafields.press.title %}
-{% assign press_date = collection.metafields.press.date %}
-{% assign press_end_date = collection.metafields.exhibitions.end_date %}
-{% assign press_link = collection.metafields.press.link %}
+{% assign exhibitions_image = collection.metafields.exhibitions.thumbnail %}
+{% assign exhibitions_location_name = collection.metafields.exhibitions.location_name %}
+{% assign exhibitions_location_city = collection.metafields.exhibitions.location_city %}
+{% assign exhibitions_location_title = collection.metafields.exhibitions.title %}
+{% assign exhibitions_start_date = collection.metafields.exhibitions.start_date %}
+{% assign exhibitions_end_date = collection.metafields.exhibitions.end_date %}
+{% assign exhibitions_link = collection.metafields.accentuate.link %}
 
-{% assign press_loop = "" %}
+{% assign exhibitions_loop = "" %}
 
 {%- capture loop_indexes -%}
-    {%- for location in press_source -%}
+    {%- for location in collection.metafields.exhibitions.location_name -%}
         {{- forloop.index0 -}}
         {%- if forloop.last == false %}::{% endif -%}
     {%- endfor -%}
@@ -29,7 +29,7 @@
             <div class="card-item media-item">
 
                 {% comment %} Opening Card Link {% endcomment %}
-                {%- for item in press_link -%}
+                {%- for item in exhibitions_link -%}
                     {%- assign loop_sub =  forloop.index0 | strip  -%}
                     {%- if loop_sub == loop_strip -%}
                         {%- if items != "" -%}
@@ -40,11 +40,11 @@
 
                 {% comment %} Card Image {% endcomment %}
                 <div class="card-header">
-                    {% for images in press_image %}
+                    {% for images in exhibitions_image %}
                         {%- assign loop_sub =  forloop.index0 | strip  -%}
                         {%- if loop_sub == loop_strip -%}
                             {% for image in images %}
-                            <img src="{{ image.cloudinary_src | append: 'w_400,h_295' }}" alt="{{ image.alt }}"/>
+                            <img src="{{ image.cloudinary_src | append: 'w_400,h_290' }}" alt="{{ image.alt }}"/>
                             {% endfor %}
 
                         {%- else -%}{% continue %}{%- endif -%}
@@ -55,17 +55,24 @@
                 <div class="card-meta">
                     <span class="meta__location">
                         {% comment %}Event Gallery Location{% endcomment %}
-                        {%- for item in press_credit -%}
+                        {%- for item in exhibitions_location_name -%}
                             {%- assign loop_sub =  forloop.index0 | strip  -%}
                             {%- if loop_sub == loop_strip -%}
                                 {{item}},
                             {%- else -%}{% continue %}{%- endif -%}
                         {%- endfor -%}
 
+                        {% comment %}Event Location City{% endcomment %}
+                        {%- for item in exhibitions_location_city -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip -%}
+                                {{item}}
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
                     </span>
 
-                    {% comment %}Press Title{% endcomment %}
-                    {%- for item in press_title -%}
+                    {% comment %}Event Title{% endcomment %}
+                    {%- for item in exhibitions_location_title -%}
                         {%- assign loop_sub =  forloop.index0 | strip  -%}
                         {%- if loop_sub == loop_strip -%}
                             <h4>{{item}}</h4>
@@ -73,18 +80,23 @@
                     {%- endfor -%}
 
                     <span class="meta__date">
-                        {% comment %}Event Location City{% endcomment %}
-                        {%- for item in press_source -%}
-                        {%- assign loop_sub =  forloop.index0 | strip  -%}
-                        {%- if loop_sub == loop_strip -%}
-                            {{item}}
-                        {%- else -%}{% continue %}{%- endif -%}
-                        {%- endfor -%}
-
-                        {%- for item in press_date -%}
+                        {%- for item in exhibitions_start_date -%}
                             {%- assign loop_sub =  forloop.index0 | strip  -%}
                             {%- if loop_sub == loop_strip -%}
-                                - {{item | date: "%B, %Y" }}
+                                {% assign d = item | date: "%-d" %}
+                                {{ item | date: "%B" }}
+                                {% case d %}{% when "1" or "21" or "31" %}{{ d }}st{% when "2" or "22" %}{{ d }}nd{% when "3" or "23" %}{{ d }}rd{% else %}{{ d }}th{% endcase %}
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+
+                        {%- for item in exhibitions_end_date -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip -%}
+                                {%- if items != "" -%}
+                                    - {% assign d = item | date: "%-d" %}
+                                    {{ item | date: "%B" }}
+                                    {% case d %}{% when "1" or "21" or "31" %}{{ d }}st{% when "2" or "22" %}{{ d }}nd{% when "3" or "23" %}{{ d }}rd{% else %}{{ d }}th{% endcase %}
+                                {%- endif -%}
                             {%- else -%}{% continue %}{%- endif -%}
                         {%- endfor -%}
                     </span>
@@ -93,7 +105,7 @@
                 </div>
 
             {% comment %}Closing Card Link {% endcomment %}
-            {%- for item in press_link -%}
+            {%- for item in exhibitions_link -%}
                 {%- assign loop_sub =  forloop.index0 | strip  -%}
                 {%- if loop_sub == loop_strip -%}
                     {%- if items != "" -%}

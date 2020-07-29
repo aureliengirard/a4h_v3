@@ -1,0 +1,17 @@
+<div class="social__icons col-lg-6">
+    {%- if collection.metafields.artist.website -%}
+    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.website }}" rel=”nofollow”>{% include 'icon-social-website' %}</a></div>
+    {%- endif -%}
+    {%- if collection.metafields.artist.facebook -%}
+    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.facebook }}" rel=”nofollow”>{% include 'icon-social-facebook' %}</a></div>
+    {%- endif -%}
+    {% if collection.metafields.artist.instagram -%}
+    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.instagram }}" rel=”nofollow”>{% include 'icon-social-instagram' %}</a></div>
+    {%- endif -%}
+    {%- if collection.metafields.artist.twitter -%}
+    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.twitter }}" rel=”nofollow”>{% include 'icon-social-twitter' %}</a></div>
+    {%- endif -%}
+    {%- if collection.metafields.artist.weibo -%}
+    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.weibo }}" rel=”nofollow”>{% include 'icon-social-weibo' %}</a></div>
+    {%- endif -%}
+</div>
