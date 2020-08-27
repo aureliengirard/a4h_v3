@@ -1,0 +1,52 @@
+{%- assign city = collection.metafields.accentuate.international_locations -%}
+{%- assign region_list = collection.metafields.gallery.region -%}
+{%- assign country_list = collection.metafields.gallery.country -%}
+{%- assign title = collection.title -%}
+
+{% assign city = city | split: ", " %}
+{% assign city = city | uniq %}
+{% assign city = city | join: "," | downcase | replace: " ", "-" %}
+
+{%- capture region -%}
+    {%- for single_region in region_list -%}
+        {{- single_region -}}
+        {%- if forloop.last == false %},{% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{% assign region = region | split: "," %}
+{% assign region = region | uniq %}
+{% assign region = region | join: "," | downcase | replace: " ", "-" %}
+
+{%- capture country -%}
+    {%- for single_country in country_list -%}
+        {{- single_country -}}
+        {%- if forloop.last == false %},{% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{% assign country = country | split: "," %}
+{% assign country = country | uniq %}
+{% assign country = country | join: "," | downcase | replace: " ", "-" %}
+
+<article class="card-item gallery-item"
+    {%- if filter == true -%}
+        country="{{- country  -}}"
+        region="{{- region -}}"
+        city="{{- city -}}"
+        name="{{- title | handleize -}}"
+        {%- endif -%}
+    >
+    <a href="{{collection.url}}">
+    <div class="img-container">
+        <div class="img-inner-container">
+            {{ collection.image | img_url: '440x313' | img_tag: collection.title }}
+        </div>
+    </div>
+    <div class="card-details gallery-details">
+        <h4 class="card__title">{{ title }}</h4>
+        <div class="card__origin">{{collection.metafields.accentuate.international_locations}}</div>
+
+    </div>
+</a>
+</article>

@@ -10,7 +10,7 @@
 {% assign press_loop = "" %}
 
 {%- capture loop_indexes -%}
-    {%- for location in press_source -%}
+    {%- for location in press_title -%}
         {{- forloop.index0 -}}
         {%- if forloop.last == false %}::{% endif -%}
     {%- endfor -%}

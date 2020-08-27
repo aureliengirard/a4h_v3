@@ -1,45 +1,30 @@
 {%- assign ngos = settings.ngo_list_for_search | split: ',' -%}
 {%- assign prices = settings.price_list_for_search | split: ',' -%}
 
-<section  class="hero" style="background-image: url({{ settings.shop_hero_image | img_url: '1920x' }})">
-    <div class="overlay"></div>
-    <div class="row-100">
-        <div class="col-md-8">
-            <h1>QUE TU SIGUIENTE OBRA DE ARTE TENGA UN IMPACTO SOCIAL</h1>
-            <h3>Una forma única de apoyar a México Vivo.</h3>
-        </div>
-        <div class="col-md-2">
-            <img src="https://cdn.shopify.com/s/files/1/0257/4142/6773/files/logo-mexico-vivo-white.png?294" alt="Fundación México Vivo">
-        </div>
-    </div>
-</section>
-
 <section class="collection">
-  <div class="row collection__header">
-    <div class="col-lg-6 col-sm-12">
-      <h2>Resultados de búsqueda</h2>
-      {% if search.results == empty %}
-      <script>window.location.replace('{{ shop.url }}/collections/all');</script>
-      <h4>No results found</h4>
-      {% endif %}
-    </div>
-    <div class="col-lg-6 col-sm-12 collection__options">
-      {% include 'partial-collection-options' %}
+
+    <div class="row collection__wrapper">
+        {% include 'partial-collection-sidebar', title: "Search Results" %}
+
+        <div class="collection-items__wrapper col-lg-8 ml-auto">
+            <div class="col-lg-12 collection__options">
+                {% include 'partial-collection-options' %}
+            </div>
+
+            <div class="col-12 collection-items" data-masonry="{ "itemSelector": ".product-item", "columnWidth": 200 }">
+
+            {% assign results = search.results | sort: 'created_at' | reverse %}
+
+            {% for product in results %}
+            {% if product.available %}
+            {% include 'partial-product-card' with filter: true %}
+            {% endif %}
+            {% endfor %}
+
+            </div>
+
+        </div>
+
     </div>
 
-  </div>
-  <div class="row collection__wrapper">
-    {% include 'partial-collection-filters' %}
-
-    <div class="collection-items__wrapper">
-      <div class="col-12 collection-items">
-        {% assign results = search.results | sort: 'created_at' | reverse %}
-        {% for product in results %}
-        {% if product.available %}
-        {% include 'product-card' %}
-        {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-  </div>
 </section>

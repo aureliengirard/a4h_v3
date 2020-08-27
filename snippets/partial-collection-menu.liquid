@@ -1,15 +1,27 @@
-<div class="col-lg-3 static-menu collection__menu">
-    <h1 class="collection__title">{{collection.title}}</h1>
+<div class="col-lg-3 static-menu static-menu-top collection__menu">
+    {%- if template.suffix == "ungoals" -%}
+        {% assign ungoal__tag_line = collection.metafields.accentuate.tag_line %}
+        <hgroup>
+            <h1>
+                <img src="{{ collection.image | img_url: '250x' }}" alt="{{ ungoal__title }}" title="{{ ungoal__title }}">
+            </h1>
+            <h4 style="color:{{theme_color}};">{{ ungoal__tag_line }}</h4>
+        </hgroup>
+    {%- else -%}
+        <h1 class="collection__title">{{collection.title}}</h1>
+    {%- endif -%}
+
     <ul class="collection__menu">
+        {%- if template.suffix == "ungoals" -%}
+            <li class="collection-nav__item active"><a href="#about">About</a></li>
+        {%- endif -%}
         {%- if template.suffix == "artist" -%}
             <li class="collection-nav__item active"><a href="#career-highlights">Career Highlights</a></li>
         {%- endif -%}
         {%- if template.suffix == "gallery" -%}
             <li class="collection-nav__item active"><a href="#overview">Overview</a></li>
         {%- endif -%}
-        {%- if template.suffix == "gallery" or template.suffix == "artist" -%}
             <li class="collection-nav__item"><a href="#curated-artworks">Curated artworks</a></li>
-        {%- endif -%}
         {%- if template.suffix == "gallery" -%}
             <li class="collection-nav__item"><a href="#represented-artists">Represented artists</a></li>
         {%- endif -%}
@@ -40,6 +52,26 @@
         {%- if template.suffix == "artist" -%}
             <li class="collection-nav__item"><a href="#related-artists">Related Artists</a></li>
         {%- endif -%}
+        {%- if template.suffix == "ungoals" -%}
+            <li class="collection-nav__item"><a href="#commited-artists">Commited Artists</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "ungoals" and has_articles == true -%}
+            <li class="collection-nav__item"><a href="#selected-press">Selected Press</a></li>
+        {%- endif -%}
     </ul>
 
 </div>
+
+<!--
+    <script type="text/javascript">
+        $(window).scroll(function() {
+            $(".static-menu").addClass("static-menu-top");
+            $(".static-menu").removeClass("static-menu-bottom");
+            if($(window).scrollTop() + $(window).height() > ($(document).height() - 530) ) {
+                //you are at bottom
+                $(".static-menu").addClass("static-menu-bottom");
+                $(".static-menu").removeClass("static-menu-top");
+            }
+        });
+    </script>
+-->

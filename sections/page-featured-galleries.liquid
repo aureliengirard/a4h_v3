@@ -1,0 +1,150 @@
+{% comment %}
+    Section build to display a Selection of Galleru
+{% endcomment %}
+
+<section class="collection__filters">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h1__alt">{{ section.settings.page-title }}</h1>
+        </div>
+    </div>
+    {%- include 'partial-gallery-filters' -%}
+</section>
+
+{% for block in section.blocks %}
+
+        {% case block.type %}
+
+            {% when 'featured-collection' %}
+
+            <section id="{{block.type}}" class="collection collection__featured collection-of-3">
+                {% assign title = block.settings.featured_collection_title %}
+                {% assign title_handelized = title | handleize %}
+                {% assign featured_collection = collections[block.settings.featured_artist] %}
+                {% assign cta_value = 'View all<span> ' | append: title | append: ' galleries</span>' %}
+                {% assign cta_url = '/pages/all-galleries/' %}
+                {% assign cta_action_val = "window.sessionStorage.setItem('value_city', '" | append: title_handelized | append: "');"  %}
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="title-has-cta">
+                            <h2>{{title}}</h2>
+                            {%- include 'partial-cta'  with { cta_label: cta_value, cta_url: cta_url, cta_action: cta_action_val } -%}
+                        </div>
+                        <div class="collection-items__wrapper">
+                            <div class="col-12 collection-items">
+                                {% assign collection_1 = collections[block.settings.collection_1] %}
+                                {% assign collection_2 = collections[block.settings.collection_2] %}
+                                {% assign collection_3 = collections[block.settings.collection_3] %}
+                                {% assign collection_4 = collections[block.settings.collection_4] %}
+                                {% assign collection_5 = collections[block.settings.collection_5] %}
+                                {% assign collection_6 = collections[block.settings.collection_6] %}
+
+                                {%- if collection_1.title != "" -%}
+                                    {% include 'partial-gallery-card', collection: collection_1 %}
+                                {%- endif -%}
+                                {%- if collection_2.title != "" -%}
+                                    {% include 'partial-gallery-card', collection: collection_2 %}
+                                {%- endif -%}
+                                {%- if collection_3.title != "" -%}
+                                    {% include 'partial-gallery-card', collection: collection_3 %}
+                                {%- endif -%}
+                                {%- if collection_4.title != "" -%}
+                                    {% include 'partial-gallery-card', collection: collection_4 %}
+                                {%- endif -%}
+                                {%- if collection_5.title != "" -%}
+                                    {% include 'partial-gallery-card', collection: collection_5 %}
+                                {%- endif -%}
+                                {%- if collection_6.title != "" -%}
+                                    {% include 'partial-gallery-card', collection: collection_6 %}
+                                {%- endif -%}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        {% endcase %}
+
+{% endfor %}
+
+{% schema %}
+{
+    "name": "Gallery Featured",
+    "class": "featured__galleries",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "page-title",
+          "type": "text",
+          "label": "Title",
+          "default": "Best-in-class Galleries"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "featured-collection",
+            "name": "Featured Category",
+            "settings":
+            [
+                {
+                    "type": "checkbox",
+                    "id": "featured_artist_has_top_border",
+                    "label": "Has CTA",
+                    "default": true
+                },
+                {
+                    "id": "featured_collection_title",
+                    "type": "text",
+                    "label": "Title",
+                    "default": "Lorem Ipsum"
+                },
+                {
+                    "id": "featured_collection_cta",
+                    "type": "text",
+                    "label": "CTA Label",
+                    "default": "View All"
+                },
+                {
+                    "id": "featured_collection_url",
+                    "type": "text",
+                    "label": "CTA Link"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_1",
+                    "label": "Gallery 1"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_2",
+                    "label": "Gallery 2"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_3",
+                    "label": "Gallery 3"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_4",
+                    "label": "Gallery 4"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_5",
+                    "label": "Gallery 5"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_6",
+                    "label": "Gallery 6"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

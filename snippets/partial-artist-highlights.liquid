@@ -1,0 +1,346 @@
+
+{% assign exhibitions_year = collection.metafields.exhibition.date %}
+{% assign exhibitions_title = collection.metafields.exhibition.exhibitions_infos %}
+{% assign exhibitions_location = collection.metafields.accentuate.location %}
+{% assign exhibitions_featured = collection.metafields.exhibitions.title %}
+{% assign exhibitions_type = collection.metafields.exhibition.type %}
+{% assign exhibitions_highlights = collection.metafields.accentuate.career_highlights %}
+{% assign artist_education = collection.metafields.artist.education %}
+
+{% assign exhibitions_type_split = exhibitions_type | split: "| " %}
+
+{% assign solo_show = "Solo Shows" %}
+{% assign group_show = "Groups Shows" %}
+{% assign institutions_collections = "Major Institutions Collections" %}
+
+{% assign exhibitions_loop = "" %}
+
+{%- capture loop_indexes -%}
+    {%- for location in exhibitions_type -%}
+        {{- forloop.index0 -}}
+        {%- if forloop.last == false %}::{% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- assign loop_index = loop_indexes | strip -%}
+{%- assign loop_in = loop_index | split: '::'  -%}
+
+{%- if artist_education or press_highlights contains "true" or exhibitions_type -%}
+    <section class="artist__highlights">
+        <div class="row">
+            <div class="col-lg-9 ml-auto artist__highlights--wrapper">
+                <h2>Career Highlights</h2>
+
+                <div class="highlights__wrapper">
+                    {% comment %} Solo Shows {% endcomment %}
+
+                    {%- if artist_education -%}
+                    <div class="highlights__item highlights__education">
+                        {% include 'icon-education' %}
+                        <p>
+                            <strong>Education: </strong>{{- artist_education -}}
+                        </p>
+                    </div>
+                    {%- endif -%}
+
+                    {%- if exhibitions_type contains solo_show -%}
+                        <div class="highlights__item highlights__solo-show">
+                            {% include 'icon-solo-show' %}
+                            <p><strong>Major Solo Shows: </strong>
+
+                                {%- for loop in loop_in -%}
+                                    {%- assign loop_strip = loop | strip  -%}
+                                    {%- assign solo_show_validation = false -%}
+                                    {%- assign is_highlights = false -%}
+
+                                    {%- for item in exhibitions_type -%}
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip -%}
+                                                {%- if item == solo_show -%}{%- assign solo_show_validation = true -%}{%- endif -%}
+                                        {%- else -%}
+                                            {%- continue -%}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+
+
+                                    {%- for item in exhibitions_highlights -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+
+                                            {%- if item contains "true" -%}
+                                                {%- assign is_highlights = true -%}
+                                            {%- endif -%}
+
+
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+
+                                    {%- for item in exhibitions_year -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {%- if item != "" -%}
+                                                {{item}} -
+                                            {%- endif -%}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                    {%- for item in exhibitions_title -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {% if item != "" %}
+                                                {{item}},
+                                            {% endif %}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                    {%- for item in exhibitions_location -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {%- if item != "" -%}
+                                                {{item}}
+                                                <span class="divider"> | </span>
+                                            {%- endif -%}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                {%- endfor -%}
+                            </p>
+                        </div>
+                    {%- else -%}
+                    {%- endif -%}
+
+                    {% comment %} Group Shows {% endcomment %}
+                    {%- if exhibitions_type contains group_show -%}
+                        <div class="highlights__item highlights__group-show">
+                            {% include 'icon-group-show' %}
+                            <p><strong>Major Group Shows: </strong>
+
+                                {%- for loop in loop_in -%}
+                                    {%- assign loop_strip = loop | strip  -%}
+                                    {%- assign solo_show_validation = false -%}
+                                    {%- assign is_highlights = false -%}
+
+                                    {%- for item in exhibitions_type -%}
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip -%}
+                                                {%- if item == group_show -%}{%- assign solo_show_validation = true -%}{%- endif -%}
+                                        {%- else -%}
+                                            {%- continue -%}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+
+
+                                    {%- for item in exhibitions_highlights -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+
+                                            {%- if item contains "true" -%}
+                                                {%- assign is_highlights = true -%}
+                                            {%- endif -%}
+
+
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+
+                                    {%- for item in exhibitions_year -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {%- if item != "" -%}
+                                                {{item}} -
+                                            {%- endif -%}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                    {%- for item in exhibitions_title -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {% if item != "" %}
+                                                {{item}},
+                                            {% endif %}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                    {%- for item in exhibitions_location -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {%- if item != "" -%}
+                                                {{item}}
+                                                <span class="divider"> | </span>
+                                            {%- endif -%}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                {%- endfor -%}
+                            </p>
+                        </div>
+                    {%- else -%}
+                    {%- endif -%}
+
+
+                    {% comment %}Institutions {% endcomment %}
+                    {%- if exhibitions_type contains institutions_collections -%}
+                        <div class="highlights__item highlights__institution-collectionss">
+                            {% include 'icon-institutions' %}
+                            <p><strong>Major Institutions Collections: </strong>
+
+                                {%- for loop in loop_in -%}
+                                    {%- assign loop_strip = loop | strip  -%}
+                                    {%- assign solo_show_validation = false -%}
+                                    {%- assign is_highlights = false -%}
+
+                                    {%- for item in exhibitions_type -%}
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip -%}
+                                                {%- if item == institutions_collections -%}{%- assign solo_show_validation = true -%}{%- endif -%}
+                                        {%- else -%}
+                                            {%- continue -%}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+
+
+                                    {%- for item in exhibitions_highlights -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true -%}
+
+                                            {%- if item contains "true" -%}
+                                                {%- assign is_highlights = true -%}
+                                            {%- endif -%}
+
+
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+
+                                    {%- for item in exhibitions_year -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {%- if item != "" -%}
+                                                {{item}} -
+                                            {%- endif -%}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                    {%- for item in exhibitions_title -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {% if item != "" %}
+                                                {{item}},
+                                            {% endif %}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                    {%- for item in exhibitions_location -%}
+
+                                        {%- assign loop_sub =  forloop.index0 | strip  -%}
+                                        {%- if loop_sub == loop_strip and solo_show_validation == true and is_highlights == true -%}
+                                            {%- if item != "" -%}
+                                                {{item}}
+                                                <span class="divider"> | </span>
+                                            {%- endif -%}
+
+                                        {%- else -%}{%- continue -%}{%- endif -%}
+                                    {%- endfor -%}
+
+                                {%- endfor -%}
+
+                            </p>
+                        </div>
+                    {%- else -%}
+                    {%- endif -%}
+
+                    {% assign press_source = collection.metafields.press.source %}
+                    {% assign press_title = collection.metafields.press.title %}
+                    {% assign press_date = collection.metafields.press.date %}
+                    {% assign press_highlights = collection.metafields.press.highlights %}
+
+                    {% assign press_loop = "" %}
+
+                    {%- capture loop_indexes -%}
+                        {%- for location in press_source -%}
+                            {{- forloop.index0 -}}
+                            {%- if forloop.last == false %}::{% endif -%}
+            {%- endfor -%}
+        {%- endcapture -%}
+        {%- assign loop_index = loop_indexes | strip -%}
+        {%- assign loop_in = loop_index | split: '::'  -%}
+
+        {%- if press_highlights contains "true" -%}
+            <div class="highlights__item highlights__major-media">
+                {% include 'icon-media' %}
+                <p>
+                    <strong>Major Media: </strong>
+
+                    {%- for loop in loop_in -%}
+
+                        {%- assign loop_strip = loop | strip  -%}
+                        {%- assign is_highlights = false -%}
+
+                        {% comment %}Validate that article is highlighted{% endcomment %}
+                        {%- for item in press_highlights -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip -%}
+                                {%- if item contains "true" -%}
+                                    {%- assign is_highlights = true -%}
+                                {%- endif -%}
+                            {%- else -%}{%- continue -%}{%- endif -%}
+                        {%- endfor -%}
+
+                        {% comment %}Press Date{% endcomment %}
+                        {%- for item in press_date -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip and is_highlights == true -%}
+                                {{item | date: "%Y" }} -
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+
+                        {% comment %}Press Title{% endcomment %}
+                        {%- for item in press_title -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip and is_highlights == true -%}
+                                {{item}},
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+
+                        {% comment %}Event Location City{% endcomment %}
+                        {%- for item in press_source -%}
+                            {%- assign loop_sub =  forloop.index0 | strip  -%}
+                            {%- if loop_sub == loop_strip and is_highlights == true -%}
+                                {{item}}
+                                <span class="divider"> | </span>
+                            {%- else -%}{% continue %}{%- endif -%}
+                        {%- endfor -%}
+
+                    {%- endfor -%}
+                </p>
+            </div>
+        {%- endif -%}
+
+    </div>
+            </div>
+        </div>
+    </section>
+{%- endif -%}

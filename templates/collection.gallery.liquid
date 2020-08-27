@@ -34,7 +34,10 @@
     <div id="curated-artworks" class="anchor"></div>
     <div class="row">
         <div class="col-lg-9 ml-auto col-tb">
-            <h2>Curated  Artworks</h2>
+            <div class="title-has-options">
+                <h2>Curated  Artworks</h2>
+                {% include 'partial-collection-options' %}
+            </div>
             <div class="collection-items__wrapper">
                 <div class="col-12 collection-items">
                     {% for product in collection.products %}
@@ -55,14 +58,17 @@
         <div class="col-lg-9 ml-auto col-tb">
             <h2>Represented Artists</h2>
             <div class="artists-list">
-                {% assign represented-artist = "Raymond Pettibon,Tomma Abts,Isa Genzken,Njideka Akunyili Crosby,Anni Albers,Josef Albers,Francis Alÿs,Harold Ancart,Mamma Andersson,Diane Arbus,Lucas Arruda,Ruth Asawa,Michaël Borremans,Carol Bove,R. Crumb,Noah Davis,Raoul De Keyser,Roy DeCarava,Philip-Lorca diCorcia,Stan Douglas,Marlene Dumas,Marcel Dzama,William Eggleston,Dan Flavin,Suzan Frecon,Isa Genzken,Felix Gonzalez-Torres,Donald Judd,On Kawara,Toba Khedoori" | split:"," %}
+                {% assign represented-artist_legacy = "Raymond Pettibon,Tomma Abts,Isa Genzken,Njideka Akunyili Crosby,Anni Albers,Josef Albers,Francis Alÿs,Harold Ancart,Mamma Andersson,Diane Arbus,Lucas Arruda,Ruth Asawa,Michaël Borremans,Carol Bove,R. Crumb,Noah Davis,Raoul De Keyser,Roy DeCarava,Philip-Lorca diCorcia,Stan Douglas,Marlene Dumas,Marcel Dzama,William Eggleston,Dan Flavin,Suzan Frecon,Isa Genzken,Felix Gonzalez-Torres,Donald Judd,On Kawara,Toba Khedoori" | split:"," %}
+                {% assign represented_artist = collection.metafields.accentuate.represented_artists | split:"," %}
 
-                {%- for artist in represented-artist -%}
+
+                {%- for artist in represented_artist -%}
                     {%- assign artist_handle = artist |  handleize -%}
                     <div class="artists-list__item">
                         {%- for collection in collections -%}
                             {%- assign template_type = collection.template_suffix | strip -%}
-                            {%- if template_type == 'artist' and collection.handle == artist_handle -%}
+                            {%- assign title_handle = collection.title | handleize -%}
+                            {%- if template_type == 'artist' and title_handle == artist_handle -%}
                                 {% assign artist_collection_url = collection.url %}
                                 <a href="{{artist_collection_url}}">
                                 {%- else -%}{%- continue -%}
@@ -73,7 +79,8 @@
 
                     {%- for collection in collections -%}
                         {%- assign template_type = collection.template_suffix | strip -%}
-                        {%- if template_type == 'artist' and collection.handle == artist_handle -%}</a>{%- else -%}{%- continue -%}{%- endif -%}
+                        {%- assign title_handle = collection.title | handleize -%}
+                        {%- if template_type == 'artist' and title_handle == artist_handle -%}</a>{%- else -%}{%- continue -%}{%- endif -%}
                     {%- endfor -%}
                     </div>
                 {%- endfor -%}

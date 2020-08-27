@@ -4,12 +4,13 @@
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 {%- assign artist_handle = product.vendor | handleize -%}
 {%- assign active_product = product.title -%}
-
+{%- assign has_un_goals = false -%}
 
 {%- assign template_type = "" -%}
 {%- assign gallery = "" -%}
 {%- assign ungoals = "" -%}
 {%- assign artist = "" -%}
+{%- assign product_title = product.title -%}
 
 {%- for collection in product.collections -%}
 
@@ -21,9 +22,33 @@
         {%- assign ungoals = collection -%}
     {%- elsif template_type == 'artist' -%}
         {%- assign artist = collection -%}
+        {% assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' %}
+
+        {%- for ungoals in artist_ungoals -%}
+            {%- if forloop.length > 0 -%}
+                {% assign has_un_goals = true %}
+
+            {%- endif -%}
+        {% endfor %}
+
     {%- endif -%}
 
 {%- endfor -%}
+
+{% comment %} CAPTURE RELATED UN GOALS FROM ACCENTUATE CUSTOM FIELDS {% endcomment %}
+{%- if has_un_goals == true -%}
+{%- capture ungoals_list -%}
+    {%- for ungoals in artist_ungoals -%}
+        {%- assign ungoal = collections[ungoals] -%}
+        {%- assign ungoals_name = ungoal.title | split: '. ' -%}
+            {{- ungoals_name[1] -}}::{{- ungoal.url -}}
+            {% if forloop.last == false %}|{% endif%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- assign ungoals_sorted_list = ungoals_list | split: '|' | sort -%}
+{%- endif -%}
+
 
 <section class="single-product__header">
     <div class="row">
@@ -44,7 +69,6 @@
 
         </div>
         <div class="col-md-6 product__metas bg--white">
-
             <h3 class="product__vendor"><a href="{{ artist.url }}">{{ artist.title }}</a></h3>
             <h1 class="product__title">{{ product.title }}{%- if product.metafields.product.date -%}, {{ product.metafields.product.date | date: "%Y" }}{%- endif -%}</h1>
 
@@ -82,27 +106,59 @@
 
                     <div class="impact-logos impact-select">
 
-                        {%- assign sdg = product.collections | sort: "title" -%}
+                        <input id="product-title" type="text" name="" value="{{ product.title | handleize }}" disabled hidden>
+                        <select id="ungoal-select" name="ungoal-select" onchange="ungoalSelection()">
 
-                        {%- for collection in sdg -%}
+                            <option value="">Please Select a UN Goal</option>
 
-                            {%- assign template_type = collection.template_suffix | strip -%}
+                            {%- if has_un_goals == true -%}
 
-                            {%- if template_type == 'ungoals' -%}
-
-                                {%- for image in collection.metafields.accentuate.choice_logo -%}
-                                <div class="impact-logo sdg-{{collection.handle}}">
-                                    <img class="{{collection.handle}}" src="{{ image.cloudinary_src | append: 'w_100,h_100' }}" alt="{{ collection.title }}"/>
-                                </div>
+                                {%- for ungoal in ungoals_sorted_list -%}
+                                    {% assign ungoal_item = ungoal | split: '::' %}
+                                    <option class="{{ ungoal_item[0] | handleize }}" value="{{ ungoal_item[0] | handleize }}">{{- ungoal_item[0] -}}</option>
                                 {%- endfor -%}
 
-                            {%- endif -%}
+                            {%- else -%}
 
-                        {%- endfor -%}
+                                {%- capture un_collections -%}
+                                {%- for collection in collections -%}
+
+                                    {%- assign template_type = collection.template_suffix | strip -%}
+                                    {%- assign ungoals = "" -%}
+
+                                    {%- if template_type == 'ungoals' -%}
+                                        |{{ collection.title | replace: ".", "::" }}::{% assign img = collection.metafields.accentuate.desktop_alt_logo | first %}{{- img.cloudinary_src | append: 'w_195' -}}::{{ collection.url }}
+                                    {%- else -%}
+                                        {%- continue -%}
+                                    {%- endif -%}
+
+                                {%- endfor -%}
+                                {%- endcapture -%}
+
+                                {%- assign sortedposts = un_collections | split: '|' | sort -%}
+                                {%- for post in sortedposts -%}
+                                    {%- assign postitems = post | split: '::' -%}
+                                    {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                                    {%- if un_id < 10 and un_id > 0 -%}
+                                    <option class="{{ postitems[1] | handleize }}" value="{{ postitems[1] | handleize }}">{{- postitems[1] -}}</option>
+                                    {%- else -%} {%- continue -%} {%- endif -%}
+
+                                {%- endfor -%}
+                                {% assign sortedposts = un_collections | split: '|' | sort %}
+                                {% for post in sortedposts %}
+                                    {% assign postitems = post | split: '::' %}
+                                    {% assign un_id = postitems[0] | strip | plus: 0 %}
+                                    {%- if un_id > 9 -%}
+                                    <option class="{{ postitems[1] | handleize }}" value="{{ postitems[1] | handleize }}">{{- postitems[1] -}}</option>
+                                    {%- else -%} {%- continue -%} {% endif %}
+
+                                {% endfor %}
+                            {%- endif -%}
+                        </select>
 
                     </div>
                     <p>
-                        {%- if product.metafields.product.hidden_price == 'true' -%}10% of the transation{%- else -%}The {{ current_variant.price | times: 0.1 | money }} collected{%- endif -%} will be forwarded to one of our partner NGOs according to the artist's choice.
+                        {% if product.metafields.product.hidden_price == 'true' %}10% of the transation {% else %}The {{ current_variant.price | times: 0.1 | money }} collected {% endif %}will be forwarded to one of our partner NGOs according to the artist's choice.
                     </p>
                 </div>
 
@@ -116,11 +172,12 @@
 
                     <div class="buy-button-container right-align">
                         <button
-                            class="generic-btn"
+                            id="buy-button"
+                            class="buy-button generic-btn"
                             type="submit"
                             name="add"
                             data-add-to-cart
-                            {%- unless current_variant.available -%}disabled="disabled"{%- endunless -%}>
+                            disabled="disabled">
                             <span data-add-to-cart-text>
                                 {%- if current_variant.available -%}
                                 {{ 'products.product.add_to_cart' | t }}
@@ -196,43 +253,31 @@
             </div>
 
             <div class="about about__impact bg--gray d-lg-flex">
-                <div class="impact-logos__wrapper">
+                <div class="title-has-cta">
                     <h2>Your Impact</h2>
-
-                    <p>
-                        {{ current_variant.price | times: 0.1 | money }} of your purchase will directly support one of the following goals:
-                    </p>
-
-                    <div class="impact-logos">
-
-                        {%- assign sdg = product.collections | sort: "title" -%}
-
-                        {%- for collection in sdg -%}
-
-                        {%- assign template_type = collection.template_suffix | strip -%}
-
-                        {%- if template_type == 'ungoals' -%}
-
-                        {%- for image in collection.metafields.accentuate.choice_logo -%}
-                        <img class="impact-logo" src="{{ image.cloudinary_src | append: 'w_160,h_160' }}" alt="{{ collection.title }}"/>
-                        {%- endfor -%}
-
-                        {%- endif -%}
-
-                        {%- endfor -%}
-                        <img class="impact-logo all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
-
-                    </div>
+                    {%- include 'partial-cta'  with { cta_label: "<span>Learn </span>More", cta_url: "/pages/un-goals" }  -%}
                 </div>
+
+                <div class="impact-logos__wrapper">
+                    <p class="lg">
+                        {% if product.metafields.product.hidden_price == 'true' %}<strong>10%</strong>{% else %}<strong>{{ current_variant.price | times: 0.1 | money }}</strong>{% endif %} of your purchase will directly support one of the 17 <strong>Sustainable Development Goals</strong>.
+                    </p>
+                    <p class="lg">
+                        Those UN Goals provide a <strong>global blueprint</strong> for dignity, peace and prosperity for people and the planet, <strong>now and in the future</strong>.
+                    </p>
+                </div>
+
                 <div class="all-impact-logos">
-                    <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
+                    <a href="/pages/un-goals">
+                        <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section id="collection-artist" class="collection single-product__collections collection__featured collection__artist">
+<section id="collection-artist" class="collection collection-of-4">
     <div class="row">
         <div class="col-12">
             <div class="title-has-cta">
@@ -240,9 +285,13 @@
                 {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: artist.url }  -%}
             </div>
             <div class="collection-items featured-items">
-                {%- for product in artist.products -%}
+                {%- for prod in artist.products -%}
 
-                    {%- include 'partial-product-card' -%}
+                    {%- if prod.title == product_title -%}
+                    {%- else -%}
+                    {%- include 'partial-product-card'   with { product: prod }  -%}
+                    {%- endif -%}
+
 
                 {%- endfor -%}
             </div>
@@ -250,17 +299,21 @@
     </div>
 </section>
 
-<section id="collection-gallery" class="collection single-product__collections collection__featured tb">
+<section id="collection-gallery" class="collection collection-of-4">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 col-tb">
             <div class="title-has-cta">
                 <h2><span>Other </span>Works From {{ gallery.title }}</h2>
                 {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: gallery.url }  -%}
             </div>
             <div class="collection-items featured-items">
-                {%- for product in gallery.products -%}
+                {%- for prod in gallery.products -%}
 
-                    {%- include 'partial-product-card' -%}
+                    {%- if prod.title == product_title -%}
+                    {%- else -%}
+                    {%- include 'partial-product-card'   with { product: prod }  -%}
+                    {%- endif -%}
+
 
                 {%- endfor -%}
             </div>
@@ -268,9 +321,9 @@
     </div>
 </section>
 
-<section id="related-artist" class="collection single-product__collections collection__featured collection__related-artist tb">
+<section id="related-artist" class="collection collection-of-4">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 col-tb">
             <div class="title-has-cta">
                 <h2>Related Artists</h2>
                 {%- include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } -%}
@@ -288,9 +341,9 @@
     </div>
 </section>
 
-<section id="tag-artist" class="tags single-product__tags tb">
+<section id="tag-artist" class="tags single-product__tags">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 col-tb">
             <h2>Related Tags</h2>
             <div class="tags__wrapper">
                 <div class="tags-catgerogy">
@@ -312,15 +365,52 @@
                         {%- include 'icon-impact-tags' -%}<span> Impact</span>
                     </div>
                     <div class="tags-catgerogy__list">
-                        {%- assign sdg = product.collections | sort: "title" -%}
-
-                        {%- for collection in sdg -%}
-                            {%- assign template_type = collection.template_suffix | strip -%}
-                            {%- if template_type == 'ungoals' -%}
-                                <a class="tag-item" href="{{ collection.url }}">{{ collection.title }}</a>
-                            {%- endif -%}
-
+                        {%- if has_un_goals == true -%}
+                            {%- for ungoal in ungoals_sorted_list -%}
+                                {% assign ungoal_item = ungoal | split: '::' %}
+                                <a class="tag-item" href="{{- ungoal_item[1] -}}">{{- ungoal_item[0] -}}</a>
+                            {%- endfor -%}
+                        {%- for ungoals in artist_ungoals -%}
+                            {% assign ungoal = collections[ungoals] %}
+                            {% assign ungoals_name = ungoal.title | split: '. ' %}
                         {%- endfor -%}
+                        {%- else -%}
+
+                            {%- capture un_collections -%}
+                            {%- for collection in collections -%}
+
+                                {%- assign template_type = collection.template_suffix | strip -%}
+                                {%- assign ungoals = "" -%}
+
+                                {%- if template_type == 'ungoals' -%}
+                                    |{{ collection.title | replace: ".", "::" }}::{% assign img = collection.metafields.accentuate.desktop_alt_logo | first %}{{- img.cloudinary_src | append: 'w_195' -}}::{{ collection.url }}
+                                {%- else -%}
+                                    {%- continue -%}
+                                {%- endif -%}
+
+                            {%- endfor -%}
+                            {%- endcapture -%}
+
+                            {%- assign sortedposts = un_collections | split: '|' | sort -%}
+                            {%- for post in sortedposts -%}
+                                {%- assign postitems = post | split: '::' -%}
+                                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                                {%- if un_id < 10 and un_id > 0 -%}
+                                <a class="tag-item" href="{{- postitems[3] -}}">{{- ungoals_name[1] -}}</a>
+                                {%- else -%} {%- continue -%} {%- endif -%}
+
+                            {%- endfor -%}
+                            {% assign sortedposts = un_collections | split: '|' | sort %}
+                            {% for post in sortedposts %}
+                                {% assign postitems = post | split: '::' %}
+                                {% assign un_id = postitems[0] | strip | plus: 0 %}
+                                {%- if un_id > 9 -%}
+                                <a class="tag-item" href="{{- postitems[3] -}}">{{- ungoals_name[1] -}}</a>
+                                {%- else -%} {%- continue -%} {% endif %}
+
+                            {% endfor %}
+                        {%- endif -%}
+
                     </div>
                 </div>
             </div>

@@ -1,0 +1,119 @@
+<div class="row">
+    <div class="col-12 search-filters__wrapper">
+
+        {%- capture region -%}
+            {%- for collection in collections -%}
+                {%- assign template_type = collection.template_suffix | strip -%}
+                {%- assign region_list = collection.metafields.gallery.region -%}
+                {%- if template_type == 'gallery' -%}
+
+                    {%- for single_region in region_list -%}
+                        {{- single_region -}}
+                        {%- if forloop.last == false -%},{% endif -%}
+                    {%- endfor -%}
+                    {%- if forloop.last == false -%},{% endif -%}
+
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- assign region = region | split: "," -%}
+        {%- assign region = region | uniq -%}
+        {%- assign region = region | sort -%}
+
+        <div class="search-filters">
+
+            <div class="filter-by__wrapper">
+                <select id="filter-by-region" class="search-by search-by-region" name="">
+                    <option class="r-filter filter" value="" disabled selected hidden>By Region</option>
+                    <option class="r-filter filter" value="">All Regions</option>
+                    {% for regions in region %}
+                        <option class="c-filter filter" value="{{ regions | handleize }}">{{ regions }}</option>
+                    {%- endfor -%}
+                </select>
+            </div>
+
+            {%- capture country -%}
+                {%- for collection in collections -%}
+                {%- assign template_type = collection.template_suffix | strip -%}
+                {%- assign country_list = collection.metafields.gallery.country -%}
+
+                    {%- if template_type == 'gallery' -%}
+
+                        {%- for single_country in country_list -%}
+                            {{- single_country -}}
+                            {%- if forloop.last == false -%},{% endif -%}
+                        {%- endfor -%}
+                        {%- if forloop.last == false -%},{% endif -%}
+
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endcapture -%}
+
+            {% assign country = country | split: "," %}
+            {% assign country = country | uniq %}
+            {% assign country = country | sort -%}
+
+            <div class="filter-by__wrapper">
+                <select id="filter-by-country" class="search-by search-by-country" name="">
+                    <option class="p-filter filter" value="" disabled selected hidden>By Country</option>
+                    <option class="p-filter filter" value="">All Countries</option>
+                    {% for countries in country %}
+                        <option class="c-filter filter" value="{{ countries | handleize }}">{{ countries }}</option>
+                    {%- endfor -%}
+                </select>
+            </div>
+
+            {%- capture city -%}
+                {%- for collection in collections -%}
+                {%- assign template_type = collection.template_suffix | strip -%}
+                {%- assign city_list = collection.metafields.accentuate.international_locations -%}
+
+                    {%- if template_type == 'gallery' -%}
+
+                        {{-city_list-}}
+                        {%- if forloop.last == false -%}, {% endif -%}
+
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endcapture -%}
+
+            {% assign city = city | split: ", " %}
+            {% assign city = city | sort -%}
+            {% assign city = city | uniq %}
+            <div class="filter-by__wrapper">
+                <select id="filter-by-city" class="search-by search-by-city" name="">
+                    <option class="p-filter filter" value="" disabled selected hidden>By City</option>
+                    <option class="p-filter filter" value="">All Cities</option>
+                    {% for cities in city %}
+                        <option class="c-filter filter" value="{{ cities | handleize }}">{{ cities }}</option>
+                    {%- endfor -%}
+                </select>
+            </div>
+
+            {%- capture name -%}
+                {%- for collection in collections -%}
+                {%- assign template_type = collection.template_suffix | strip -%}
+                {%- assign name = collection.title -%}
+
+                    {%- if template_type == 'gallery' -%}
+
+                        {{-name-}}
+                        {%- if forloop.last == false -%},{% endif -%}
+
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endcapture -%}
+
+            <div class="filter-by__wrapper">
+                <input type="text" id="filter-by-title" class="awesomplete" placeholder="BY NAME..." data-list="{{ name | join: ", " }}">
+            </div>
+
+            {%- if section.blocks -%}
+                <div class="filter-by__wrapper">
+                    <button onclick="location.href = '/pages/all-galleries/';" type="button" id="collection-hero-filters-btn" class="generic-btn">SEARCH</button>
+                </div>
+            {%- endif -%}
+        </div>
+    </div>
+</div>

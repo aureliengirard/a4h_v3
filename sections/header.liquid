@@ -5,6 +5,16 @@
             <a class="logo" href="/">
             <img src="{{ settings.header_logo | img_url: 'master' }}" width="{{ settings.header_logo_max_width }}" alt="{{ shop.name }}"></a>
         </div>
+        <div class="search__form">
+            <form method="get" action="/search">
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search"
+                 />
+                 <button type="submit">{% include "icon-search" %}</button>
+            </form>
+        </div>
         <input class="menu-btn" type="checkbox" id="menu-btn">
         <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
         <ul class="menu">

@@ -1,10 +1,47 @@
-{% assign artworks = "" %}
+{%- assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' -%}
+{%- assign nationality = collection.metafields.artist.nationality -%}
+{%- assign title = collection.title -%}
+{%- assign artworks = "" -%}
 
 {% for product in collection.products%}
     {% assign artworks = forloop.length %}
 {% endfor %}
 
-<article class="card-item artist-item">
+{%- capture medium -%}
+    {%- for product in collection.products -%}
+        {{- product.type | handleize -}}
+        {%- if forloop.last == false -%}, {% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{% assign medium = medium | split: ", " %}
+{% assign medium = medium | sort -%}
+{% assign medium = medium | uniq %}
+{% assign medium = medium | join: "," %}
+
+{%- capture un_goal -%}
+    {%- if artist_ungoals != "" -%}
+        {%- for ungoals in artist_ungoals -%}
+            {%- assign ungoal = collections[ungoals] -%}
+            {%- assign ungoals_name = ungoal.title | split: '. ' -%}
+            {{- ungoals_name[1] | handleize -}}
+            {%- if forloop.last == false %},{% endif -%}
+        {%- endfor -%}
+    {%- endif -%}
+{%- endcapture -%}
+
+{%- if un_goal == "" -%}
+    {% assign un_goal = "all-un-goals" %}
+{%- endif -%}
+
+<article class="card-item artist-item"
+    {%- if filter == true -%}
+        nationality="{{- nationality | handleize -}}"
+        medium="{{- medium -}}"
+        ungoal="{{- un_goal -}}"
+        name="{{- title | handleize -}}"
+        {%- endif -%}
+    >
     <a href="{{collection.url}}">
     <div class="img-container">
         <div class="img-inner-container">
@@ -12,9 +49,10 @@
         </div>
     </div>
     <div class="card-details artist-details">
-        <h4 class="card__artist">{{ collection.title }}</h4>
+        <h4 class="card__artist">{{ title }}</h4>
         <div class="card__origin">{{ collection.metafields.artist.born }}</div>
         <div class="card__artworks">{{artworks}} artworks</div>
+        <div class="card__artworks">{{un_goal}}</div>
     </div>
 </a>
 </article>

@@ -1,0 +1,35 @@
+<section class="collection__filters">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h1__alt">A World-Class Selection Of Artists</h1>
+        </div>
+    </div>
+    <div class="row">
+        {%- include 'partial-artist-filters' -%}
+    </div>
+</section>
+
+<section class="collection collection-of-4">
+    {% assign featured_collection = collections[block.settings.featured_artist] %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="collection-items__wrapper">
+                <div class="col-12 collection-items">
+
+                    {%- for collection in collections -%}
+                        {%- assign template_type = collection.template_suffix | strip -%}
+                        {%- if template_type == 'artist' -%}
+                            {% include 'partial-artist-card' with filter: true %}
+                        {%- endif -%}
+                    {%- endfor -%}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{%- include 'partial-section-all-ungoals', title: 'Browse Art by UN-Goals', cta: '', filters_artists: true -%}

@@ -1,3 +1,4 @@
+{% comment %}
 {% if collection_filters != 'false' %}
     <button id="filter-toggler" onclick="FiltersToggler();FiltersActive();" class="filter__option filter-toggler only-xs">
         <span>Filters</span>
@@ -5,36 +6,31 @@
         {% include 'icon-filters' %}
     </button>
 {% endif %}
+{% endcomment %}
 
-<select id="sort-by" class="sort-select filter__option{% if collection_filters == 'false' %} filter__option--full_width{% endif %}">
-    <option disabled="" selected="" value="">Sort by...</option>
-    <option value="price-ascending">Price: Low to High</option>
-    <option value="price-descending">Price: High to Low</option>
-    <option value="title-ascending">Title : A-Z</option>
-    <option value="title-descending">Title : Z-A</option>
-    <option value="created-ascending">Oldest to Newest</option>
-    <option value="created-descending">Newest to Oldest</option>
-</select>
+<div class="sort-by__wrapper">
+
+    <div class="sort-by--container">
+      {% assign sorter_selected = collection.sort_by | default: collection.default_sort_by | escape %}
+        <label for="sort-by">Sort by</label>
+        <select id="sort-by" class="sort-by sort-select filter__option{% if collection_filters == 'false' %} filter__option--full_width{% endif %}">
+            <option value="created-descending"{% if 'created-descending' == sorter_selected %} selected{% endif %}>Recently Added</option>
+            <option value="title-ascending"{% if 'title-ascending' == sorter_selected %} selected{% endif %}>Title: A-Z</option>
+            <option value="title-descending"{% if 'title-descending' == sorter_selected %} selected{% endif %}>Title: Z-A</option>
+            <option value="price-ascending"{% if 'price-ascending' == sorter_selected %} selected{% endif %}>Price: Low to High</option>
+            <option value="price-descending"{% if 'price-descending' == sorter_selected %} selected{% endif %}>Price: High to Low</option>
+            <option value="created-ascending"{% if 'created-ascending' == sorter_selected %} selected{% endif %}>Oldest to Newest</option>
+        </select>
+    </div>
+</div>
+
 
 <script type="text/javascript">
 
-// Sort By Filter
-
-    Shopify.queryParams = {};
-    if (location.search.length) {
-        for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
-            aKeyValue = aCouples[i].split('=');
-            if (aKeyValue.length > 1) {
-                Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
-            }
-        }
-    }
-
-    jQuery('#sort-by')
-    .val('{{ collection.sort_by | default: collection.default_sort_by | escape }}')
-    .bind('change', function() {
-        Shopify.queryParams.sort_by = jQuery(this).val();
-        location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
-    });
-
+// Add existing sort parameters to current URL
+document.querySelector('.sort-by').addEventListener('change', function(e) {
+  var value = e.currentTarget.value;
+  Shopify.queryParams.sort_by = value;
+  location.search = new URLSearchParams(Shopify.queryParams).toString();
+});
 </script>

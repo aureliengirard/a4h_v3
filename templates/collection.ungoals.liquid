@@ -1,35 +1,175 @@
-{% section 'collection-ngo-hero' %}
+{% assign ungoal__theme_color = collection.metafields.sdg.sdg_theme_color %}
+{% assign ungoal__featured_image = collection.metafields.accentuate.featured_image %}
+{% assign ungoal__fact_highlight = collection.metafields.sdg.fact_highlight %}
+{% assign ungoal__tag_line = collection.metafields.accentuate.tag_line %}
+{% assign ungoal__why_it_matters = collection.metafields.accentuate.why_it_matters %}
+{% assign ungoal__infographic = collection.metafields.accentuate.infographic %}
+{% assign title = collection.title %}
+{% assign title = title | replace: ". ", "::" %}
+{% assign title = title | split: '::' %}
+{% assign ungoal__number = title[0]  %}
+{% assign ungoal__title = title[1] %}
+{% assign ungoal__handeleize = ungoal__title | handleize %}
 
-{% include 'partial-collection-profil', bg_color: '', type: 'ngo' %}
+{%- capture pdf_infographic -%}
+    {%- for pdf in ungoal__why_it_matters -%}
+        {{ pdf.src }}
+    {%- endfor -%}
+{%- endcapture -%}
 
-<section class="collection">
-    <div class="row collection__header">
-        <div class="col-lg-6 col-sm-12">
-            <h2>{{ collection.title }}</h2>
+{%- capture pdf_why_it_matters -%}
+    {%- for pdf in ungoal__infographic -%}
+        {{ pdf.src }}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{% comment %}Validate if there are Press Articles{% endcomment %}
+{% assign press_title = collection.metafields.press.title %}
+{% assign has_articles = false %}
+
+{%- capture loop_indexes -%}
+    {%- for location in press_title -%}
+        {{- forloop.index0 -}}
+        {%- if forloop.last == false %}::{% endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- if loop_indexes != "" -%}
+    {% assign has_articles = true %}
+    {%- else -%}
+{%- endif -%}
+
+
+<div class="content__wrapper ungoal__wrapper collection__ungoal">
+    <div class="row">
+        <div class="col-lg-3">
+            {%- include 'partial-collection-menu', bg_color: '', type: 'ungoal', theme_color: ungoal__theme_color, ungoal__title: ungoal__title, has_articles: has_articles -%}
         </div>
-        <div class="col-lg-6 col-sm-12 collection__options">
-            {% include 'partial-collection-options', collection_filters: 'false' %}
+        <div class="col-lg-9">
+            <section class="ungoal__hero collection__hero">
+                <div id="about" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 ungoal__about">
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h2>About</h2>
+                                {{ collection.description }}
+                                <div class="ungoal__links">
+                                    <a href="{{pdf_why_it_matters}}" target="_blank">{%- include 'icon-why-it-matters' -%}<span>Why it matters</span></a>
+                                    <a href="{{pdf_infographic}}" target="_blank">{%- include 'icon-infographic' -%}<span>Infographic</span></a>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                {% assign img = ungoal__featured_image | first %}
+                                <img src="{{ img.cloudinary_src | append: 'w_300,h_300' }}" alt="{{ ungoal__fact_highlight }}"/>
+                                <h4 class="ungoal__highlight" style="color:{{ungoal__theme_color}};"><span>{{ungoal__fact_highlight}}</span></h4>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection ungoal__collection collection-of-2">
+                <div id="curated-artworks" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 ungoal__">
+
+                        <div class="title-has-options">
+                            <h2>Curated  Artworks</h2>
+                            {% include 'partial-collection-options' %}
+                        </div>
+
+                        <div class="collection-items__wrapper">
+                            <div class="col-12 collection-items">
+                                {%- for product in collection.products -%}
+                                    {%- include 'partial-product-card' -%}
+                                {%- endfor -%}
+                            </div>
+                        </div>
+
+                        <div class="collection__cta">
+                            {%- include 'partial-cta'  with { cta_label: "<span>Explore </span>All Art", cta_url: "/collections/all" }  -%}
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="">
+                <div id="commited-artists" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Artists Comitted Towards UN-Goal #{{ungoal__number}}</h2>
+                        <div class="artists-list">
+                            {%- assign collection_goals = "" -%}
+
+                            {%- capture comitted_artists -%}
+                                {%- for collection in collections -%}
+                                    {%- assign template_type = collection.template_suffix | strip -%}
+                                    {%- assign collection_goals = collection.metafields.artist.un_goals -%}
+                                    {%- assign artist_ungoals = collection_goals | split: '|' -%}
+
+                                    {%- if template_type == 'artist' -%}
+                                        {% assign has_un_goal = true %}
+
+                                        {%- capture un_goal -%}
+                                            {%- if artist_ungoals != "" -%}
+                                                {%- for ungoals in artist_ungoals -%}
+                                                    {%- assign ungoal = collections[ungoals] -%}
+                                                    {%- assign ungoals_name = ungoal.title | split: '. ' -%}
+                                                    {{- ungoals_name[1] | handleize -}}
+                                                {%- endfor -%}
+                                            {%- endif -%}
+                                        {%- endcapture -%}
+
+                                        {%- if un_goal == "" -%}
+                                            {% assign has_un_goal = false %}
+                                        {%- endif -%}
+
+                                        {%- if collection_goals contains ungoal__handeleize -%}
+                                            {{- collection.title -}}::{{- collection.url -}}
+                                        {%- elsif has_un_goal == false -%}
+                                            {{- collection.title -}}::{{- collection.url -}}
+                                        {%- else -%}
+                                            {%- continue -%}
+                                        {%- endif -%}
+                                        {%- if forloop.last == false -%},{% endif -%}
+                                    {%- else -%}{%- continue -%}{%- endif -%}
+                                {%- endfor -%}
+                            {%- endcapture -%}
+
+                            {% assign comitted_artists = comitted_artists | split:"," %}
+
+                            {%- for artist in comitted_artists -%}
+                                {% assign artistitem = artist | split: '::' %}
+                                {%- if artistitem[1] contains "/collections/" -%}
+                                <div class="artists-list__item">
+                                    <a href="{{- artistitem[1] -}}">{{- artistitem[0] -}}</a>
+                                </div>
+                                {%- else -%}
+                                {%- endif -%}
+                            {%- endfor -%}
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {%- if has_articles == true -%}
+                <section class="collection__press ungoal__press">
+                    <div id="selected-press" class="anchor"></div>
+                    <div class="row">
+                        <div class="col-12 col-tb">
+                            <h2>Selected Press</h2>
+                            {% include 'partial-press-slider' %}
+                        </div>
+                    </div>
+                </section>
+            {%- endif -%}
+
         </div>
-
     </div>
-
-    <div class="row collection__wrapper">
-        <!--{% include 'partial-collection-filters' %}-->
-   		{% paginate collection.products by 50 %}
-          <div class="collection-items__wrapper">
-              <div class="col-12 collection-items">
-                  {% for product in collection.products %}
-                      {% if product.available and product.handle != 'art-lover-service-fee' %}
-                        {% include 'product-card', type: ngo %}
-                      {% endif %}
-                  {% endfor %}
-              </div>
-          {% if paginate.pages > 1 %}
-           <div class="pagination-container">{{ paginate | default_pagination: next: '>>', previous: '<<' }}</div>
-          {% endif %}
-      		</div>
-        {% endpaginate %}
-    </div>
-</section>
-
-{% section 'featured-artists' %}
+</div>

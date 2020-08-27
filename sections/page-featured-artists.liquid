@@ -1,0 +1,219 @@
+{% comment %}
+    Section build to display all artists
+{% endcomment %}
+
+<section class="collection__filters">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h1__alt">{{ section.settings.page-title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        {%- include 'partial-artist-filters' -%}
+    </div>
+</section>
+
+{% for block in section.blocks %}
+
+        {% case block.type %}
+
+            {% when 'featured-artist' %}
+
+            {% assign featured_collection = collections[block.settings.featured_artist] %}
+            {% assign top_border = block.settings.featured_artist_has_top_border %}
+
+            <section id="{{block.type}}" class="collection collection-of-4">
+
+                <div class="row">
+                    <div class="col-12 {%- if top_border == true -%}col-tb{%- endif -%}">
+                        <div class="title-has-cta">
+                            <h2>{{block.settings.featured_artist_title}}</h2>
+                            {%- if block.settings.featured_artist_cta -%}
+                                {%- include 'partial-cta'  with { cta_label: block.settings.featured_artist_cta, cta_url: featured_collection.url }  -%}
+                            {%- endif -%}
+                        </div>
+                        <div class="collection-items__wrapper">
+                            <div class="col-12 collection-items">
+                                {% assign product_1 = all_products[block.settings.product_1] %}
+                                {% assign product_2 = all_products[block.settings.product_2] %}
+                                {% assign product_3 = all_products[block.settings.product_3] %}
+                                {% assign product_4 = all_products[block.settings.product_4] %}
+
+                                {%- if product_1.title -%}
+                                    {% include 'partial-product-card', product: product_1 %}
+                                {%- endif -%}
+
+                                {%- if product_2.title -%}
+                                    {% include 'partial-product-card', product: product_2 %}
+                                {%- endif -%}
+
+                                {%- if product_3.title -%}
+                                    {% include 'partial-product-card', product: product_3 %}
+                                {%- endif -%}
+
+                                {%- if product_4.title -%}
+                                    {% include 'partial-product-card', product: product_4 %}
+                                {%- endif -%}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            {% when 'featured-collection' %}
+
+            <section id="{{block.type}}" class="collection collection-of-4">
+                {% assign featured_collection = collections[block.settings.featured_artist] %}
+
+                <div class="row">
+                    <div class="col-12 {%- if top_border == true -%}col-tb{%- endif -%}">
+                        <div class="title-has-cta">
+                            <h2>{{block.settings.featured_collection_title}}</h2>
+                            {%- if block.settings.featured_collection_cta -%}
+                                {%- include 'partial-cta'  with { cta_label: block.settings.featured_collection_cta, cta_url: block.settings.featured_collection_url }  -%}
+                            {%- endif -%}
+                        </div>
+                        <div class="collection-items__wrapper">
+                            <div class="col-12 collection-items">
+                                {% assign collection_1 = collections[block.settings.collection_1] %}
+                                {% assign collection_2 = collections[block.settings.collection_2] %}
+                                {% assign collection_3 = collections[block.settings.collection_3] %}
+                                {% assign collection_4 = collections[block.settings.collection_4] %}
+
+                                {%- if collection_1 -%}
+                                    {% include 'partial-artist-card', collection: collection_1 %}
+                                {%- endif -%}
+                                {%- if collection_2 -%}
+                                    {% include 'partial-artist-card', collection: collection_2 %}
+                                {%- endif -%}
+                                {%- if collection_3 -%}
+                                    {% include 'partial-artist-card', collection: collection_3 %}
+                                {%- endif -%}
+                                {%- if collection_4 -%}
+                                    {% include 'partial-artist-card', collection: collection_4 %}
+                                {%- endif -%}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        {% endcase %}
+
+{% endfor %}
+
+{% schema %}
+{
+    "name": "Artist Featured",
+    "class": "featured__artists",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "page-title",
+          "type": "text",
+          "label": "Title",
+          "default": "A World-Class Selection of Artists"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "featured-artist",
+            "name": "Featured Artist",
+            "settings":
+            [
+                {
+                    "type":      "checkbox",
+                    "id":        "featured_artist_has_top_border",
+                    "label":     "Has Top Border",
+                    "default":   false
+                },
+                {
+                  "id": "featured_artist_title",
+                  "type": "text",
+                  "label": "Title",
+                  "default": "Lorem Ipsum"
+                },
+                {
+                    "id": "featured_artist_cta",
+                    "type": "text",
+                    "label": "Link Label",
+                    "default": "View artist profile"
+                },
+                {
+                    "id": "featured_artist",
+                    "type": "collection",
+                    "label": "Artist"
+                },
+                {
+                    "type": "product",
+                    "id": "product_1",
+                    "label": "Product 1"
+                },
+                {
+                    "type": "product",
+                    "id": "product_2",
+                    "label": "Product 2"
+                },
+                {
+                    "type": "product",
+                    "id": "product_3",
+                    "label": "Product 3"
+                },
+                {
+                    "type": "product",
+                    "id": "product_4",
+                    "label": "Product 4"
+                }
+            ]
+        },
+        {
+            "type": "featured-collection",
+            "name": "Featured Category",
+            "settings":
+            [
+                {
+                  "id": "featured_collection_title",
+                  "type": "text",
+                  "label": "Title",
+                  "default": "Lorem Ipsum"
+                },
+                {
+                    "id": "featured_collection_cta",
+                    "type": "text",
+                    "label": "CTA Label",
+                    "default": "View artist profile"
+                },
+                {
+                    "id": "featured_collection_url",
+                    "type": "text",
+                    "label": "CTA Link"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_1",
+                    "label": "Collection 1"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_2",
+                    "label": "Collection 2"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_3",
+                    "label": "Collection 3"
+                },
+                {
+                    "type": "collection",
+                    "id": "collection_4",
+                    "label": "Collection 4"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

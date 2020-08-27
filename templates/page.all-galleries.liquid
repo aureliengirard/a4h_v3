@@ -1,0 +1,37 @@
+
+<section class="collection__filters">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h1__alt">Best-in-class Galleries</h1>
+        </div>
+    </div>
+    {%- include 'partial-gallery-filters' -%}
+</section>
+
+<section class="collection collection__featured collection-of-3">
+
+    <div class="row">
+        <div class="col-12 col-tb">
+            <div class="collection-items__wrapper">
+                <div class="col-12 collection-items">
+                    {%- for collection in collections -%}
+
+                        {%- assign template_type = collection.template_suffix | strip -%}
+
+                        {%- if template_type == 'gallery' -%}
+                            {% include 'partial-gallery-card' with filter: true %}
+                        {%- else -%}
+                            {%- continue -%}
+                        {%- endif -%}
+
+                    {%- endfor -%}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{%- include 'partial-section-all-ungoals', title: 'Supporting The 2030 UN-Goals', cta: '' -%}

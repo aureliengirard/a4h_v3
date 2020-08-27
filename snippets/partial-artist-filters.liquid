@@ -1,0 +1,151 @@
+{% comment %}
+<div class="col-12 search-by-letter__wrapper">
+    <ul class="search-by-letter">
+        <li><a href="">#</a></li>
+        <li><a href="">A</a></li>
+        <li><a href="">B</a></li>
+        <li><a href="">C</a></li>
+        <li><a href="">D</a></li>
+        <li><a href="">E</a></li>
+        <li><a href="">F</a></li>
+        <li><a href="">G</a></li>
+        <li><a href="">H</a></li>
+        <li><a href="">I</a></li>
+        <li><a href="">J</a></li>
+        <li><a href="">K</a></li>
+        <li><a href="">L</a></li>
+        <li><a href="">M</a></li>
+        <li><a href="">N</a></li>
+        <li><a href="">O</a></li>
+        <li><a href="">P</a></li>
+        <li><a href="">Q</a></li>
+        <li><a href="">R</a></li>
+        <li><a href="">S</a></li>
+        <li><a href="">T</a></li>
+        <li><a href="">U</a></li>
+        <li><a href="">V</a></li>
+        <li><a href="">W</a></li>
+        <li><a href="">X</a></li>
+        <li><a href="">Y</a></li>
+        <li><a href="">Z</a></li>
+    </ul>
+</div>
+{% endcomment %}
+<div class="col-12 search-filters__wrapper">
+
+    <div class="search-filters">
+
+
+        {%- capture nationality -%}
+            {%- for collection in collections -%}
+            {%- assign template_type = collection.template_suffix | strip -%}
+            {%- assign nationalities_list = collection.metafields.artist.nationality -%}
+
+                {%- if template_type == 'artist' -%}
+
+                    {%- for single_nationality in nationalities_list -%}
+                        {%- if single_nationality != "" -%}
+
+                            {{- single_nationality -}}
+                            {%- if forloop.last == false -%},{% endif -%}
+
+                        {% endif -%}
+                    {%- endfor -%}
+                    {%- if forloop.last == false -%},{% endif -%}
+
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endcapture -%}
+
+        {% assign nationality = nationality | split: "," %}
+        {% assign nationality = nationality | uniq %}
+        {% assign nationality = nationality | sort -%}
+
+        <div class="filter-by__wrapper">
+            <select id="filter-by-nationality" class="search-by search-by-nationality" name="">
+                <option class="p-filter filter" value="" disabled selected hidden>Nationality</option>
+                <option class="p-filter filter" value="">All Nationalities</option>
+                {% for nationalities in nationality %}
+                    <option class="c-filter filter" value="{{ nationalities | handleize }}">{{ nationalities }}</option>
+                {%- endfor -%}
+            </select>
+        </div>
+
+        <div class="filter-by__wrapper">
+            <select id="filter-by-medium" class="search-by search-by-medium" name="">
+                <option class="r-filter filter" value="" disabled selected hidden>Medium</option>
+                <option class="r-filter filter" value="">All Mediums</option>
+                {% for medium in shop.types %}
+
+                  <option class="c-filter filter" value="{{ medium | handleize }}">{{ medium }}</option>
+
+                {%- endfor -%}
+            </select>
+        </div>
+
+        {%- capture un_collections -%}
+            {%- for collection in collections -%}
+
+                {%- assign template_type = collection.template_suffix | strip -%}
+                {%- assign ungoals = "" -%}
+
+                {%- if template_type == 'ungoals' -%}
+                    |{{ collection.title | replace: ".", "::" }}::{% assign img = collection.metafields.accentuate.desktop_alt_logo | first %}{{- img.cloudinary_src | append: 'w_195' -}}::{{ collection.url }}
+                {%- else -%}
+                    {%- continue -%}
+                {%- endif -%}
+
+            {%- endfor -%}
+        {%- endcapture -%}
+
+
+        <div class="filter-by__wrapper">
+            <select id="filter-by-ungoal" class="search-by search-by-ungoal" name="">
+                <option class="p-filter filter" value="" disabled selected hidden>UN-Goal</option>
+                <option class="un-filter filter" value="">All UN-Goals</option>
+                {%- assign sortedposts = un_collections | split: '|' | sort -%}
+                {%- for post in sortedposts -%}
+                    {%- assign postitems = post | split: '::' -%}
+                    {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                    {%- if un_id < 10 and un_id > 0 -%}
+                        <option class="un-filter filter" value="{{ postitems[1] | handleize }}">{{postitems[1]}}</option>
+                    {%- else -%} {%- continue -%} {%- endif -%}
+
+                {%- endfor -%}
+                {% assign sortedposts = un_collections | split: '|' | sort %}
+                {% for post in sortedposts %}
+                    {% assign postitems = post | split: '::' %}
+                    {% assign un_id = postitems[0] | strip | plus: 0 %}
+                    {%- if un_id > 9 -%}
+                        <option class="un-filter filter" value="{{ postitems[1] | handleize }}">{{postitems[1]}}</option>
+                    {%- else -%} {%- continue -%} {% endif %}
+
+                {% endfor %}
+            </select>
+        </div>
+
+        {%- capture name -%}
+            {%- for collection in collections -%}
+            {%- assign template_type = collection.template_suffix | strip -%}
+            {%- assign name = collection.title -%}
+
+                {%- if template_type == 'artist' -%}
+
+                    {{-name-}}
+                    {%- if forloop.last == false -%},{% endif -%}
+
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endcapture -%}
+
+        <div class="filter-by__wrapper">
+            <input type="text" id="filter-by-name" class="awesomplete filter-by-name" placeholder="BY NAME..." data-list="{{ name | join: ", " }}">
+        </div>
+
+        {%- if section.blocks -%}
+        <div class="filter-by__wrapper">
+            <button onclick="location.href = '/pages/all-artists/';" type="button" id="collection-hero-filters-btn" class="generic-btn">SEARCH</button>
+        </div>
+        {%- endif -%}
+    </div>
+</div>

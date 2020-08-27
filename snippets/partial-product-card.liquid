@@ -1,10 +1,11 @@
-{% if product.type == "mw_hidden_cart_fee" %}{% continue %}{% endif %}
-{% assign template_type = "" %}
-{% assign gallery_name = "" %}
-{% assign gallery_url = "" %}
-{% assign ungoals_name = "" %}
-{% assign artist_name = "" %}
-{% assign artist_url = "" %}
+{%- assign template_type = "" -%}
+{%- assign gallery_name = "" -%}
+{%- assign gallery_url = "" -%}
+{%- assign ungoals_name = "" -%}
+{%- assign artist_name = "" -%}
+{%- assign artist_url = "" -%}
+{%- assign artist_ungoals = "" -%}
+{% assign has_un_goals = false %}
 
 {% for collection in product.collections %}
 
@@ -13,16 +14,43 @@
     {% if template_type == 'gallery' %}
         {% assign gallery_name = collection.title %}
         {% assign gallery_url = collection.url %}
+
     {% elsif template_type == 'ungoals' %}
         {% assign ungoals_name = collection.title | split: '. ' %}
     {% elsif template_type == 'artist' %}
         {% assign artist_name = collection.title %}
         {% assign artist_url = collection.url %}
+        {% assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' %}
+
+        {%- for ungoals in artist_ungoals -%}
+            {%- if forloop.length > 0 -%}
+                {% assign has_un_goals = true %}
+
+            {%- endif -%}
+        {% endfor %}
+
     {% endif %}
 
 {% endfor %}
 
-<article price="{{product.price}}" type="{{product.type}}" href="{{ product.url }}" class="card-item product-item">
+{%- capture un_goals_filter -%}
+    {%- for ungoals in artist_ungoals -%}
+        {%- assign ungoal = collections[ungoals] -%}
+        {%- assign ungoals_name = ungoal.title | split: '. ' -%}
+        {%- if forloop.first == true -%}{%- else -%},{%- endif -%}
+        {{- ungoals_name[1] | handleize -}}
+    {%- endfor -%}
+{%- endcapture -%}
+
+<article
+    {% if filter == true -%}
+        price="{{product.price}}"
+        type="{{ product.type | handleize }}"
+        vendor="{{ product.vendor | handleize }}"
+        gallery="{{ gallery_name | handleize }}"
+        un-goals="{%- if has_un_goals == true -%}{{-un_goals_filter-}}{%- else -%}all{%- endif -%}"
+    {%- endif -%}
+    class="card-item product-item">
     <a href="{{product.url}}" class="img-container">
         <div class="img-inner-container">
             {{ product.featured_image.src | img_url: '480x480' | img_tag: product.title }}
@@ -45,16 +73,20 @@
         <h4 class="card__artist">{%- if artist_name != "" -%} <a href="{{ artist_url }}">{{ artist_name }}</a>{%- else -%}{{ product.vendor }}{%- endif -%}</h4>
         <div class="card__title"><a href="{{product.url}}">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</a></div>
         <div class="card__gallery"><a href="{{ gallery_url }}">{{ gallery_name }}</a></div>
-        <div class="card__un-goals">
-            {%- for collection in product.collections -%}
-            {% assign template_type = collection.template_suffix | strip %}
-            {%- if template_type == 'ungoals' -%}
-            {% assign ungoals_name = collection.title | split: '. ' %}
 
-            <a href="{{ collection.url }}" class="un-goals">{{- ungoals_name[1] -}}</a><span class="separator">, </span>
-            {%- else -%}
-            {%- endif -%}
+        <div class="card__un-goals">
+
+            {%- if has_un_goals == true -%}
+            {%- for ungoals in artist_ungoals -%}
+                {% assign ungoal = collections[ungoals] %}
+                {% assign ungoals_name = ungoal.title | split: '. ' %}
+
+                <a href="{{ ungoal.url }}" class="un-goals" title="{{- ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</a>
+
             {%- endfor -%}
+            {%- else -%}
+                <a href="/pages/un-goals" class="un-goals" title="Discover The UN Goals"><img class="all-impact-logo" src="{{ 'all-un-goals-small.png' | asset_url }}" alt="UN Goals"></a>
+            {%- endif -%}
         </div>
 
     </div>
