@@ -1,121 +1,128 @@
 
 {%- include 'global-assets' -%}
 
-<section class="gallery__hero collection__hero">
-    <div id="overview" class="anchor"></div>
+<div class="content__wrapper ungoal__wrapper collection__ungoal">
     <div class="row">
-        {% include 'partial-collection-menu', bg_color: '', type: 'ngo' %}
+        <div class="col-lg-3">
+            {%- include 'partial-collection-menu', bg_color: '', type: 'gallery' -%}
+        </div>
+        <div class="col-lg-9">
+            <section class="gallery__hero collection__hero">
+                <div id="overview" class="anchor"></div>
+                <div class="row">
 
-        <div class="col-lg-9 ml-auto gallery__about">
+                    <div class="col-12 gallery__about">
 
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="row gallery__social">
-                        <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row gallery__social">
+                                    <div class="col-lg-6">
 
-                            <h2>About</h2>
+                                        <h2>About</h2>
+                                    </div>
+                                        {% include 'partial-social-links' %}
+                                </div>
+                                {{ collection.description }}
+                            </div>
+                            <div class="col-lg-6">
+                                <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
+
+                                <h4 class="meta__locations">{% include 'icon-locations' %}<span>{{collection.metafields.accentuate.international_locations}}</span></h4>
+                            </div>
                         </div>
-                            {% include 'partial-social-links' %}
+
                     </div>
-                    {{ collection.description }}
                 </div>
-                <div class="col-lg-6">
-                    <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
+            </section>
 
-                    <h4 class="meta__locations">{% include 'icon-locations' %}<span>{{collection.metafields.accentuate.international_locations}}</span></h4>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<section class="collection gallery__collection">
-    <div id="curated-artworks" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <div class="title-has-options">
-                <h2>Curated  Artworks</h2>
-                {% include 'partial-collection-options' %}
-            </div>
-            <div class="collection-items__wrapper">
-                <div class="col-12 collection-items">
-                    {% for product in collection.products %}
-                        {% include 'partial-product-card' %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{% assign artist_collection = "" %}
-{% assign artist_collection_url = "" %}
-
-<section class="gallery__artists artists-list__wrapper">
-    <div id="represented-artists" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <h2>Represented Artists</h2>
-            <div class="artists-list">
-                {% assign represented-artist_legacy = "Raymond Pettibon,Tomma Abts,Isa Genzken,Njideka Akunyili Crosby,Anni Albers,Josef Albers,Francis Alÿs,Harold Ancart,Mamma Andersson,Diane Arbus,Lucas Arruda,Ruth Asawa,Michaël Borremans,Carol Bove,R. Crumb,Noah Davis,Raoul De Keyser,Roy DeCarava,Philip-Lorca diCorcia,Stan Douglas,Marlene Dumas,Marcel Dzama,William Eggleston,Dan Flavin,Suzan Frecon,Isa Genzken,Felix Gonzalez-Torres,Donald Judd,On Kawara,Toba Khedoori" | split:"," %}
-                {% assign represented_artist = collection.metafields.accentuate.represented_artists | split:"," %}
-
-
-                {%- for artist in represented_artist -%}
-                    {%- assign artist_handle = artist |  handleize -%}
-                    <div class="artists-list__item">
-                        {%- for collection in collections -%}
-                            {%- assign template_type = collection.template_suffix | strip -%}
-                            {%- assign title_handle = collection.title | handleize -%}
-                            {%- if template_type == 'artist' and title_handle == artist_handle -%}
-                                {% assign artist_collection_url = collection.url %}
-                                <a href="{{artist_collection_url}}">
-                                {%- else -%}{%- continue -%}
-                            {%- endif -%}
-                        {%- endfor -%}
-
-                        {{- artist -}}
-
-                    {%- for collection in collections -%}
-                        {%- assign template_type = collection.template_suffix | strip -%}
-                        {%- assign title_handle = collection.title | handleize -%}
-                        {%- if template_type == 'artist' and title_handle == artist_handle -%}</a>{%- else -%}{%- continue -%}{%- endif -%}
-                    {%- endfor -%}
+            <section class="collection gallery__collection">
+                <div id="curated-artworks" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <div class="title-has-options">
+                            <h2>Curated  Artworks</h2>
+                            {% include 'partial-collection-options' %}
+                        </div>
+                        <div class="collection-items__wrapper">
+                            <div class="col-12 collection-items">
+                                {% for product in collection.products %}
+                                    {% include 'partial-product-card' %}
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                {%- endfor -%}
-            </div>
-        </div>
-    </div>
-</section>
+                </div>
+            </section>
 
-<section class="collection__exhibitions gallery__exhibitions">
-    <div id="selected-exhibitions" class="anchor"></div>
-        <div class="row">
-            <div class="col-lg-9 ml-auto col-tb">
-                <h2>Selected Exhibitions</h2>
-                {% include 'partial-exhibition-slider' %}
-            </div>
-        </div>
-    </div>
-</section>
+            {% assign artist_collection = "" %}
+            {% assign artist_collection_url = "" %}
 
-<section class="collection__press gallery__press">
-    <div id="selected-press" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <h2>Selected Press</h2>
-            {% include 'partial-press-slider' %}
-        </div>
-    </div>
-</section>
+            <section class="gallery__artists artists-list__wrapper">
+                <div id="represented-artists" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Represented Artists</h2>
+                        <div class="artists-list">
+                            {% assign represented-artist_legacy = "Raymond Pettibon,Tomma Abts,Isa Genzken,Njideka Akunyili Crosby,Anni Albers,Josef Albers,Francis Alÿs,Harold Ancart,Mamma Andersson,Diane Arbus,Lucas Arruda,Ruth Asawa,Michaël Borremans,Carol Bove,R. Crumb,Noah Davis,Raoul De Keyser,Roy DeCarava,Philip-Lorca diCorcia,Stan Douglas,Marlene Dumas,Marcel Dzama,William Eggleston,Dan Flavin,Suzan Frecon,Isa Genzken,Felix Gonzalez-Torres,Donald Judd,On Kawara,Toba Khedoori" | split:"," %}
+                            {% assign represented_artist = collection.metafields.accentuate.represented_artists | split:"," %}
 
-<section class="collection__contact gallery__contact">
-    <div id="contact" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <h2>Contact Information</h2>
-            {% include 'partial-gallery-locations' %}
+
+                            {%- for artist in represented_artist -%}
+                                {%- assign artist_handle = artist |  handleize -%}
+                                <div class="artists-list__item">
+                                    {%- for collection in collections -%}
+                                        {%- assign template_type = collection.template_suffix | strip -%}
+                                        {%- assign title_handle = collection.title | handleize -%}
+                                        {%- if template_type == 'artist' and title_handle == artist_handle -%}
+                                            {% assign artist_collection_url = collection.url %}
+                                            <a href="{{artist_collection_url}}">
+                                            {%- else -%}{%- continue -%}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+
+                                    {{- artist -}}
+
+                                {%- for collection in collections -%}
+                                    {%- assign template_type = collection.template_suffix | strip -%}
+                                    {%- assign title_handle = collection.title | handleize -%}
+                                    {%- if template_type == 'artist' and title_handle == artist_handle -%}</a>{%- else -%}{%- continue -%}{%- endif -%}
+                                {%- endfor -%}
+                                </div>
+                            {%- endfor -%}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection__exhibitions gallery__exhibitions">
+                <div id="selected-exhibitions" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Selected Exhibitions</h2>
+                        {% include 'partial-exhibition-slider' %}
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection__press gallery__press">
+                <div id="selected-press" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Selected Press</h2>
+                        {% include 'partial-press-slider' %}
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection__contact gallery__contact">
+                <div id="contact" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Contact Information</h2>
+                        {% include 'partial-gallery-locations' %}
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
-</section>
+</div>

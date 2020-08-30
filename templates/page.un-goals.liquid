@@ -1,8 +1,156 @@
-<section class="hero" style="background-image: url({{ settings.join_hero_image | img_url: '1920x' }})">
-    <div class="row-100">
-        <div class="col-md-12">
-            <h1>{{page.title}}</h1>
+{%- capture un_collections -%}
+{%- for collection in collections -%}
+
+    {%- assign template_type = collection.template_suffix | strip -%}
+    {% assign desktop_logo_loop = collection.metafields.accentuate.mobile_logo %}
+    {% assign tag_line = collection.metafields.accentuate.tag_line %}
+    {% assign mobile_logo = collection.image | img_url: '625x'  %}
+    {% assign ungoal__theme_color = collection.metafields.sdg.sdg_theme_color %}
+    {%- assign ungoals = "" -%}
+
+    {%- if template_type == 'ungoals' -%}
+        {%- capture desktop_logo -%}
+            {%- for img in desktop_logo_loop -%}
+                {{ img.cloudinary_src | append: 'w_625' }}
+            {%- endfor -%}
+        {%- endcapture -%}
+
+        |{{ collection.title | replace: ".", "::" }}::{{ collection.url }}::{{ tag_line }}::{{ desktop_logo }}::{{ mobile_logo }}::{{ ungoal__theme_color }}
+    {%- else -%}
+        {%- continue -%}
+    {%- endif -%}
+
+{%- endfor -%}
+{%- endcapture -%}
+
+
+{% for post in sortedposts %}
+    {% assign postitems = post | split: '::' %}
+    {% assign un_id = postitems[0] | strip | plus: 0 %}
+    {%- if un_id > 9 -%}
+
+        {{- postitems[2] -}}
+
+    {%- else -%} {%- continue -%} {% endif %}
+
+{% endfor %}
+
+<div class="content__wrapper ungoal-home__wrapper">
+
+    <section class="page__hero">
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <img src="{{ 'all-un-goals-2.png' | asset_url }}" alt="{{ collection.title }}">
+                <img src="{{ 'all-un-goals-small.png' | asset_url }}" alt="{{ collection.title }}">
+
+            </div>
+            <div class="col-lg-6">
+
+                <img class="only-xs" src="{{ 'all-sdgs.png' | asset_url }}" alt="{{ collection.title }}">
+
+                <h2>17 Goals to Transform Our World</h2>
+                <p>The Sustainable Development Goals are a universal call to action to end poverty, protect the planet and improve the lives and prospects of everyone, everywhere.</p>
+                <p>The 2030 Agenda for Sustainable Development provides a global blueprint for dignity, peace and prosperity for people and the planet, now and in the future. </p>
+
+                <img class="hidden-xs" src="{{ 'sdg-image.png' | asset_url }}" alt="{{ collection.title }}">
+
+            </div>
 
         </div>
-    </div>
-</section>
+    </section>
+
+    <section class="decade-of-action">
+        <div class="row">
+
+            <div class="col-12">
+
+                <h2>Decade of Action To Deliver The Goals.</h2>
+                <p>The Sustainable Development Goals are gaining global momentum.<br>
+                    With just 10 years to go, 2020 needs to usher in a decade of ambitious action to deliver the Goals by 2030.</p>
+                <p>In response to this decisive decade, Art4Humans has designed a marketplace placing art as a catalyst for impact and sustainable development.<br>
+                    We are on a mission to provide unique awareness to those defining challenges of our time, global exposure & accessibility to art, while generating funding opportunities for charities.</p>
+                    <div class="cta__wrapper">
+                        {%- include 'partial-cta'  with { cta_label: "Brose Artworks", cta_url: "/collections/all" }  -%}
+                    </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="make-those-goals-your-own">
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="rainbow-title">
+                    <img class="only-xs" src="{{ 'all-un-goals-small.png' | asset_url }}" alt="{{ collection.title }}">
+                    <h2>Make Those Goals Your Own, Through Art</h2>
+                </div>
+                <p>We connect the best Art with the 2030 UN Sustainable Development Goals. </p>
+                <p>Support the goals that speak to you the most and get a philanthropic connection with your artworks.</p>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="collection collection-of-1">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="collection-items__wrapper">
+                    <div class="col-12 collection-items">
+
+                        {%- assign sortedposts = un_collections | split: '|' | sort -%}
+                        {%- for post in sortedposts -%}
+                        {%- assign postitems = post | split: '::' -%}
+                        {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                        {%- if un_id < 10 and un_id > 0 -%}
+
+                        <article class="card-item ungoal-item">
+                            <a href="{{postitems[2]}}">
+                                <div class="img-container">
+                                    <img class="img--mobile" src="{{postitems[5]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                                    <img class="img--desktop" src="{{postitems[4]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                                </div>
+                                <div class="card-details ungoal-details">
+                                    <h4 class="card__tagline" style="color:{{postitems[6]}}">{{postitems[3]}} {%- include 'icon-arrow-right', fill_color: postitems[6] -%}</h4>
+                                </div>
+                            </a>
+                        </article>
+
+                        {%- else -%} {%- continue -%} {%- endif -%}
+                        {%- endfor -%}
+
+                        {%- for post in sortedposts -%}
+                        {%- assign postitems = post | split: '::' -%}
+                        {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                        {%- if un_id > 9 -%}
+
+                        <article class="card-item ungoal-item">
+                            <a href="{{postitems[2]}}">
+                                <div class="img-container">
+                                    <img class="img--mobile" src="{{postitems[5]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                                    <img class="img--desktop" src="{{postitems[4]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                                </div>
+                                <div class="card-details ungoal-details">
+                                    <h4 class="card__tagline" style="color:{{postitems[6]}}">{{postitems[3]}} {%- include 'icon-arrow-right', fill_color: postitems[6] -%}</h4>
+                                </div>
+                            </a>
+                        </article>
+
+                        {%- else -%} {%- continue -%} {%- endif -%}
+                        {%- endfor -%}
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>

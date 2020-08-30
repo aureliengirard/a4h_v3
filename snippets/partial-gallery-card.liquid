@@ -38,15 +38,15 @@
         {%- endif -%}
     >
     <a href="{{collection.url}}">
-    <div class="img-container">
-        <div class="img-inner-container">
-            {{ collection.image | img_url: '440x313' | img_tag: collection.title }}
+        <div class="img-container">
+            <div class="img-inner-container">
+                {{ collection.image | img_url: '440x313' | img_tag: collection.title }}
+            </div>
         </div>
-    </div>
-    <div class="card-details gallery-details">
-        <h4 class="card__title">{{ title }}</h4>
-        <div class="card__origin">{{collection.metafields.accentuate.international_locations}}</div>
+        <div class="card-details gallery-details">
+            <h4 class="card__title">{{ title }}</h4>
+            <div class="card__origin">{{collection.metafields.accentuate.international_locations}}</div>
 
-    </div>
-</a>
+        </div>
+    </a>
 </article>

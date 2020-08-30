@@ -18,243 +18,252 @@
 {%- endcapture -%}
 
 {%- assign sortedposts = un_collections | split: '|' | sort -%}
-
-<section class="artist__hero collection__hero">
-    <div id="career-highlights" class="anchor"></div>
+<div class="content__wrapper ungoal__wrapper collection__ungoal">
     <div class="row">
-        {%- include 'partial-collection-menu', bg_color: '', type: 'artist' -%}
+        <div class="col-lg-3">
+            {%- include 'partial-collection-menu', bg_color: '', type: 'artist' -%}
+        </div>
+        <div class="col-lg-9">
 
-        <div class="col-lg-9 ml-auto artist__about">
+            <section class="artist__hero collection__hero">
+                <div id="career-highlights" class="anchor"></div>
+                <div class="row">
 
-            <div class="row">
-                <div class="col-lg-6">
-                    <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
+                    <div class="col-12 artist__about">
 
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
+
+                            </div>
+                            <div class="col-lg-6">
+
+                                <p><strong>Born:</strong> {{collection.metafields.artist.born}}</p>
+                                <p><strong>Studio:</strong> {{collection.metafields.artist.studio}}</p>
+
+                                <div class="tags ">
+
+                                    <div class="tags__wrapper">
+                                        <div class="tags-catgerogy">
+                                            <div class="tags-catgerogy__title">
+                                                {%- include 'icon-art-tags' -%}<span> Art</span>
+                                            </div>
+                                            <div class="tags-catgerogy__list">
+                                                {%- for tag in collection.all_tags | sort -%}
+                                                {%- if impact-tags contains tag -%}
+                                                {% continue %}
+                                                {%- else -%}
+                                                <a class="tag-item" href="{{tag | handleize }}">{{ tag }}</a>
+                                                {%- endif -%}
+                                                {%- endfor -%}
+                                            </div>
+                                        </div>
+
+                                        <div class="tags-catgerogy">
+                                            <div class="tags-catgerogy__title">
+                                                {%- include 'icon-impact-tags' -%}<span> Impact</span>
+                                            </div>
+                                            <div class="tags-catgerogy__list">
+                                                {% assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' %}
+
+                                                {%- for ungoals in artist_ungoals -%}
+                                                {% assign ungoal = collections[ungoals] %}
+                                                {% assign ungoals_name = ungoal.title | split: '. ' %}
+                                                <a class="tag-item" href="{{ ungoal.url }}">{{- ungoals_name[1] -}}</a>
+                                                {%- endfor -%}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="social__icons">
+                                    {%- if collection.metafields.artist.website -%}
+                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.website }}">{% include 'icon-social-website' %}</a></div>
+                                    {%- endif -%}
+                                    {%- if collection.metafields.artist.facebook -%}
+                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.facebook }}">{% include 'icon-social-facebook' %}</a></div>
+                                    {%- endif -%}
+                                    {% if collection.metafields.artist.instagram -%}
+                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.instagram }}">{% include 'icon-social-instagram' %}</a></div>
+                                    {%- endif -%}
+                                    {%- if collection.metafields.artist.twitter -%}
+                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.twitter }}">{% include 'icon-social-twitter' %}</a></div>
+                                    {%- endif -%}
+                                    {%- if collection.metafields.artist.weibo -%}
+                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.weibo }}">{% include 'icon-social-weibo' %}</a></div>
+                                    {%- endif -%}
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="col-lg-6">
+            </section>
 
-                    <p><strong>Born:</strong> {{collection.metafields.artist.born}}</p>
-                    <p><strong>Studio:</strong> {{collection.metafields.artist.studio}}</p>
+            {% include 'partial-artist-highlights' %}
 
-                    <div class="tags ">
+            <section class="collection artist__collection">
+                <div id="curated-artworks" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <div class="title-has-options">
+                            <h2>Curated  Artworks</h2>
+                            {% include 'partial-collection-options' %}
+                        </div>
 
+
+                        <div class="collection-items__wrapper">
+                            <div class="col-12 collection-items">
+                                {%- for product in collection.products -%}
+                                {%- include 'partial-product-card' -%}
+                                {%- endfor -%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection__un-goals artist__un-commitment">
+                <div id="un-commitment" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <div class="title-has-cta">
+                            <h2>Artist's support to the UN-Goals</h2>
+                            {%- include 'partial-cta'  with { cta_label: "<span>Learn about </span>UN-Goals", cta_url: "/un-goals/" }  -%}
+                        </div>
+                        <blockquote>
+                            <p>“This situation right now in the United States with Trump makes you want to just burn it all down and start over…. I don’t censor myself. If you’re sending out a political message, it has only one interpretation. But  when I do an automatic drawing, it’s open to many interpretations.”</p>
+                            <p class="author">- {{ collection.title }}</p>
+
+                        </blockquote>
+
+                        <p><strong>{{ collection.title }}</strong> a in coordination with his galleries <strong>Gallery Name 1</strong>, <strong>Gallery Name 2</strong>, has decided to support the 2030 UN Sustainable Development Goals:</p>
+
+
+
+                        <div class="impact-logos">
+
+
+                            {%- for post in sortedposts -%}
+                            {%- assign postitems = post | split: '::' -%}
+                            {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                            {%- if un_id < 10 and un_id > 0 -%}
+                            <a href="{{- postitems[3] -}}">
+                                <img src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
+                            </a>
+                            {%- else -%} {%- continue -%} {%- endif -%}
+
+                            {%- endfor -%}
+                            {% for post in sortedposts %}
+                            {% assign postitems = post | split: '::' %}
+                            {% assign un_id = postitems[0] | strip | plus: 0 %}
+                            {%- if un_id > 9 -%}
+                            <a href="{{- postitems[3] -}}">
+                                <img src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
+                            </a>
+                            {%- else -%} {%- continue -%} {% endif %}
+
+                            {% endfor %}
+
+                            <a href="/pages/un-goals">
+                                <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="gallery__artists artists-list__wrapper">
+                <div id="biography" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Biography</h2>
+                        {{ collection.description }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection__exhibitions artist__exhibitions">
+                <div id="major-exhibitions" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Major Exhibitions</h2>
+                        {% include 'partial-exhibitions-lists' %}
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection__press artist__press">
+                <div id="major-press" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Major Press</h2>
+                        {% include 'partial-press-slider' %}
+                    </div>
+                </div>
+            </section>
+
+            <section class="">
+                <div id="market-data" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <h2>Market Data</h2>
+                        <div class="visibility-insights__graph">
+
+                            {%- include 'partial-dummy-graph'  -%}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="collection collection__featured collection__related-artists">
+                <div id="related-artists" class="anchor"></div>
+                <div class="row">
+                    <div class="col-12 col-tb">
+                        <div class="title-has-cta">
+                            <h2>Related Artists</h2>
+                            {%- include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } -%}
+                        </div>
+                        <div class="collection-items featured-items">
+
+                            {%- assign related_artists = collection.metafields.accentuate.related_artist | split: '|' -%}
+                            {%- for related_artist in related_artists -%}
+
+                            {%- include 'partial-artist-card' with { collection: collections[related_artist] } -%}
+
+                            {%- endfor -%}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tags collection__tags">
+                <div class="row">
+                    <div class="col-lg-9 ml-auto">
                         <div class="tags__wrapper">
+
                             <div class="tags-catgerogy">
                                 <div class="tags-catgerogy__title">
-                                    {%- include 'icon-art-tags' -%}<span> Art</span>
+                                    {%- include 'icon-art-tags' -%}
                                 </div>
                                 <div class="tags-catgerogy__list">
                                     {%- for tag in collection.all_tags | sort -%}
-                                        {%- if impact-tags contains tag -%}
-                                            {% continue %}
-                                        {%- else -%}
-                                            <a class="tag-item" href="{{tag | handleize }}">{{ tag }}</a>
-                                        {%- endif -%}
+                                    {%- if impact-tags contains tag -%}
+                                    {% continue %}
+                                    {%- else -%}
+                                    <a class="tag-item" href="{{tag | handleize }}">{{ tag }}</a>
+                                    {%- endif -%}
                                     {%- endfor -%}
-                                </div>
-                            </div>
-
-                            <div class="tags-catgerogy">
-                                <div class="tags-catgerogy__title">
-                                    {%- include 'icon-impact-tags' -%}<span> Impact</span>
-                                </div>
-                                <div class="tags-catgerogy__list">
-                                    {% assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' %}
-
-                                    {%- for ungoals in artist_ungoals -%}
-                                        {% assign ungoal = collections[ungoals] %}
-                                        {% assign ungoals_name = ungoal.title | split: '. ' %}
-                                        <a class="tag-item" href="{{ ungoal.url }}">{{- ungoals_name[1] -}}</a>
-                                    {%- endfor -%}
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="social__icons">
-                        {%- if collection.metafields.artist.website -%}
-                            <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.website }}">{% include 'icon-social-website' %}</a></div>
-                        {%- endif -%}
-                        {%- if collection.metafields.artist.facebook -%}
-                            <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.facebook }}">{% include 'icon-social-facebook' %}</a></div>
-                        {%- endif -%}
-                        {% if collection.metafields.artist.instagram -%}
-                            <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.instagram }}">{% include 'icon-social-instagram' %}</a></div>
-                        {%- endif -%}
-                        {%- if collection.metafields.artist.twitter -%}
-                            <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.twitter }}">{% include 'icon-social-twitter' %}</a></div>
-                        {%- endif -%}
-                        {%- if collection.metafields.artist.weibo -%}
-                            <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.weibo }}">{% include 'icon-social-weibo' %}</a></div>
-                        {%- endif -%}
-                    </div>
-
                 </div>
-            </div>
+            </section>
 
         </div>
     </div>
-</section>
-
-{% include 'partial-artist-highlights' %}
-
-<section class="collection artist__collection">
-    <div id="curated-artworks" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto">
-            <div class="title-has-options">
-                <h2>Curated  Artworks</h2>
-                {% include 'partial-collection-options' %}
-            </div>
-
-
-            <div class="collection-items__wrapper">
-                <div class="col-12 collection-items">
-                    {%- for product in collection.products -%}
-                        {%- include 'partial-product-card' -%}
-                    {%- endfor -%}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="collection__un-goals artist__un-commitment">
-    <div id="un-commitment" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <div class="title-has-cta">
-                <h2>Artist's support to the UN-Goals</h2>
-                {%- include 'partial-cta'  with { cta_label: "<span>Learn about </span>UN-Goals", cta_url: "/un-goals/" }  -%}
-            </div>
-            <blockquote>
-                <p>“This situation right now in the United States with Trump makes you want to just burn it all down and start over…. I don’t censor myself. If you’re sending out a political message, it has only one interpretation. But  when I do an automatic drawing, it’s open to many interpretations.”</p>
-                <p class="author">- {{ collection.title }}</p>
-
-            </blockquote>
-
-            <p><strong>{{ collection.title }}</strong> a in coordination with his galleries <strong>Gallery Name 1</strong>, <strong>Gallery Name 2</strong>, has decided to support the 2030 UN Sustainable Development Goals:</p>
-
-
-
-            <div class="impact-logos">
-
-
-            {%- for post in sortedposts -%}
-                {%- assign postitems = post | split: '::' -%}
-                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
-                {%- if un_id < 10 and un_id > 0 -%}
-                <a href="{{- postitems[3] -}}">
-                    <img src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
-                </a>
-                {%- else -%} {%- continue -%} {%- endif -%}
-
-            {%- endfor -%}
-            {% for post in sortedposts %}
-                {% assign postitems = post | split: '::' %}
-                {% assign un_id = postitems[0] | strip | plus: 0 %}
-                {%- if un_id > 9 -%}
-                <a href="{{- postitems[3] -}}">
-                    <img src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
-                </a>
-                {%- else -%} {%- continue -%} {% endif %}
-
-            {% endfor %}
-
-            <a href="/pages/un-goals">
-            <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
-            </a>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<section class="gallery__artists artists-list__wrapper">
-    <div id="biography" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <h2>Biography</h2>
-            {{ collection.description }}
-        </div>
-    </div>
-</section>
-
-<section class="collection__exhibitions artist__exhibitions">
-    <div id="major-exhibitions" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <h2>Major Exhibitions</h2>
-            {% include 'partial-exhibitions-lists' %}
-        </div>
-    </div>
-</section>
-
-<section class="collection__press artist__press">
-    <div id="major-press" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <h2>Major Press</h2>
-            {% include 'partial-press-slider' %}
-        </div>
-    </div>
-</section>
-
-<section class="">
-    <div id="market-data" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <h2>Market Data</h2>
-            <div class="visibility-insights__graph">
-
-                {%- include 'partial-dummy-graph'  -%}
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="collection collection__featured collection__related-artists">
-    <div id="related-artists" class="anchor"></div>
-    <div class="row">
-        <div class="col-lg-9 ml-auto col-tb">
-            <div class="title-has-cta">
-                <h2>Related Artists</h2>
-                {%- include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } -%}
-            </div>
-            <div class="collection-items featured-items">
-
-                {%- assign related_artists = collection.metafields.accentuate.related_artist | split: '|' -%}
-                {%- for related_artist in related_artists -%}
-
-                    {%- include 'partial-artist-card' with { collection: collections[related_artist] } -%}
-
-                {%- endfor -%}
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="tags collection__tags">
-    <div class="row">
-        <div class="col-lg-9 ml-auto">
-            <div class="tags__wrapper">
-
-                <div class="tags-catgerogy">
-                    <div class="tags-catgerogy__title">
-                        {%- include 'icon-art-tags' -%}
-                    </div>
-                    <div class="tags-catgerogy__list">
-                        {%- for tag in collection.all_tags | sort -%}
-                        {%- if impact-tags contains tag -%}
-                        {% continue %}
-                        {%- else -%}
-                        <a class="tag-item" href="{{tag | handleize }}">{{ tag }}</a>
-                        {%- endif -%}
-                        {%- endfor -%}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+</div>

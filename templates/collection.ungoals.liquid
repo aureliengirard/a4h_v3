@@ -12,13 +12,13 @@
 {% assign ungoal__handeleize = ungoal__title | handleize %}
 
 {%- capture pdf_infographic -%}
-    {%- for pdf in ungoal__why_it_matters -%}
+    {%- for pdf in ungoal__infographic -%}
         {{ pdf.src }}
     {%- endfor -%}
 {%- endcapture -%}
 
 {%- capture pdf_why_it_matters -%}
-    {%- for pdf in ungoal__infographic -%}
+    {%- for pdf in ungoal__why_it_matters -%}
         {{ pdf.src }}
     {%- endfor -%}
 {%- endcapture -%}
@@ -39,6 +39,44 @@
     {%- else -%}
 {%- endif -%}
 
+{% comment %}Capturing Artist that are supporting the Goal or All Goals{% endcomment %}
+{%- assign collection_goals = "" -%}
+
+{%- capture comitted_artists -%}
+    {%- for collection in collections -%}
+        {%- assign template_type = collection.template_suffix | strip -%}
+        {%- assign collection_goals = collection.metafields.artist.un_goals -%}
+        {%- assign artist_ungoals = collection_goals | split: '|' -%}
+
+        {%- if template_type == 'artist' -%}
+            {% assign has_un_goal = true %}
+
+            {%- capture un_goal -%}
+                {%- if artist_ungoals != "" -%}
+                    {%- for ungoals in artist_ungoals -%}
+                        {%- assign ungoal = collections[ungoals] -%}
+                        {%- assign ungoals_name = ungoal.title | split: '. ' -%}
+                        {{- ungoals_name[1] | handleize -}}
+                    {%- endfor -%}
+                {%- endif -%}
+            {%- endcapture -%}
+
+            {%- if un_goal == "" -%}
+                {% assign has_un_goal = false %}
+            {%- endif -%}
+
+            {%- if collection_goals contains ungoal__handeleize -%}
+                {{- collection.title -}}::{{- collection.url -}}
+            {%- elsif has_un_goal == false -%}
+                {{- collection.title -}}::{{- collection.url -}}
+            {%- else -%}
+                {%- continue -%}
+            {%- endif -%}
+            {%- if forloop.last == false -%},{% endif -%}
+        {%- else -%}{%- continue -%}{%- endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
 
 <div class="content__wrapper ungoal__wrapper collection__ungoal">
     <div class="row">
@@ -55,15 +93,15 @@
                             <div class="col-lg-8">
                                 <h2>About</h2>
                                 {{ collection.description }}
-                                <div class="ungoal__links">
-                                    <a href="{{pdf_why_it_matters}}" target="_blank">{%- include 'icon-why-it-matters' -%}<span>Why it matters</span></a>
-                                    <a href="{{pdf_infographic}}" target="_blank">{%- include 'icon-infographic' -%}<span>Infographic</span></a>
+                                <div class="ungoal-link__wrapper">
+                                    <a class="ungoal-link" href="{{pdf_why_it_matters}}" target="_blank">{%- include 'icon-why-it-matters' -%}<span>Why it matters</span></a>
+                                    <a class="ungoal-link" href="{{pdf_infographic}}" target="_blank">{%- include 'icon-infographic' -%}<span>Infographic</span></a>
 
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 {% assign img = ungoal__featured_image | first %}
-                                <img src="{{ img.cloudinary_src | append: 'w_300,h_300' }}" alt="{{ ungoal__fact_highlight }}"/>
+                                <img class="featured__image" src="{{ img.cloudinary_src | append: 'w_300,h_300' }}" alt="{{ ungoal__fact_highlight }}"/>
                                 <h4 class="ungoal__highlight" style="color:{{ungoal__theme_color}};"><span>{{ungoal__fact_highlight}}</span></h4>
                             </div>
                         </div>
@@ -84,8 +122,13 @@
 
                         <div class="collection-items__wrapper">
                             <div class="col-12 collection-items">
-                                {%- for product in collection.products -%}
-                                    {%- include 'partial-product-card' -%}
+                                {% for product in collections.all.products %}
+                                    {% assign vendor = product.vendor | handleize %}
+                                        {%- if comitted_artists contains vendor -%}
+                                            {%- include 'partial-product-card' -%}
+                                        {%- else -%}
+                                            {%- continue -%}
+                                        {%- endif -%}
                                 {%- endfor -%}
                             </div>
                         </div>
@@ -102,45 +145,11 @@
                 <div id="commited-artists" class="anchor"></div>
                 <div class="row">
                     <div class="col-12 col-tb">
-                        <h2>Artists Comitted Towards UN-Goal #{{ungoal__number}}</h2>
+                        <div class="title-has-cta">
+                            <h2>Artists Comitted Towards UN-Goal #{{ungoal__number}}</h2>
+                            {%- include 'partial-cta'  with { cta_label: "See all<span> Committed Artists</span>", cta_url: "/pages/all-artists/" }  -%}
+                        </div>
                         <div class="artists-list">
-                            {%- assign collection_goals = "" -%}
-
-                            {%- capture comitted_artists -%}
-                                {%- for collection in collections -%}
-                                    {%- assign template_type = collection.template_suffix | strip -%}
-                                    {%- assign collection_goals = collection.metafields.artist.un_goals -%}
-                                    {%- assign artist_ungoals = collection_goals | split: '|' -%}
-
-                                    {%- if template_type == 'artist' -%}
-                                        {% assign has_un_goal = true %}
-
-                                        {%- capture un_goal -%}
-                                            {%- if artist_ungoals != "" -%}
-                                                {%- for ungoals in artist_ungoals -%}
-                                                    {%- assign ungoal = collections[ungoals] -%}
-                                                    {%- assign ungoals_name = ungoal.title | split: '. ' -%}
-                                                    {{- ungoals_name[1] | handleize -}}
-                                                {%- endfor -%}
-                                            {%- endif -%}
-                                        {%- endcapture -%}
-
-                                        {%- if un_goal == "" -%}
-                                            {% assign has_un_goal = false %}
-                                        {%- endif -%}
-
-                                        {%- if collection_goals contains ungoal__handeleize -%}
-                                            {{- collection.title -}}::{{- collection.url -}}
-                                        {%- elsif has_un_goal == false -%}
-                                            {{- collection.title -}}::{{- collection.url -}}
-                                        {%- else -%}
-                                            {%- continue -%}
-                                        {%- endif -%}
-                                        {%- if forloop.last == false -%},{% endif -%}
-                                    {%- else -%}{%- continue -%}{%- endif -%}
-                                {%- endfor -%}
-                            {%- endcapture -%}
-
                             {% assign comitted_artists = comitted_artists | split:"," %}
 
                             {%- for artist in comitted_artists -%}

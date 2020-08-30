@@ -44,7 +44,7 @@
                         {%- assign loop_sub =  forloop.index0 | strip  -%}
                         {%- if loop_sub == loop_strip -%}
                             {% for image in images %}
-                            <img src="{{ image.cloudinary_src | append: 'w_400,h_295' }}" alt="{{ image.alt }}"/>
+                            <img src="{{ image.cloudinary_src | append: 'c_fill_pad,g_auto,w_400,h_295' }}" alt="{{ image.alt }}"/>
                             {% endfor %}
 
                         {%- else -%}{% continue %}{%- endif -%}
@@ -58,7 +58,7 @@
                         {%- for item in press_credit -%}
                             {%- assign loop_sub =  forloop.index0 | strip  -%}
                             {%- if loop_sub == loop_strip -%}
-                                {{item}},
+                                {{item}}
                             {%- else -%}{% continue %}{%- endif -%}
                         {%- endfor -%}
 
@@ -84,7 +84,7 @@
                         {%- for item in press_date -%}
                             {%- assign loop_sub =  forloop.index0 | strip  -%}
                             {%- if loop_sub == loop_strip -%}
-                                - {{item | date: "%B, %Y" }}
+                                {% if press_source %} - {% endif %}{{item | date: "%B, %Y" }}
                             {%- else -%}{% continue %}{%- endif -%}
                         {%- endfor -%}
                     </span>

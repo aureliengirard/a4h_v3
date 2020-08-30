@@ -15,7 +15,7 @@
 {% endfor %}
 
 <div class="col-lg-3 static-menu static-menu-top collection__filters">
-    <h1 class="h1__alt">{{title}}</h1>
+    <h1 class="h1__menu">{{title}}</h1>
 
     <div id="collection_filters" class="collection-filters__wrapper">
         <div class="collection-filters filter-by__wrapper filter-by-type__wrapper">
@@ -169,3 +169,15 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+    $(window).scroll(function() {
+        $(".static-menu").addClass("static-menu-top");
+        $(".static-menu").removeClass("static-menu-bottom");
+        if($(window).scrollTop() + $(window).height() > ($(document).height() - 515) ) {
+            //you are at bottom
+            $(".static-menu").addClass("static-menu-bottom");
+            $(".static-menu").removeClass("static-menu-top");
+        }
+    });
+</script>
