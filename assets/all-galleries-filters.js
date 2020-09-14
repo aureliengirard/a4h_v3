@@ -115,3 +115,10 @@ function Filters() {
     }
 }
 $(document).ready(Filters);
+
+window.addEventListener('beforeunload', function (e) {
+    window.sessionStorage.removeItem('value_region');
+    window.sessionStorage.removeItem('value_country');
+    window.sessionStorage.removeItem('value_city');
+    window.sessionStorage.removeItem('value_title');
+});

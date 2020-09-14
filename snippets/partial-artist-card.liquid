@@ -1,6 +1,8 @@
 {%- assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' -%}
 {%- assign nationality = collection.metafields.artist.nationality -%}
+{%- assign born = collection.metafields.artist.born -%}
 {%- assign title = collection.title -%}
+{%- assign image = collection.image -%}
 {%- assign artworks = "" -%}
 
 {% for product in collection.products%}
@@ -45,12 +47,40 @@
     <a href="{{collection.url}}">
     <div class="img-container">
         <div class="img-inner-container">
-            {{ collection.image | img_url: '480x480' | img_tag: collection.title }}
+            {%- if card_per_row == 2 -%}
+
+                <img
+                    alt="{{ title }}"
+                    srcset="{{- image.src | img_url: '171x' }} 171w,
+                        {{- image.src | img_url: '285x285' }} 285w,
+                        {{- image.src | img_url: '340x340' }} 340w"
+                    sizes="(max-width: 767px) 41.6vw, (max-width: 991px) 45vw, 360px"
+                    src="{{ image.src | img_url: '405x' }}"
+                    class="lazyload" />
+            {%- elsif card_per_row == 3 -%}
+                <img
+                    alt="{{ title }}"
+                    srcset="{{- image.src | img_url: '171x' }} 171w,
+                        {{- image.src | img_url: '285x285' }} 285w,
+                        {{- image.src | img_url: '340x340' }} 340w"
+                    sizes="(max-width: 767px) 171px, (max-width: 991px) 340px, 285px"
+                    src="{{ image.src | img_url: '285x285' }}"
+                    class="lazyload" />
+            {%- else -%}
+                <img
+                    alt="{{ title }}"
+                    srcset="{{- image.src | img_url: '171x' }} 171w,
+                        {{- image.src | img_url: '285x285' }} 285w,
+                        {{- image.src | img_url: '340x340' }} 340w"
+                    sizes="(max-width: 767px) 171px, (max-width: 991px) 340px, 285px"
+                    src="{{ image.src | img_url: '285x285' }}"
+                    class="lazyload" />
+            {%- endif -%}
         </div>
     </div>
     <div class="card-details artist-details">
         <h4 class="card__artist">{{ title }}</h4>
-        <div class="card__origin">{{ collection.metafields.artist.born }}</div>
+        <div class="card__origin">{{ born }}</div>
         <div class="card__artworks">{{artworks}} artworks</div>
     </div>
 </a>

@@ -1,0 +1,309 @@
+{% assign raw_price = product.price -%}
+{% assign price = raw_price | divided_by: raw_price -%}
+{% assign price = price | times: 100 -%}
+
+{%- if raw_price >= 0 and raw_price < 50000 -%}
+
+    {%- assign price_min = price | times: 1 -%}
+    {%- assign price_min = price | minus: 100 -%}
+    {%- assign price_max = price | times: 500 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 50000 and raw_price < 100000 -%}
+
+    {%- assign price_min = price | times: 500 -%}
+    {%- assign price_max = price | times: 1000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 100000 and raw_price < 150000 -%}
+
+    {%- assign price_min = price | times: 1000 -%}
+    {%- assign price_max = price | times: 1500 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 150000 and raw_price < 200000 -%}
+
+    {%- assign price_min = price | times: 1500 -%}
+    {%- assign price_max = price | times: 2000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 200000 and raw_price < 300000 -%}
+
+    {%- assign price_min = price | times: 2000 -%}
+    {%- assign price_max = price | times: 3000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 300000 and raw_price < 400000 -%}
+
+    {%- assign price_min = price | times: 3000 -%}
+    {%- assign price_max = price | times: 4000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 400000 and raw_price < 500000 -%}
+
+    {%- assign price_min = price | times: 4000 -%}
+    {%- assign price_max = price | times: 5000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 500000 and raw_price < 750000 -%}
+
+    {%- assign price_min = price | times: 5000 -%}
+    {%- assign price_max = price | times: 7500 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 750000 and raw_price < 1000000 -%}
+
+    {%- assign price_min = price | times: 7500 -%}
+    {%- assign price_max = price | times: 10000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 100000 and raw_price < 1500000 -%}
+
+    {%- assign price_min = price | times: 10000 -%}
+    {%- assign price_max = price | times: 15000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 1500000 and raw_price < 2000000 -%}
+
+    {%- assign price_min = price | times: 15000 -%}
+    {%- assign price_max = price | times: 20000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 2000000 and raw_price < 3000000 -%}
+
+    {%- assign price_min = price | times: 20000 -%}
+    {%- assign price_max = price | times: 30000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 3000000 and raw_price < 4000000 -%}
+
+    {%- assign price_min = price | times: 30000 -%}
+    {%- assign price_max = price | times: 40000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 4000000 and raw_price < 5000000 -%}
+
+    {%- assign price_min = price | times: 40000 -%}
+    {%- assign price_max = price | times: 50000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 5000000 and raw_price < 7500000 -%}
+
+    {%- assign price_min = price | times: 50000 -%}
+    {%- assign price_max = price | times: 75000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 7500000 and raw_price < 10000000 -%}
+
+    {%- assign price_min = price | times: 75000 -%}
+    {%- assign price_max = price | times: 100000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+
+{%- elsif raw_price >= 10000000 and raw_price < 15000000 -%}
+
+    {%- assign price_min = price | times: 100000 -%}
+    {%- assign price_max = price | times: 150000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 15000000 and raw_price < 20000000 -%}
+
+    {%- assign price_min = price | times: 150000 -%}
+    {%- assign price_max = price | times: 200000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 20000000 and raw_price < 30000000 -%}
+
+    {%- assign price_min = price | times: 200000 -%}
+    {%- assign price_max = price | times: 300000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 30000000 and raw_price < 40000000 -%}
+
+    {%- assign price_min = price | times: 300000 -%}
+    {%- assign price_max = price | times: 400000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 40000000 and raw_price < 50000000 -%}
+
+    {%- assign price_min = price | times: 400000 -%}
+    {%- assign price_max = price | times: 500000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 50000000 and raw_price < 75000000 -%}
+
+    {%- assign price_min = price | times: 500000 -%}
+    {%- assign price_max = price | times: 750000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 75000000 and raw_price < 100000000 -%}
+
+    {%- assign price_min = price | times: 750000 -%}
+    {%- assign price_max = price | times: 1000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 100000000 and raw_price < 150000000 -%}
+
+    {%- assign price_min = price | times: 1000000 -%}
+    {%- assign price_max = price | times: 1500000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 150000000 and raw_price < 200000000 -%}
+
+    {%- assign price_min = price | times: 1500000 -%}
+    {%- assign price_max = price | times: 2000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 200000000 and raw_price < 300000000 -%}
+
+    {%- assign price_min = price | times: 2000000 -%}
+    {%- assign price_max = price | times: 3000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 300000000 and raw_price < 400000000 -%}
+
+    {%- assign price_min = price | times: 3000000 -%}
+    {%- assign price_max = price | times: 4000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 400000000 and raw_price < 500000000 -%}
+
+    {%- assign price_min = price | times: 4000000 -%}
+    {%- assign price_max = price | times: 5000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 500000000 and raw_price < 750000000 -%}
+
+    {%- assign price_min = price | times: 5000000 -%}
+    {%- assign price_max = price | times: 7500000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 750000000 and raw_price < 1000000000 -%}
+
+    {%- assign price_min = price | times: 7500000 -%}
+    {%- assign price_max = price | times: 10000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 1000000000 and raw_price < 1500000000 -%}
+
+    {%- assign price_min = price | times: 10000000 -%}
+    {%- assign price_max = price | times: 15000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 1500000000 and raw_price < 2000000000 -%}
+
+    {%- assign price_min = price | times: 15000000 -%}
+    {%- assign price_max = price | times: 20000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 2000000000 and raw_price < 3000000000 -%}
+
+    {%- assign price_min = price | times: 20000000 -%}
+    {%- assign price_max = price | times: 30000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 3000000000 and raw_price < 4000000000 -%}
+
+    {%- assign price_min = price | times: 30000000 -%}
+    {%- assign price_max = price | times: 40000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 4000000000 and raw_price < 5000000000 -%}
+
+    {%- assign price_min = price | times: 40000000 -%}
+    {%- assign price_max = price | times: 50000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+{%- elsif raw_price >= 5000000000 and raw_price < 7500000000 -%}
+
+    {%- assign price_min = price | times: 50000000 -%}
+    {%- assign price_max = price | times: 75000000 -%}
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+
+{%- elsif raw_price >= 7500000000 and raw_price < 10000000000 -%}
+
+    {%- assign price_min = price | times: 75000000 -%}
+    {%- assign price_max = price | times: 100000000 -%}
+    {{ price_min | money }} - {{ price_max | money_without_currency }}<br>
+
+    {%- assign price_modifier = price_max | minus: price_min | divided_by: 2 -%}
+    {{- price_min | plus: price_modifier -}}
+{%- else -%}
+
+    {{ raw_price | money }}
+
+{%- endif -%}

@@ -5,99 +5,163 @@
             {% if cart.item_count > 0 %}
 
                 <form action="/cart" method="post" class="cart-items" novalidate onsubmit="if(document.getElementById('agree').checked) { return true; } else { alert('Please indicate that you have read and agree to the Terms and Conditions and Privacy Policy'); return false; }">
-                    <div class="product-list">
-                        <div class="list-header">
-                            <h3>Art Piece</h3>
-                            <h3 class="text--center">Charity</h3>
-                            <h3 class="text--center">Quantity</h3>
-                            <h3 class="text--right">Total</h3>
+                    <div class="cart__wrapper">
+                        <div class="cart__row cart__header">
+                            <div class="cart__column">
+                                <h4>Art Piece</h4>
+                            </div>
+                            <div class="cart__column">
+                                <h4 class="text--center">Quantity</h4>
+                            </div>
+                            <div class="cart__column">
+                                <h4 class="text--right">Total</h4>
+                            </div>
                         </div>
                         {% for item in cart.items %}
-                        {% if item.product.type  == 'mw_hidden_cart_fee' %}{% continue %}{% endif %}
+                            {%- for collection in item.product.collections -%}
 
-                        {% if item.product.type != 'Product Fee' %} <span class="mw-product-fees" data-id="{{ item.id }}"></span> {% endif %}
+                                {%- assign template_type = collection.template_suffix | strip -%}
 
-                        <div class="cart-item">
-                            <div class="image">
-                                <a href="{{ item.url }}">{{item | img_url: '240x240' | img_tag: item.title}}</a>
-                            </div>
-                            <div class="details">
-                                <div class="name-vendor-container">
-                                    <span class="product-name">{{ item.product.title }}</span>
-                                    <span class="product-vendor">{{ item.vendor }}</span>
-                                    <span class="product-vendor">test : {{ attributes.your-pet-name }}</span>
+                                {%- if template_type == 'gallery' -%}
+                                    {%- assign gallery = collection -%}
+                                {%- elsif template_type == 'ungoals' -%}
+                                    {%- assign ungoals = collection -%}
+                                {%- elsif template_type == 'artist' -%}
+                                    {%- assign artist = collection -%}
+                                {%- endif -%}
+
+                            {%- endfor -%}
+
+                            <div class="cart__row cart__item">
+                                <div class="cart__column cart__item--details">
+                                    <div class="item__image--wrapper">
+                                        <a class="item__image" href="{{ item.url }}">{{item | img_url: '140x140' | img_tag: item.title}}</a>
+                                    </div>
+                                    <div class="item__meta--wrapper">
+                                        <span class="item__meta item__vendor">
+                                            {%- if artist.title -%}
+                                                <a href="{{artist.url}}">{{ artist.title }}</a>
+                                            {%- else -%}
+                                                {{item.vendor}}test
+                                            {%- endif -%}
+                                        </span>
+                                        <span class="item__meta item__title">{{ item.product.title }}</span>
+                                        <span class="item__meta item__gallery"><a href="{{gallery.url}}">{{ gallery.title }}</a></span>
+                                        <a class="item__remove" href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a>
+                                    </div>
                                 </div>
-                                <a class="remove" href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a>
+                                <div class="cart__column cart__item--un-goal">
+                                    <img id="item_{{ item.product.title | handleize }}" src="">
+                                    <span class="item__contribution">{{ item.line_price | times: 0.1 | money }}</span>
+                                </div>
+                                <div class="cart__column cart__item--price">
+                                    <span class="item__price">{{ item.line_price | money }}</span>
+                                </div>
                             </div>
-                            <div class="variant-container">
-                                <span>{{ item.variant.title }}</span>
-                                <span> - </span>
-                                <span>{% if item.product.metafields.c_f.donation == 'split' %}[Split]{% else %}[Full]{% endif %}</span>
-                            </div>
-                            <div class="quantity-container">
-                                <b>1</b>
-                                <input type="hidden"
-                                name="updates[]"
-                                id="updates_{{ item.id }}"
-                                value="1"
-                                min="0" max="1"
-                                aria-label="{{ 'cart.general.item_quantity' | t }}"/>
-                            </div>
-                            <div class="total-price">
-                                <span>{{ item.line_price | money }}</span>
-                            </div>
-                        </div>
+
+                            <script type="text/javascript">
+                                var sdg = window.sessionStorage.getItem('{{ item.product.title | handleize }}');
+                                var sdg_alt = sdg.replace(/-/g, ' ');
+                                var img = document.getElementById('item_{{ item.product.title | handleize }}');
+
+                                console.log(sdg)
+                                console.log(img)
+
+                                var no_poverty = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180138868778%2F1594673600433%2FBrowse-by-UN-Gol-1.png" ;
+                                var zero_hunger = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180138901546%2F1594673324624%2FBrowse-by-UN-Gol-2.png" ;
+                                var good_health_and_well_being = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180138934314%2F1594400609138%2FBrowse-by-UN-Gol-3.png" ;
+                                var quality_education = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180138967082%2F1594673807020%2FBrowse-by-UN-Gol-4.png" ;
+                                var gender_equality = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273578026%2F1594673674778%2FBrowse-by-UN-Gol-5.png" ;
+                                var clean_water_and_sanitation = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273610794%2F1594673621935%2FBrowse-by-UN-Gol-6.png" ;
+                                var affordable_and_clean_energy = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273643562%2F1594673639339%2FBrowse-by-UN-Gol-7.png" ;
+                                var decent_work_and_economic_growth = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273676330%2F1594673666140%2FBrowse-by-UN-Gol-8.png" ;
+                                var industry_innovation_and_infrastructure = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273709098%2F1594673724274%2FBrowse-by-UN-Gol-9.png" ;
+                                var reduced_inequalities = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273741866%2F1594673826211%2FBrowse-by-UN-Gol-10.png" ;
+                                var sustainable_cities_and_communities = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273807402%2F1594673859563%2FBrowse-by-UN-Gol-11.png" ;
+                                var responsible_consumption_and_production = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273840170%2F1594673847307%2FBrowse-by-UN-Gol-12.png" ;
+                                var climate_action = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273872938%2F1594673653045%2FBrowse-by-UN-Gol-13.png" ;
+                                var life_below_water = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273905706%2F1594673736636%2FBrowse-by-UN-Gol-14.png" ;
+                                var life_on_land = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180273938474%2F1594673749398%2FBrowse-by-UN-Gol-15.png" ;
+                                var peace_and_justice_strong_institutions = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180274036778%2F1594673792439%2FBrowse-by-UN-Gol-16.png" ;
+                                var partnerships_to_achieve_the_goal = "https://images.accentuate.io/?image=https%3A%2F%2Fcdn.accentuate.io%2F180274069546%2F1594673772712%2FBrowse-by-UN-Gol-17.png" ;
+                                if (sdg=="no-poverty") {
+                                    img.src = no_poverty;
+                                } else if (sdg=="zero-hunger") {
+                                    img.src = zero_hunger;
+                                } else if (sdg=="good-health-and-well-being") {
+                                    img.src = good_health_and_well_being;
+                                } else if (sdg=="quality-education") {
+                                    img.src = quality_education;
+                                } else if (sdg=="gender-equality") {
+                                    img.src = gender_equality;
+                                } else if (sdg=="clean-water-and-sanitation") {
+                                    img.src = clean_water_and_sanitation;
+                                } else if (sdg=="affordable-and-clean-energy") {
+                                    img.src = affordable_and_clean_energy;
+                                } else if (sdg=="decent-work-and-economic-growth") {
+                                    img.src = decent_work_and_economic_growth;
+                                } else if (sdg=="industry-innovation-and-infrastructure") {
+                                    img.src = industry_innovation_and_infrastructure;
+                                } else if (sdg=="reduced-inequalities") {
+                                    img.src = reduced_inequalities;
+                                } else if (sdg=="sustainable-cities-and-communities") {
+                                    img.src = sustainable_cities_and_communities;
+                                } else if (sdg=="responsible-consumption-and-production") {
+                                    img.src = responsible_consumption_and_production;
+                                } else if (sdg=="climate-action") {
+                                    img.src = climate_action;
+                                } else if (sdg=="life-below-water") {
+                                    img.src = life_below_water;
+                                } else if (sdg=="life-on-land") {
+                                    img.src = life_on_land;
+                                } else if (sdg=="peace-and-justice-strong-institutions") {
+                                    img.src = peace_and_justice_strong_institutions;
+                                } else if (sdg=="partnerships-to-achieve-the-goal") {
+                                    img.src = partnerships_to_achieve_the_goal;
+                                }
+                                img.alt = sdg_alt;
+                                img.title = sdg_alt;
+                            </script>
                         {% endfor %}
                     </div>
-                    <div class="subtotal-container commission-container charity">
-                        ART LOVER SERVICE FEE INCLUDED IN NEXT STEP<br><br>
-                        <div class="tooltip">
-                            <img height="30px" src="{{ 'question_black.png' | asset_img_url: 'master' }}"/>
-                            <span class="tooltiptext">This fee is required to cover the operational costs involved without which Art For Humans could not exist. All our efforts are solely dedicated to achieving our social goal. </span>
+                    <div class="cart__row cart__subtotal-container">
+                        <div class="cart__subtotal">
+                            <div class="subtotal__wrapper">
+                                <p class="subtotal">
+                                    <span class="subtotal--label">{{ 'cart.general.subtotal' | t }}</span>
+                                    <span class="subtotal--value" id="subtotalBlock">{{ cart.total_price | money }}</span>
+                                </p>
+                                <p class="contribution">
+                                    <span class="contribution--label">Your impact: </span>
+                                    <span class="contribution--value" id="subtotalBlock">{{ cart.total_price | times: 0.1 | money }}</span>
+                                </p>
+                                <p class="disclaimer">* Tax & shipping amount will be calculated at the next step before payment</p>
+
+                            </div>
                         </div>
-
-                        <!-- test ramzi --> <span class="mw-hidden-fees" style="display:none"></span> <!-- HIDDEN BECAUSE OF AMOUNT FORMAT BUG -->
-                        <!-- test ramzi à retirer : <span class="subtotal-label">PROCEEDS TO CHARITY</span>
-                        <span class="subtotal-value">{{ cart.total_price | times: 0.8 | money }}</span> -->
                     </div>
 
-                    <div class="subtotal-container">
-                        <span class="subtotal-label">{{ 'cart.general.subtotal' | t }}</span>
-                        <span class="subtotal-value" id="subtotalBlock">{{ cart.total_price | money }}</span>
-                    </div>
-                    <div class="text--right" style="margin-top : -35px; margin-bottom : 30px;">
-                        <small>* Tax & shipping amount will be calculated at the next step before payment</small>
+                    <div class="cart__row cart__checkout-container">
+
+                        <div class="cart__agree">
+                            <input class="checkbox-agree" type="checkbox" id="agree" name="agree" value="1">
+                            <label for="agree">I have read and agree to the <a href="/21924275/policies/1761443878.html">Terms and Conditions</a> and <a href="/21924275/policies/1761411110.html">Privacy Policy</a>. </label>
+                        </div>
+                        <input class="cart__checkout generic-btn" type="submit" name="checkout" class="btn" value="{{ 'cart.general.checkout' | t }}">
                     </div>
 
-                    {% comment %}
-                    <div class="subtotal-container commission-container afh">
-                        <span class="subtotal-label">A4H Commission (20%)</span>
-                        <span class="subtotal-value">{{ cart.total_price | times: 0.2 | money }}</span>
-                    </div>
-                    {% endcomment %}
+                </form>
 
-                    <div class="checkout-container agree">
-                        <input class="checkbox-agree" type="checkbox" id="agree" name="agree" value="1">
-                        <label for="agree">I have read and agree to the <a href="https://artforhumans.org/21924275/policies/1761443878.html">Terms and Conditions</a> and <a href="https://artforhumans.org/21924275/policies/1761411110.html">Privacy Policy</a>. </label>
-                    </div>
-                    <div class="checkout-container">
-                        <input class="generic-btn" type="submit" name="checkout" class="btn" value="{{ 'cart.general.checkout' | t }}">
-                    </div>
-                    <div class="text--center" style="display:none !important">
-                        <b>Our checkout is temporary unavailable.  Thanks for your patience while we put the pieces back together.</b><br><br>
-                        In the meantime, please <a href="mailto:contact@artforhumans.org">contact us</a> if you would like us to hold a piece for you!</div>
-                    </form>
+            {% else %}
 
-                {% else %}
+                <div class="empty">
+                    {% include 'empty cart' %}
+                    <h3>Your cart is empty</h3>
+                    <a href="/collections/all" class="secondary-btn">Keep Exploring</a>
+                </div>
 
-                    <div class="empty">
-                        {% include 'empty cart' %}
-                        <h3>Your cart is empty</h3>
-                        <a href="/collections/all" class="secondary-btn">Keep Exploring</a>
-                    </div>
+            {% endif %}
 
-                {% endif %}
-            </div>
         </div>
-
-    </section>
+    </div>
+</section>

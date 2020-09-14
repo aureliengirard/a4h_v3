@@ -1,3 +1,4 @@
+{%- assign variable_price = product.metafields.product.hidden_price -%}
 {%- assign template_type = "" -%}
 {%- assign gallery_name = "" -%}
 {%- assign gallery_url = "" -%}
@@ -44,32 +45,73 @@
 
 <article
     {% if filter == true -%}
-        price="{{product.price}}"
+        {%- if variable_price == 'true' -%}
+            price="{%- include 'partial-product-variable-price-filter' -%}"
+        {%- else -%}
+            price="{{product.price}}"
+        {%- endif -%}
         type="{{ product.type | handleize }}"
         vendor="{{ product.vendor | handleize }}"
         gallery="{{ gallery_name | handleize }}"
-        un-goals="{%- if has_un_goals == true -%}{{-un_goals_filter-}}{%- else -%}all{%- endif -%}"
+        un-goals="{%- if has_un_goals == true -%}{{-un_goals_filter-}}{%- else -%}all-un-goals{%- endif -%}"
     {%- endif -%}
     class="card-item product-item">
     <a href="{{product.url}}" class="img-container">
         <div class="img-inner-container">
-            {{ product.featured_image.src | img_url: '480x480' | img_tag: product.title }}
+            {%- if card_per_row == 2 -%}
+
+                <img
+                    alt="{{ product.title }}"
+                    srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                        {{- product.featured_image.src | img_url: '340x340' }} 340w,
+                        {{- product.featured_image.src | img_url: '405x405' }} 405w"
+                    sizes="(max-width: 767px) 42vw, (max-width: 991px) 45vw, 405px"
+                    src="{{ product.featured_image.src | img_url: '405x405' }}"
+                    class="lazyload" />
+            {%- elsif card_per_row == 3 -%}
+                <img
+                    alt="{{ product.title }}"
+                    srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                        {{- product.featured_image.src | img_url: '340x340' }} 340w,
+                        {{- product.featured_image.src | img_url: '360x360' }} 360w"
+                    sizes="(max-width: 767px) 41.6vw, (max-width: 991px) 45vw, 360px"
+                    src="{{ product.featured_image.src | img_url: '360x360' }}"
+                    class="lazyload" />
+            {%- elsif card_per_row == 4 -%}
+                <img
+                    alt="{{ product.title }}"
+                    srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                    {{- product.featured_image.src | img_url: '360x360' }} 360w,
+                    {{- product.featured_image.src | img_url: '280x280' }} 280w"
+                    sizes="(max-width: 767px) 41.6vw, (max-width: 991px) 45vw, 360px"
+                    src="{{ product.featured_image.src | img_url: '280x280' }}"
+                    class="lazyload" />
+            {%- else -%}
+                <img
+                alt="{{ product.title }}"
+                srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                    {{- product.featured_image.src | img_url: '340x340' }} 340w,
+                    {{- product.featured_image.src | img_url: '405x405' }} 405w"
+                sizes="(max-width: 767px) 42vw, (max-width: 991px) 45vw, 405px"
+                src="{{ product.featured_image.src | img_url: '405x405' }}"
+                class="lazyload" />
+            {%- endif -%}
         </div>
     </a>
     <div class="card-details product-details">
-        <div class="product__price">
+        <h4 class="card__price">
             <a href="{{product.url}}">
-            {%- if product.available -%}
-                {%- if product.metafields.product.hidden_price == 'true' -%}
-                    Variable price magic
+                {%- if product.available -%}
+                    {%- if variable_price == 'true' -%}
+                        {%- include 'partial-product-variable-price' -%}
+                    {%- else -%}
+                        {{ product.price | money }}
+                    {%- endif -%}
                 {%- else -%}
-                    {{ product.price | money }}
+                    SOLD OUT
                 {%- endif -%}
-            {%- else -%}
-            SOLD OUT
-            {%- endif -%}
             </a>
-        </div>
+        </h4>
         <h4 class="card__artist">{%- if artist_name != "" -%} <a href="{{ artist_url }}">{{ artist_name }}</a>{%- else -%}{{ product.vendor }}{%- endif -%}</h4>
         <div class="card__title"><a href="{{product.url}}">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</a></div>
         <div class="card__gallery"><a href="{{ gallery_url }}">{{ gallery_name }}</a></div>
@@ -81,11 +123,11 @@
                 {% assign ungoal = collections[ungoals] %}
                 {% assign ungoals_name = ungoal.title | split: '. ' %}
 
-                <a href="{{ ungoal.url }}" class="un-goals" title="{{- ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</a>
+                <a href="{{ ungoal.url }}" class="un-goals" title="{{- ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img class="lazyload" src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</a>
 
             {%- endfor -%}
             {%- else -%}
-                <a href="/pages/un-goals" class="un-goals" title="Discover The UN Goals"><img class="all-impact-logo" src="{{ 'all-un-goals-small.png' | asset_url }}" alt="UN Goals"></a>
+                <a href="/pages/un-goals" class="un-goals" title="Discover The UN Goals"><img class="all-impact-logo lazyload" src="{{ 'all-un-goals-small.png' | asset_url }}" alt="UN Goals"></a>
             {%- endif -%}
         </div>
 

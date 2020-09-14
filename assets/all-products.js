@@ -24,22 +24,86 @@ function Filters() {
     var v_filter = '';
     var un_filter = '';
     var g_filter = '';
-    var gallery_filter = document.getElementById('filter-by-gallery');
-    var ungoals_filter = document.getElementById('filter-by-ungoal');
+
+    var gallery_select = document.getElementById('filter-by-gallery');
+    var ungoals_select = document.getElementById('filter-by-ungoal');
     var artist_filter_btn = document.getElementById('filter-by-artist-btn');
     var artist_filter_field = document.getElementById('filter-by-artist-field');
+
+    var value_medium = sessionStorage.getItem("value_medium");
+    var value_ungoal = sessionStorage.getItem("value_ungoal");
+    var value_price = sessionStorage.getItem("value_price");
+    var value_gallery = sessionStorage.getItem("value_gallery");
+
+
+    if (value_gallery !== null) {
+        gallery_select.value = value_gallery;
+        title_filter = title_input.value;
+        upFilter();
+    }
+
+    if (value_ungoal !== null) {
+        ungoals_select.value = value_ungoal;
+        un_filter = ungoals_select.value;
+        upFilter();
+    }
+
+    if (value_price !== null) {
+        var price_section = jQuery('.filter-by__title--price');
+        var price_selector = jQuery('.p-filter');
+
+        //open menu element
+        price_section.siblings(".filter-by__filters").toggleClass("active");
+        price_section.toggleClass("active");
+
+        //Remove Selectected filter
+        jQuery('.p-filter').removeClass('active');
+
+        price_selector.each(function() {
+            if ( jQuery(this).attr('price') == value_price ) {
+                jQuery(this).addClass('active');
+            }
+        });
+
+        p_filter = value_price;
+        upFilter();
+    }
+
+    if (value_medium !== null) {
+        var medium_section = jQuery('.filter-by__title--medium');
+        var medium_selector = jQuery('.t-filter');
+
+        //open menu element
+        medium_section.siblings(".filter-by__filters").toggleClass("active");
+        medium_section.toggleClass("active");
+
+        //Remove Selectected filter
+        jQuery('.t-filter').removeClass('active');
+
+        medium_selector.each(function() {
+            var test_value = jQuery(this).attr('medium');
+            console.log('Value t-filter ' + test_value);
+            if ( jQuery(this).attr('medium') == value_medium ) {
+                jQuery(this).addClass('active');
+            }
+        });
+
+        t_filter = value_medium;
+        console.log('-' + t_filter + '-');
+        upFilter();
+    }
 
     jQuery('.t-filter').click(function() {
         jQuery('.t-filter').removeClass('active');
         jQuery(this).addClass('active');
-        t_filter = jQuery(this).attr('alt');
+        t_filter = jQuery(this).attr('medium');
         upFilter();
     });
 
     jQuery('.p-filter').click(function() {
         jQuery('.p-filter').removeClass('active');
         jQuery(this).addClass('active');
-        p_filter = jQuery(this).attr('alt');
+        p_filter = jQuery(this).attr('price');
         upFilter();
     });
 
@@ -65,12 +129,12 @@ function Filters() {
         upFilter();
     };
 
-    ungoals_filter.onchange = function(){
+    ungoals_select.onchange = function(){
         un_filter = this.value;
         upFilter();
     };
 
-    gallery_filter.onchange = function(){
+    gallery_select.onchange = function(){
         g_filter = this.value;
         upFilter();
     };
@@ -87,7 +151,7 @@ function Filters() {
             max = 1000000000;
         } else if (p_filter=='All') {
             min = 0;
-            max = 1000000000;
+            max = 10000000000000;
         } else {
             var temp = p_filter.replace(/\s/g, '').replace(/\$/g, '').split('-');
             min = parseInt(temp[0]) * 1000;
@@ -107,7 +171,7 @@ function Filters() {
             if (
                 (t_filter==t_val || t_filter=='')
                 && (g_val.includes(g_filter) == true || g_filter=='')
-                && (un_val.includes(un_filter) == true || un_filter=='')
+                && (un_val.includes(un_filter) == true || un_val.includes('all-un-goals') == true || un_filter=='')
                 && (v_val.includes(v_filter) == true || v_filter=='')
                 && (p_filter=='' || (p_val<=max && p_val>=min)) )
             {
@@ -124,5 +188,11 @@ function Filters() {
         }
     }
 }
-
 $(document).ready(Filters);
+
+window.addEventListener('beforeunload', function (e) {
+    window.sessionStorage.removeItem('value_medium');
+    window.sessionStorage.removeItem('value_ungoal');
+    window.sessionStorage.removeItem('value_price');
+    window.sessionStorage.removeItem('value_gallery');
+});

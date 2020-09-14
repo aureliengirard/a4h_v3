@@ -20,7 +20,7 @@
                     {%- for collection in collections -%}
                         {%- assign template_type = collection.template_suffix | strip -%}
                         {%- if template_type == 'artist' -%}
-                            {% include 'partial-artist-card' with filter: true %}
+                            {% include 'partial-artist-card' with filter: true, card_per_row: 4 %}
                         {%- endif -%}
                     {%- endfor -%}
 
@@ -32,4 +32,4 @@
 
 </section>
 
-{%- include 'partial-section-all-ungoals', title: 'Browse Art by UN-Goals', cta: '', filters_artists: true -%}
+{%- include 'partial-section-all-ungoals', title: 'Browse Art by UN-Goals', cta: '', is_filter: true, filter_type: 'artist' -%}

@@ -18,7 +18,7 @@
 {%- endcapture -%}
 
 {%- assign sortedposts = un_collections | split: '|' | sort -%}
-<div class="content__wrapper ungoal__wrapper collection__ungoal">
+<div class="content__wrapper artist__wrapper collection__artist">
     <div class="row">
         <div class="col-lg-3">
             {%- include 'partial-collection-menu', bg_color: '', type: 'artist' -%}
@@ -107,9 +107,9 @@
             <section class="collection artist__collection">
                 <div id="curated-artworks" class="anchor"></div>
                 <div class="row">
-                    <div class="col-12 col-tb">
+                    <div class="col-12">
                         <div class="title-has-options">
-                            <h2>Curated  Artworks</h2>
+                            <h2>Curated Artworks</h2>
                             {% include 'partial-collection-options' %}
                         </div>
 
@@ -117,7 +117,7 @@
                         <div class="collection-items__wrapper">
                             <div class="col-12 collection-items">
                                 {%- for product in collection.products -%}
-                                {%- include 'partial-product-card' -%}
+                                {%- include 'partial-product-card' with card_per_row: 2 -%}
                                 {%- endfor -%}
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                     <div class="col-12 col-tb">
                         <div class="title-has-cta">
                             <h2>Artist's support to the UN-Goals</h2>
-                            {%- include 'partial-cta'  with { cta_label: "<span>Learn about </span>UN-Goals", cta_url: "/un-goals/" }  -%}
+                            {%- include 'partial-cta' with { cta_label: "<span>Learn about </span>UN-Goals", cta_url: "/un-goals/" }  -%}
                         </div>
                         <blockquote>
                             <p>“This situation right now in the United States with Trump makes you want to just burn it all down and start over…. I don’t censor myself. If you’re sending out a political message, it has only one interpretation. But  when I do an automatic drawing, it’s open to many interpretations.”</p>
@@ -181,7 +181,20 @@
                 <div class="row">
                     <div class="col-12 col-tb">
                         <h2>Biography</h2>
-                        {{ collection.description }}
+                        <div class="see-more__wrapper">
+                            {% assign text = collection.description %}
+                            {% assign text_short = text | strip_html %}
+
+                            {%- if text != "" -%}
+                                <div class="see-more__content see-more__short active">
+                                    {{ text_short | truncatewords: 57 }}
+                                </div>
+                                <div class="see-more__content see-more__full">
+                                    {{ text }}
+                                </div>
+                                {%- include 'partial-cta-see-more' -%}
+                            {%- endif -%}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -219,7 +232,7 @@
                 </div>
             </section>
 
-            <section class="collection collection__featured collection__related-artists">
+            <section class="collection collection-of-3 related-artists">
                 <div id="related-artists" class="anchor"></div>
                 <div class="row">
                     <div class="col-12 col-tb">
@@ -232,7 +245,7 @@
                             {%- assign related_artists = collection.metafields.accentuate.related_artist | split: '|' -%}
                             {%- for related_artist in related_artists -%}
 
-                            {%- include 'partial-artist-card' with { collection: collections[related_artist] } -%}
+                            {%- include 'partial-artist-card' with { collection: collections[related_artist], card_per_row: 3 } -%}
 
                             {%- endfor -%}
                         </div>
@@ -242,7 +255,7 @@
 
             <section class="tags collection__tags">
                 <div class="row">
-                    <div class="col-lg-9 ml-auto">
+                    <div class="col-lg-12">
                         <div class="tags__wrapper">
 
                             <div class="tags-catgerogy">

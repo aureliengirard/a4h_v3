@@ -4,6 +4,7 @@
 {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
 {%- assign artist_handle = product.vendor | handleize -%}
 {%- assign active_product = product.title -%}
+{%- assign variable_price = product.metafields.product.hidden_price -%}
 {%- assign has_un_goals = false -%}
 
 {%- assign template_type = "" -%}
@@ -80,15 +81,15 @@
 
             <div class="product__price">
                 {%- if product.available -%}
-                    {%- if product.metafields.product.hidden_price == 'true' -%}
-                        Variable price magic
+                    {%- if variable_price == 'true' -%}
+                        {%- include 'partial-product-variable-price' -%}
                     {%- else -%}
                         {{ product.price | money }}
                     {%- endif -%}
                 {%- endif -%}
             </div>
 
-            {%- if current_variant.available and product.metafields.product.hidden_price == 'false' -%}
+            {%- if current_variant.available and variable_price == 'false' -%}
                 <div class="product__price-impact">
                     {{ section.settings.impact }} {{ current_variant.price | times: 0.1 | money }}
                 </div>
@@ -158,36 +159,44 @@
 
                     </div>
                     <p>
-                        {% if product.metafields.product.hidden_price == 'true' %}10% of the transation {% else %}The {{ current_variant.price | times: 0.1 | money }} collected {% endif %}will be forwarded to one of our partner NGOs according to the artist's choice.
+                        {% if variable_price == 'true' %}10% of the transation {% else %}The {{ current_variant.price | times: 0.1 | money }} collected {% endif %}will be forwarded to one of our partner NGOs according to the artist's choice.
                     </p>
                 </div>
 
-                <form class="action cart__form" action="/cart/add" method="post" enctype="multipart/form-data">
-
-                    <select id="variant-select" name="id" data-product-select  style="display:none;">
-                        {%- for variant in product.variants -%}
-                        <option class="{{ variant.title | handleize }}" value="{{ variant.id }}">{{ variant.title }}</option>
-                        {%- endfor -%}
-                    </select>
-
+                {% if variable_price == 'true' %}
                     <div class="buy-button-container right-align">
-                        <button
-                            id="buy-button"
-                            class="buy-button generic-btn"
-                            type="submit"
-                            name="add"
-                            data-add-to-cart
-                            disabled="disabled">
-                            <span data-add-to-cart-text>
-                                {%- if current_variant.available -%}
-                                {{ 'products.product.add_to_cart' | t }}
-                                {%- else -%}
-                                {{ 'products.product.sold_out' | t }}
-                                {%- endif -%}
-                            </span>
+                        <button id="inquire-button" class="buy-button generic-btn">
+                            <span data-add-to-cart-text>INQUIRE</span>
                         </button>
                     </div>
-                </form>
+                {% else %}
+                    <form class="action cart__form" action="/cart/add" method="post" enctype="multipart/form-data">
+
+                        <select id="variant-select" name="id" data-product-select  style="display:none;">
+                            {%- for variant in product.variants -%}
+                            <option class="{{ variant.title | handleize }}" value="{{ variant.id }}">{{ variant.title }}</option>
+                            {%- endfor -%}
+                        </select>
+
+                        <div class="buy-button-container right-align">
+                            <button
+                                id="buy-button"
+                                class="buy-button generic-btn"
+                                type="submit"
+                                name="add"
+                                data-add-to-cart
+                                disabled="disabled">
+                                <span data-add-to-cart-text>
+                                    {%- if current_variant.available -%}
+                                    {{ 'products.product.add_to_cart' | t }}
+                                    {%- else -%}
+                                    {{ 'products.product.sold_out' | t }}
+                                    {%- endif -%}
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -205,9 +214,20 @@
                     <p><strong>Born:</strong> {{artist.metafields.artist.born}}</p>
                     <p><strong>Studio:</strong> {{artist.metafields.artist.studio}}</p>
                     <p><strong>Short Bio: </strong></p>
-                    <p>
-                        {{- artist.description | truncate: 530 -}}
-                    </p>
+                    <div class="see-more__wrapper">
+                        {% assign text = artist.description %}
+                        {% assign text_short = text | strip_html %}
+
+                        {%- if text != "" -%}
+                            <div class="see-more__content see-more__short active">
+                                {{ text_short | truncatewords: 57 }}
+                            </div>
+                            <div class="see-more__content see-more__full">
+                                {{ text }}
+                            </div>
+                            {%- include 'partial-cta-see-more' -%}
+                        {%- endif -%}
+                    </div>
                     <h4>Artist Visibility Insights</h4>
                     <p>- Worldwide Ranking: 597</p>
                     <p>- Days of Exhibition in 2019: 1334</p>
@@ -249,10 +269,23 @@
                     <h2>About {{ gallery.title }}</h2>
                     {%- include 'partial-cta'  with { cta_label: "Gallery<span> Profile</span>", cta_url: gallery.url }  -%}
                 </div>
-                <p>{{ gallery.description | truncate: 530 }}</p>
+                <div class="see-more__wrapper">
+                    {% assign text = gallery.description %}
+                    {% assign text_short = text | strip_html %}
+
+                    {%- if text != "" -%}
+                        <div class="see-more__content see-more__short active">
+                            {{ text_short | truncatewords: 57 }}
+                        </div>
+                        <div class="see-more__content see-more__full">
+                            {{ text }}
+                        </div>
+                        {%- include 'partial-cta-see-more' -%}
+                    {%- endif -%}
+                </div>
             </div>
 
-            <div class="about about__impact bg--gray d-lg-flex">
+            <div class="about about__impact d-lg-flex">
                 <div class="title-has-cta">
                     <h2>Your Impact</h2>
                     {%- include 'partial-cta'  with { cta_label: "<span>Learn </span>More", cta_url: "/pages/un-goals" }  -%}
@@ -260,7 +293,7 @@
 
                 <div class="impact-logos__wrapper">
                     <p class="lg">
-                        {% if product.metafields.product.hidden_price == 'true' %}<strong>10%</strong>{% else %}<strong>{{ current_variant.price | times: 0.1 | money }}</strong>{% endif %} of your purchase will directly support one of the 17 <strong>Sustainable Development Goals</strong>.
+                        {% if variable_price == 'true' %}<strong>10%</strong>{% else %}<strong>{{ current_variant.price | times: 0.1 | money }}</strong>{% endif %} of your purchase will directly support one of the 17 <strong>Sustainable Development Goals</strong>.
                     </p>
                     <p class="lg">
                         Those UN Goals provide a <strong>global blueprint</strong> for dignity, peace and prosperity for people and the planet, <strong>now and in the future</strong>.
@@ -277,7 +310,7 @@
     </div>
 </section>
 
-<section id="collection-artist" class="collection collection-of-4">
+<section id="collection-artist" class="collection collection-of-4 collection-limit-of-4">
     <div class="row">
         <div class="col-12">
             <div class="title-has-cta">
@@ -285,11 +318,13 @@
                 {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: artist.url }  -%}
             </div>
             <div class="collection-items featured-items">
-                {%- for prod in artist.products -%}
+                {%- for prod in artist.products limit:5 -%}
+
 
                     {%- if prod.title == product_title -%}
+                        {%- continue -%}
                     {%- else -%}
-                    {%- include 'partial-product-card'   with { product: prod }  -%}
+                        {%- include 'partial-product-card'   with { product: prod, card_per_row: 4 }  -%}
                     {%- endif -%}
 
 
@@ -299,7 +334,7 @@
     </div>
 </section>
 
-<section id="collection-gallery" class="collection collection-of-4">
+<section id="collection-gallery" class="collection collection-of-4 collection-limit-of-4">
     <div class="row">
         <div class="col-12 col-tb">
             <div class="title-has-cta">
@@ -307,11 +342,11 @@
                 {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: gallery.url }  -%}
             </div>
             <div class="collection-items featured-items">
-                {%- for prod in gallery.products -%}
+                {%- for prod in gallery.products limit:5 -%}
 
                     {%- if prod.title == product_title -%}
                     {%- else -%}
-                    {%- include 'partial-product-card'   with { product: prod }  -%}
+                    {%- include 'partial-product-card'   with { product: prod, card_per_row: 4 }  -%}
                     {%- endif -%}
 
 
@@ -321,7 +356,7 @@
     </div>
 </section>
 
-<section id="related-artist" class="collection collection-of-4">
+<section id="related-artist" class="collection collection-of-4 collection-limit-of-4">
     <div class="row">
         <div class="col-12 col-tb">
             <div class="title-has-cta">
@@ -417,6 +452,23 @@
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    window.sessionStorage.setItem('product_title', '{{product.title}}');
+
+    $('#inquire-button').magnificPopup({
+        items: {
+            src: '#product__inquire',
+            type: 'inline'
+        }
+  });
+});
+
+</script>
+
+{%- include 'partial-product-popup' -%}
+
 
 
 {% schema %}

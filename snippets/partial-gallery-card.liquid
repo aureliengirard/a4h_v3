@@ -2,6 +2,7 @@
 {%- assign region_list = collection.metafields.gallery.region -%}
 {%- assign country_list = collection.metafields.gallery.country -%}
 {%- assign title = collection.title -%}
+{%- assign image = collection.image -%}
 
 {% assign city = city | split: ", " %}
 {% assign city = city | uniq %}
@@ -40,7 +41,14 @@
     <a href="{{collection.url}}">
         <div class="img-container">
             <div class="img-inner-container">
-                {{ collection.image | img_url: '440x313' | img_tag: collection.title }}
+                <img
+                    alt="{{ title }}"
+                    srcset="{{- image.src | img_url: '181x114' }} 181w,
+                        {{- image.src | img_url: '360x225' }} 360w,
+                        {{- image.src | img_url: '440x313' }} 440w"
+                        sizes="(max-width: 767px) 181px, (max-width: 991px) 360px, 440px"
+                    src="{{ image.src | img_url: '440x313' }}"
+                    class="lazyload" />
             </div>
         </div>
         <div class="card-details gallery-details">

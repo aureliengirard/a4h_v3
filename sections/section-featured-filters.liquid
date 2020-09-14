@@ -1,0 +1,133 @@
+{% assign filter_object = section.settings.filter_object %}
+{% assign filter_type = section.settings.filter_type %}
+{% assign title = section.settings.title %}
+{% assign cta_label = section.settings.linktext %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="title-has-cta">
+            <h2>{{ title }}</h2>
+            {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: filter_object } -%}
+        </div>
+        <div class="row collection-items {{section.settings.large-box}}-featured">
+            {% for block in section.blocks %}
+                {%- assign block_title = block.settings.title -%}
+                {%- assign filter_price = block.settings.filter_price -%}
+                {%- assign image = block.settings.image -%}
+                {%- assign filter = "" -%}
+
+                {%- capture filter -%}
+                    {%- if filter_type == "value_price" -%}
+                        {{- filter_price -}}
+                    {%- else -%}
+                        {{- block_title | handleize -}}
+                    {%- endif -%}
+                {%- endcapture -%}
+
+                {%- include 'partial-filter-card' -%}
+
+            {% endfor %}
+        </div>
+        {% if section.settings.link %}
+            <div class="btn-container-center">
+                <a class="generic-btn centered" href="{{ section.settings.link }}">{{ section.settings.linktext }}</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script type="text/javascript">
+    $( ".{{filter_type}}__filter-item" ).on("click", function(e){
+        var {{filter_type}}_key = '{{filter_type}}';
+        var {{filter_type}}_value = $(this).attr('filter');
+        window.sessionStorage.setItem({{filter_type}}_key, {{filter_type}}_value);
+    });
+</script>
+
+{% schema %}
+{
+    "name": "Featured Filters",
+    "class": "collection collection-of-3",
+    "tag": "section",
+    "max_blocks": 6,
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Hello world"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA text",
+            "default": "Explore",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
+        },
+        {
+           "type":      "select",
+           "id":        "filter_type",
+           "label":     "Filter Type",
+           "options": [
+             { "value": "value_medium", "label": "Mediun" },
+             { "value": "value_price", "label": "Price Range" },
+             { "value": "value_ungoal", "label": "UN-Goals" },
+             { "value": "value_nationality", "label": "Artist Nationality" },
+             { "value": "value_city", "label": "Gallery City" },
+             { "value": "value_country", "label": "Gallery Country" },
+             { "value": "value_region", "label": "Gallery Region" }
+           ],
+           "default":   "value_medium"
+        },
+        {
+           "type":      "select",
+           "id":        "filter_object",
+           "label":     "Filtered Object",
+           "options": [
+             { "value": "/collections/all", "label": "Products" },
+             { "value": "/pages/all-artists/", "label": "Artists" },
+             { "value": "/pages/all-galleries", "label": "Galleries" }
+           ],
+           "default":   "/collections/all"
+       }
+    ],
+    "blocks": [
+        {
+            "name": "Filters",
+            "type": "filters",
+            "settings": [
+                {
+                    "id": "title",
+                    "type": "text",
+                    "label": "Title"
+                },
+                {
+                    "id": "image",
+                    "type": "image_picker",
+                    "label": "Image"
+                },
+                {
+                   "type":      "select",
+                   "id":        "filter_price",
+                   "label":     "Filter by Price ",
+                   "info":      "If element is a price filter, please select an option",
+                   "options": [
+                     { "value": "$0 - $1k", "label": "$0 - $1k" },
+                     { "value": "$1k - $5k", "label": "$1k - $5k" },
+                     { "value": "$5k - $10k", "label": "$5k - $10k" },
+                     { "value": "$10k - $20k", "label": "$10k - $20k" },
+                     { "value": "$20k - $50k", "label": "$20k - $50k" },
+                     { "value": "$50k+", "label": "$50k+" }
+                   ]
+               }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Featured Filters",
+        "category": "Filters"
+      }
+    ]
+}
+{% endschema %}

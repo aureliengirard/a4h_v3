@@ -962,3 +962,10 @@ theme.customerLogin = (function() {
     $('#ResetSuccess').removeClass('hide');
   }
 })();
+
+// Filter menu expand
+$(".see-more__cta").on("click", function(e) {
+      e.preventDefault();
+      $(this).siblings(".see-more__content").toggleClass("active");
+      $(this).toggleClass("active");
+});

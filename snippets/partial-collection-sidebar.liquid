@@ -19,27 +19,28 @@
 
     <div id="collection_filters" class="collection-filters__wrapper">
         <div class="collection-filters filter-by__wrapper filter-by-type__wrapper">
-            <div class="filter-by__title">
+            <div class="filter-by__title filter-by__title--medium">
                 <h4>Medium</h4>
             </div>
             <div class="filter-by filter-by__filters filter-by-type">
                 {% if collection_type_page == true %}
-                    <a alt="" class="filter" href="/collections/all">
+                    <a medium="" class="filter" href="/collections/all">
                         <div class="filter__all">
                             {% include "icon-all-items" %}
                             <div>See all categories</div>
                         </div>
                     </a>
                 {% else %}
-                    <div alt="" class="t-filter filter{% if collection.url contains 'all' %} active{% endif %}">
+                    <div medium="" class="t-filter filter{% if collection.url contains 'all' %} active{% endif %}">
                         <div class="filter__icon"></div>
                         <div class="filter__label">
                             All
                         </div>
                     </div>
+
                     {%- for type in shop.types -%}
                         {% assign type_string = type | replace: " ", "+" %}
-                        <div alt="{{- type | handleize -}}" class="t-filter filter{% if collection.url contains type_string %} active{% endif %}">
+                        <div medium="{{- type | handleize -}}" class="t-filter filter{% if collection.url contains type_string %} active{% endif %}">
                             <div class="filter__icon"></div>
                             <div class="filter__label">
                                 {{- type -}}
@@ -52,27 +53,25 @@
         </div>
 
         <div class="collection-filters filter-by__wrapper filter-by-price__wrapper">
-            <div class="filter-by__title">
+            <div class="filter-by__title filter-by__title--price">
                 <h4>Price Range</h4>
             </div>
             <div class="filter-by filter-by__filters filter-by-type">
-                {% if collection_price_page == true %}
-                    <a alt="" class="filter" href="/collections/all">
+                {%- if collection_price_page == true -%}
+                    <a price="" class="filter" href="/collections/all">
                         <div class="filter__all">
                             {% include "icon-all-items" %}
                             <div>See all prices</div>
                         </div>
                     </a>
                 {% else %}
-                    {% for price_filters in price_filter %}
-                        <div alt="{{ price_filters }}" class="p-filter filter {% if price_filters == 'All' %} active{% endif %}">
+                    {%- for price_filters in price_filter -%}
+                        <div price="{{ price_filters }}" class="p-filter filter {% if price_filters == 'All' %} active{% endif %}">
                             <div class="filter__icon"></div>
-                            <div class="filter__label">
-                                {{ price_filters }}
-                            </div>
+                            <div class="filter__label">{{- price_filters -}}{%- if price_filters != "All" %} USD{%- endif -%}</div>
                         </div>
-                    {% endfor %}
-                {% endif %}
+                    {%- endfor -%}
+                {%- endif -%}
             </div>
         </div>
 
@@ -80,23 +79,15 @@
             <div class="filter-by filter-by-ungoal filter-by__select filter">
                 <h4>UN-Goals</h4>
                 <select id="filter-by-ungoal" class="" name="">
-
                     {%- capture un_collections -%}
                     {%- for collection in collections | sort -%}
-
                         {%- assign template_type = collection.template_suffix | strip -%}
                         {%- assign ungoals = "" -%}
-
                         {%- if template_type == 'ungoals' -%}
-                            |{{ collection.title | replace: ".", "::" }}::{% assign img = collection.metafields.accentuate.desktop_alt_logo | first %}{{- img.cloudinary_src | append: 'w_195' -}}::{{ collection.url }}
-                        {%- else -%}
-                            {%- continue -%}
-                        {%- endif -%}
-
+                            |{{- collection.title | replace: ".", "::" -}}::{%- assign img = collection.metafields.accentuate.desktop_alt_logo | first -%}{{- img.cloudinary_src | append: 'w_195' -}}::{{- collection.url -}}
+                        {%- else -%}{%- continue -%}{%- endif -%}
                     {%- endfor -%}
                     {%- endcapture -%}
-
-
                     <option class="un-filter filter" value="">All</option>
                     {%- assign sortedposts = un_collections | split: '|' | sort -%}
                     {%- for post in sortedposts -%}
@@ -105,7 +96,6 @@
                         {%- if un_id < 10 and un_id > 0 -%}
                             <option class="un-filter filter" value="{{ postitems[1] | handleize }}">{{postitems[1]}}</option>
                         {%- else -%} {%- continue -%} {%- endif -%}
-
                     {%- endfor -%}
                     {% assign sortedposts = un_collections | split: '|' | sort %}
                     {% for post in sortedposts %}
@@ -113,9 +103,8 @@
                         {% assign un_id = postitems[0] | strip | plus: 0 %}
                         {%- if un_id > 9 -%}
                             <option class="un-filter filter" value="{{ postitems[1] | handleize }}">{{postitems[1]}}</option>
-                        {%- else -%} {%- continue -%} {% endif %}
-
-                    {% endfor %}
+                        {%- else -%} {%- continue -%}{%- endif -%}
+                    {%- endfor -%}
                 </select>
             </div>
 
@@ -156,12 +145,12 @@
                 <h4>Galleries</h4>
                 <select id="filter-by-gallery" class="" name="">
                     <option class="g-filter filter" value="">All</option>
-                    {% for collection in collections %}
-                    {% if collection.template_suffix == 'gallery' and collection.all_products_count > 0 %}
-                    <option class="c-filter filter" value="{{ collection.title | handleize }}">{{ collection.title }}</option>
+                    {%- for collection in collections -%}
+                    {%- if collection.template_suffix == 'gallery' and collection.all_products_count > 0 -%}
+                    <option class="c-filter filter" value="{{ collection.title | handleize }}">{{- collection.title -}}</option>
                     {%- else -%}
                         {% continue %}
-                    {% endif -%}
+                    {%- endif -%}
                     {%- endfor -%}
                 </select>
             </div>

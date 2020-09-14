@@ -1,0 +1,79 @@
+{% assign title = section.settings.title %}
+{% assign subtitle = section.settings.subtitle %}
+{% assign bg_image = section.settings.bg_image %}
+{% assign cta_link = section.settings.cta_link %}
+{% assign cta_label = section.settings.cta_label %}
+
+<div class="overlay"></div>
+<div class="row">
+    <div class="col-12">
+        <hgroup>
+            <h1>{{title}}</h1>
+            <h4>{{subtitle}}</h4>
+        </hgroup>
+        <div class="btn-container hidden-xs">
+            <a href="{{cta_link}}" class="generic-btn">
+                {{cta_label}}
+            </a>
+        </div>
+
+        {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_link, extra_class: "only-xs" } -%}
+    </div>
+</div>
+
+<style media="screen">
+    .home__hero{
+        background-image: url('{{bg_image  | img_url: '1920x625', crop: 'center' }}');
+    }
+</style>
+
+{% schema %}
+{
+    "name": "Hero Section",
+    "class": "page__hero home__hero",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Buy Art For Good"
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "label": "Subtitle",
+          "default": "The best of contemporary art for a sustainable world"
+        },
+        {
+            "id": "cta_link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "cta_label",
+            "type": "text",
+            "label": "CTA Label",
+            "default": "View Artworks",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
+        },
+        {
+            "id": "bg_image",
+            "type": "image_picker",
+            "label": "Background Image"
+        }
+    ],
+    "presets": [
+      {
+        "name": "Hero",
+        "category": "Hero"
+      }
+    ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

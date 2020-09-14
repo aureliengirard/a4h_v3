@@ -1,26 +1,31 @@
+{% assign title = section.settings.title %}
+{% assign cta_label = section.settings.linktext %}
+
 <div class="row">
     <div class="col-12">
-        <h2>{{ section.settings.title }}</h2>
+        {%- if section.settings.link -%}
+            <div class="title-has-cta">
+                <h2>{{ title }}</h2>
+                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: "https://a4hproject.myshopify.com/" } -%}
+            </div>
+        {%- else -%}
+            <h2>{{ section.settings.title }}</h2>
+        {%- endif -%}
         <div class="collection-items featured-items">
             {% for block in section.blocks %}
 
                 {% assign product = all_products[block.settings.product] %}
-                {% include 'product-card' %}
+                {% include 'partial-product-card', with card_per_row: 4 %}
 
             {% endfor %}
         </div>
-        {% if section.settings.link %}
-            <div class="btn-container-center">
-                <a class="generic-btn centered" href="{{ section.settings.link }}">{{ section.settings.linktext }}</a>
-            </div>
-        {% endif %}
     </div>
 </div>
 
 {% schema %}
 {
-    "name": "Featured Art Pieces",
-    "class": "collection",
+    "name": "Featured Artworks",
+    "class": "collection collection-of-4",
     "tag": "section",
     "max_blocks": 4,
     "settings": [
@@ -31,15 +36,11 @@
           "default": "Hello world"
         },
         {
-            "id": "link",
-            "type": "url",
-            "label": "CTA link"
-        },
-        {
             "id": "linktext",
             "type": "text",
-            "label": "CTA text",
-            "default": "Explore"
+            "label": "CTA Label",
+            "default": "Explore",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
         }
     ],
     "blocks": [
@@ -57,8 +58,8 @@
     ],
     "presets": [
       {
-        "name": "Featured Art Pieces",
-        "category": "Product"
+        "name": "Featured Artworks",
+        "category": "Products"
       }
     ]
 }

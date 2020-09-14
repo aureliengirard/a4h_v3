@@ -158,92 +158,92 @@
   {
     "name": "Filters",
     "settings": [
-          {
-            "type": "text",
-            "id": "ngo_filters",
-            "label": "Comma separated list of NGOs"
-          },
-          {
-            "type": "text",
-            "id": "price_filters",
-            "label": "Comma separated list of Price Ranges. eg: 10-50, 50-100"
-          }
-      ]
-    },
-    {
+      {
+        "type": "text",
+        "id": "ngo_filters",
+        "label": "Comma separated list of NGOs"
+      },
+      {
+        "type": "text",
+        "id": "price_filters",
+        "label": "Comma separated list of Price Ranges. eg: 10-50, 50-100"
+      }
+    ]
+  },
+  {
     "name": "Primary Footer",
     "settings": [
-        {
-            "type": "text",
-            "id": "column-1-title",
-            "label": "1rst Col Title",
-            "default": "Art 4 Humans (A4H)"
-        },
-        {
-            "type": "link_list",
-            "id": "column-1-menu",
-            "label": "1rst Col Menu"
-        },
-        {
-            "type": "text",
-            "id": "column-2-title",
-            "label": "2nd Col Title",
-            "default": "Partnering with A4H"
-        },
-        {
-            "type": "link_list",
-            "id": "column-2-menu",
-            "label": "Second Column Menu"
-        },
-        {
-            "type": "text",
-            "id": "column-3-title",
-            "label": "3rd Col Title",
-            "default": "A4H Services"
-        },
-        {
-            "type": "link_list",
-            "id": "column-3-menu",
-            "label": "Third Column Menu"
-        },
-        {
-            "type": "text",
-            "id": "column-4-title",
-            "label": "4th Col Title",
-            "default": "Get in Touch"
-        },
-        {
-            "type": "text",
-            "id": "newsletter-txt",
-            "label": "Newsletter Text",
-            "default": "Susbscribe to our monthly newsletter"
-        },
-        {
-            "type": "text",
-            "id": "newsletter-placeholder",
-            "label": "Newsletter Placeholder",
-            "default": "Subscribe to our newsletter"
-        },
-        {
-            "type": "link_list",
-            "id": "column-4-menu",
-            "label": "Fourth Column Menu"
-        }
+      {
+        "type": "text",
+        "id": "column-1-title",
+        "label": "1rst Col Title",
+        "default": "Art 4 Humans (A4H)"
+      },
+      {
+        "type": "link_list",
+        "id": "column-1-menu",
+        "label": "1rst Col Menu"
+      },
+      {
+        "type": "text",
+        "id": "column-2-title",
+        "label": "2nd Col Title",
+        "default": "Partnering with A4H"
+      },
+      {
+        "type": "link_list",
+        "id": "column-2-menu",
+        "label": "Second Column Menu"
+      },
+      {
+        "type": "text",
+        "id": "column-3-title",
+        "label": "3rd Col Title",
+        "default": "A4H Services"
+      },
+      {
+        "type": "link_list",
+        "id": "column-3-menu",
+        "label": "Third Column Menu"
+      },
+      {
+        "type": "text",
+        "id": "column-4-title",
+        "label": "4th Col Title",
+        "default": "Get in Touch"
+      },
+      {
+        "type": "text",
+        "id": "newsletter-txt",
+        "label": "Newsletter Text",
+        "default": "Susbscribe to our monthly newsletter"
+      },
+      {
+        "type": "text",
+        "id": "newsletter-placeholder",
+        "label": "Newsletter Placeholder",
+        "default": "Subscribe to our newsletter"
+      },
+      {
+        "type": "link_list",
+        "id": "column-4-menu",
+        "label": "Fourth Column Menu"
+      }
     ]
-},
-    {
+  },
+  {
     "name": "Secondary Footer",
     "settings": [
-        {
-            "type": "image_picker",
-            "id": "footer_icon",
-            "label": "Footer Icon"
-        },
-        {
-            "type": "link_list",
-            "id": "secondary-footer-menu",
-            "label": "Secondary Footer Menu"
-        }
+      {
+        "type": "image_picker",
+        "id": "footer_icon",
+        "label": "Footer Icon"
+      },
+      {
+        "type": "link_list",
+        "id": "secondary-footer-menu",
+        "label": "Secondary Footer Menu"
+      }
     ]
   }
 ]

@@ -1,4 +1,4 @@
-<a class="cta" href="{{cta_url}}" {% if cta_action %}onclick="{{cta_action}}"{%- endif -%}>
+<a class="cta {% if extra_class -%}{{extra_class}}{%- endif -%}" href="{{cta_url}}" {% if cta_action %}onclick="{{cta_action}}"{%- endif -%}>
     {% include 'icon-cta' %}
     <p>{{ cta_label }}</p>
 </a>

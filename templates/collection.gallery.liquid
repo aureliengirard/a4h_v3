@@ -35,7 +35,7 @@
                 </div>
             </section>
 
-            <section class="collection gallery__collection">
+            <section class="collection collection-of-2">
                 <div id="curated-artworks" class="anchor"></div>
                 <div class="row">
                     <div class="col-12 col-tb">
@@ -46,7 +46,7 @@
                         <div class="collection-items__wrapper">
                             <div class="col-12 collection-items">
                                 {% for product in collection.products %}
-                                    {% include 'partial-product-card' %}
+                                    {% include 'partial-product-card' with card_per_row: 2 %}
                                 {% endfor %}
                             </div>
                         </div>

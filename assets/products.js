@@ -26,6 +26,7 @@ $(document).ready(function() {
     }
 });
 
+
 function ungoalSelection() {
 
     var selected_un_goal = document.getElementById("ungoal-select").value;
@@ -34,5 +35,5 @@ function ungoalSelection() {
 
     $("#buy-button").prop('disabled', false);
 
-    window.sessionStorage.setItem(JSON.stringify(product_title), JSON.stringify(selected_un_goal));
+    window.sessionStorage.setItem(product_title, selected_un_goal);
 };

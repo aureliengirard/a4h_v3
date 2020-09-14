@@ -4,120 +4,111 @@
 <!--[if IE 8]><html class="no-js lt-ie10 lt-ie9" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="ie9 lt-ie10 no-js"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
-<head>
+    <head>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="{{ settings.color_primary }}">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="theme-color" content="{{ settings.color_primary }}">
 
-  <link rel="canonical" href="{{ canonical_url }}">
+        <link rel="canonical" href="{{ canonical_url }}">
 
-    {% comment %} Force OG:IMG fr {% endcomment %}
+        {% comment %} Force OG:IMG fr {% endcomment %}
 
-  {% if settings.favicon != blank %}
-    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
-  {% endif %}
+        {% if settings.favicon != blank %}
+            <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+        {% endif %}
 
-  <title>{{ seo_title }}</title>
+        <title>{{ seo_title }}</title>
 
-  {% include 'social-meta-tags' %}
+        {% include 'social-meta-tags' %}
 
-  {% include 'schema-json' %}
+        {% comment %}{% include 'schema-json' %}{% endcomment %}
 
-  {{'theme.scss.css' | asset_url | stylesheet_tag }}
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet" />
+        {{'theme.scss.css' | asset_url | stylesheet_tag }}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet" />
 
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5DN2C9J');</script>
-  <!-- End Google Tag Manager -->
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5DN2C9J');</script>
+        <!-- End Google Tag Manager -->
 
-  <script>
+        <script>
 
-    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+        document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
 
-    window.theme = {
-      strings: {
-        addToCart: {{ 'products.product.add_to_cart' | t | json }},
-        soldOut: {{ 'products.product.sold_out' | t | json }},
-        unavailable: {{ 'products.product.unavailable' | t | json }}
-      },
-      moneyFormat: {{ shop.money_format | json }}
-    };
+        window.theme = {
+          strings: {
+            addToCart: {{ 'products.product.add_to_cart' | t | json }},
+            soldOut: {{ 'products.product.sold_out' | t | json }},
+            unavailable: {{ 'products.product.unavailable' | t | json }}
+          },
+          moneyFormat: {{ shop.money_format | json }}
+        };
 
-  </script>
+        </script>
 
-  {{ content_for_header }}
+        {{ content_for_header }}
 
-    {%- if request.page_type contains 'customers/' -%}
-      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
-    {%- endif -%}
+        {%- if request.page_type contains 'customers/' -%}
+            <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+        {%- endif -%}
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
-  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
+        <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+        <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
 
-  {%- if request.page_type contains 'product' -%}
-    <script type="text/javascript" src="{{ 'products.js' | asset_url }}" defer="defer"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" defer="defer"></script>
-  {%- endif -%}
+        {%- if request.page_type contains 'product' -%}
+            <script type="text/javascript" src="{{ 'products.js' | asset_url }}" defer="defer"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" defer="defer"></script>
+        {%- endif -%}
 
-  {%- unless request.path contains '/collections/all' -%}
-      {%- if request.page_type contains 'collection' -%}
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" defer="defer"></script>
-        <script type="text/javascript" src="{{ 'collections.js' | asset_url }}" defer="defer"></script>
-      {%- endif -%}
-  {%- endunless -%}
+        {%- unless request.path contains '/collections/all' -%}
+            {%- if request.page_type contains 'collection' -%}
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" defer="defer"></script>
+                <script type="text/javascript" src="{{ 'collections.js' | asset_url }}" defer="defer"></script>
+            {%- endif -%}
+        {%- endunless -%}
 
-  {%- if request.path contains ('artists' or 'galleries' or '/collections/all' ) -%}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js" defer="defer"></script>
-  {%- endif -%}
+        {%- if request.path contains ('artists' or 'galleries' or '/collections/all' ) -%}
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js" defer="defer"></script>
+        {%- endif -%}
 
-  {%- if request.path contains '/collections/all' -%}
-    <script type="text/javascript" src="{{ 'all-products.js' | asset_url }}" defer="defer"></script>
-  {%- endif -%}
-
-  {%- if request.path contains 'all-galleries' -%}
-    <script type="text/javascript" src="{{ 'all-galleries-filters.js' | asset_url }}" defer="defer"></script>
-  {%- endif -%}
-
-  {%- if request.path contains 'all-artists' -%}
-    <script type="text/javascript" src="{{ 'all-artists-filters.js' | asset_url }}" defer="defer"></script>
-  {%- endif -%}
-
-  {%- if request.path contains 'pages/artists' -%}
-    <script type="text/javascript" src="{{ 'artists-filters.js' | asset_url }}" defer="defer"></script>
-  {%- endif -%}
-
-  {%- if request.path contains 'pages/galleries' -%}
-    <script type="text/javascript" src="{{ 'galleries-filters.js' | asset_url }}" defer="defer"></script>
-  {%- endif -%}
+        {%- if request.path contains '/collections/all' -%}
+            <script type="text/javascript" src="{{ 'all-products.js' | asset_url }}" defer="defer"></script>
+        {%- elsif request.path contains 'all-galleries' -%}
+            <script type="text/javascript" src="{{ 'all-galleries-filters.js' | asset_url }}" defer="defer"></script>
+        {%- elsif request.path contains 'all-artists' -%}
+            <script type="text/javascript" src="{{ 'all-artists-filters.js' | asset_url }}" defer="defer"></script>
+        {%- if request.path contains 'pages/artists' -%}
+            <script type="text/javascript" src="{{ 'artists-filters.js' | asset_url }}" defer="defer"></script>
+        {%- elsif request.path contains 'pages/galleries' -%}
+            <script type="text/javascript" src="{{ 'galleries-filters.js' | asset_url }}" defer="defer"></script>
+        {%- endif -%}
 
 
-</head>
+    </head>
 
-<body id="{{ langify_title | handle }}" class="template-{{ template.name | handle }} template-{{ template.name | handle }}-{{ template.suffix | handle }} {{ language }}">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5DN2C9J"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+    <body id="{{ langify_title | handle }}" class="template-{{ template.name | handle }} template-{{ template.name | handle }}-{{ template.suffix | handle }} {{ language }}">
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5DN2C9J" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
 
-  {% section 'header' %}
+        {% section 'header' %}
 
-  <main role="main" id="MainContent" class="main-content {{ page-language }}">
+        <main role="main" id="MainContent" class="main-content {{ page-language }}">
 
-    {{ content_for_layout }}
+            {{ content_for_layout }}
 
-  </main>
+        </main>
 
-  {% section 'footer' %}
+        {% section 'footer' %}
 
-</body>
+    </body>
 
 </html>

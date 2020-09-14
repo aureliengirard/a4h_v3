@@ -1,28 +1,43 @@
 {
   "current": {
-    "header_logo": "shopify:\/\/shop_images\/logo_white.png",
-    "header_logo_max_width": 105,
+    "header_logo": "shopify:\/\/shop_images\/art4humans-logo.png",
+    "header_logo_max_width": 200,
     "is_ngo_list_select": false,
     "ngo_list_for_search": "Canadian Cancer Society,Children's Wish Foundation,CNIB,Fillactive FitSpirit,Grizzly Bear Foundation,Habitat For Humanity Greater Vancouver,Les Petits Frères,Oxfam - Québec,United Way Lower Mainland,Zénitud'Art",
     "price_list_for_search": "0 - 500,500 - 1000,1000 - 5000,5000 +",
-    "homepage_hero_image": "shopify:\/\/shop_images\/iStock_-_cut_2.jpg",
-    "shop_hero_image": "shopify:\/\/shop_images\/paintings-in-side-room-1839919_-_cut_5e16bb65-c6ba-4d70-9a26-955ef5c48c1a.jpg",
+    "homepage_hero_image": "",
+    "shop_hero_image": "",
     "ngo_hero_image": "",
-    "artists_hero_image": "shopify:\/\/shop_images\/hero-artist-page.jpg",
+    "artists_hero_image": "",
     "concept_hero_image": "",
-    "about_hero_image": "shopify:\/\/shop_images\/hero_about_a4h_1920.jpg",
-    "enterprise_hero_image": "shopify:\/\/shop_images\/hero_enterprise_a4h_1920.jpg",
-    "join_hero_image": "shopify:\/\/shop_images\/hero_contact_a4h_1920.jpg",
+    "about_hero_image": "",
+    "enterprise_hero_image": "",
+    "join_hero_image": "",
+    "ci_title": "Contact Us",
     "ci_message": "¡Nos encantaría saber de usted!",
     "ci_phone_number": "(+1) 833-977-1222",
     "ci_email_address": "contact@artforhumans.org",
     "ci_physical_address": "Montreal, QC",
     "ci_twitter": "https:\/\/twitter.com\/ArtForHumansorg",
+    "ci_weibo": "",
     "ci_instagram": "https:\/\/www.instagram.com\/artforhumansorg\/",
+    "ci_linkedin": "",
     "ci_facebook": "https:\/\/www.facebook.com\/artforhumansorg\/",
     "favicon": "shopify:\/\/shop_images\/Asset_3_4x.png",
     "ngo_filters": "",
-    "price_filters": "Todos,Hasta $10 000,$10 000 - 20 000,$20 000 - 40 000,$40 000 - 100 000,$100 000 y más",
+    "price_filters": "All,$0 - $1k,$1k - $5k,$5k - $10k,$10k - $20k,$20k - $50k,$50k+",
+    "column-1-title": "Art 4 Humans (A4H)",
+    "column-1-menu": "footer",
+    "column-2-title": "Partnering with A4H",
+    "column-2-menu": "footer-menu-3",
+    "column-3-title": "A4H Services",
+    "column-3-menu": "footer-menu-3",
+    "column-4-title": "Get in Touch",
+    "newsletter-txt": "Susbscribe to our monthly newsletter",
+    "newsletter-placeholder": "Your email...",
+    "column-4-menu": "footer-menu-4",
+    "footer_icon": "shopify:\/\/shop_images\/icon-fav-a4h.png",
+    "secondary-footer-menu": "secondary-footer-menu",
     "checkout_header_image": "",
     "checkout_logo_image": "",
     "checkout_logo_position": "left",
@@ -65,20 +80,83 @@
       },
       "footer": {
         "type": "footer",
-        "settings": {
-          "footer_linklist": "footer",
-          "show_payment_icons": false
-        }
+        "settings": {}
       },
       "1508710620923": {
         "type": "index-section",
         "settings": {
-          "collection": "featured-items"
+          "collection": ""
         }
       },
       "product": {
         "type": "product",
-        "settings": {}
+        "settings": {
+          "impact": "Your impact:",
+          "delivery": ""
+        }
+      },
+      "page-featured-artists": {
+        "type": "page-featured-artists",
+        "blocks": {
+          "1597858596793": {
+            "type": "featured-artist",
+            "settings": {
+              "featured_artist_has_top_border": false,
+              "featured_artist_title": "Featured Artist - Marcel Dzama",
+              "featured_artist_cta": "View<span> artist<\/span> profile",
+              "featured_artist": "marcel-dzama",
+              "product_1": "adam-cohen-portrait",
+              "product_2": "and-i-saw-the-light",
+              "product_3": "au-dela",
+              "product_4": "blue"
+            }
+          },
+          "1597858470540": {
+            "type": "featured-collection",
+            "settings": {
+              "featured_collection_title": "Painting",
+              "featured_collection_cta": "View All",
+              "featured_collection_url": "\/pages\/all-artists",
+              "collection_1": "marcel-dzama",
+              "collection_2": "guillaume-leti",
+              "collection_3": "raymond-petitbon",
+              "collection_4": "barthelemy-toguo"
+            }
+          }
+        },
+        "block_order": [
+          "1597858596793",
+          "1597858470540"
+        ],
+        "settings": {
+          "page-title": "A World-Class Selection of Artists"
+        }
+      },
+      "page-featured-galleries": {
+        "type": "page-featured-galleries",
+        "blocks": {
+          "1598303125351": {
+            "type": "featured-collection",
+            "settings": {
+              "featured_artist_has_top_border": true,
+              "featured_collection_title": "New York",
+              "featured_collection_cta": "",
+              "featured_collection_url": "",
+              "collection_1": "david-zwirner",
+              "collection_2": "perrotin",
+              "collection_3": "spruth-magers",
+              "collection_4": "",
+              "collection_5": "",
+              "collection_6": ""
+            }
+          }
+        },
+        "block_order": [
+          "1598303125351"
+        ],
+        "settings": {
+          "page-title": "Best-in-class Galleries"
+        }
       }
     },
     "content_for_index": [

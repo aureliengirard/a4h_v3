@@ -40,19 +40,19 @@
                                 {% assign product_4 = all_products[block.settings.product_4] %}
 
                                 {%- if product_1.title -%}
-                                    {% include 'partial-product-card', product: product_1 %}
+                                    {% include 'partial-product-card', product: product_1, card_per_row: 4 %}
                                 {%- endif -%}
 
                                 {%- if product_2.title -%}
-                                    {% include 'partial-product-card', product: product_2 %}
+                                    {% include 'partial-product-card', product: product_2, card_per_row: 4 %}
                                 {%- endif -%}
 
                                 {%- if product_3.title -%}
-                                    {% include 'partial-product-card', product: product_3 %}
+                                    {% include 'partial-product-card', product: product_3, card_per_row: 4 %}
                                 {%- endif -%}
 
                                 {%- if product_4.title -%}
-                                    {% include 'partial-product-card', product: product_4 %}
+                                    {% include 'partial-product-card', product: product_4, card_per_row: 4 %}
                                 {%- endif -%}
                             </div>
                         </div>
@@ -83,16 +83,16 @@
                                 {% assign collection_4 = collections[block.settings.collection_4] %}
 
                                 {%- if collection_1 -%}
-                                    {% include 'partial-artist-card', collection: collection_1 %}
+                                    {% include 'partial-artist-card', collection: collection_1, card_per_row: 4%}
                                 {%- endif -%}
                                 {%- if collection_2 -%}
-                                    {% include 'partial-artist-card', collection: collection_2 %}
+                                    {% include 'partial-artist-card', collection: collection_2, card_per_row: 4 %}
                                 {%- endif -%}
                                 {%- if collection_3 -%}
-                                    {% include 'partial-artist-card', collection: collection_3 %}
+                                    {% include 'partial-artist-card', collection: collection_3, card_per_row: 4 %}
                                 {%- endif -%}
                                 {%- if collection_4 -%}
-                                    {% include 'partial-artist-card', collection: collection_4 %}
+                                    {% include 'partial-artist-card', collection: collection_4, card_per_row: 4 %}
                                 {%- endif -%}
                             </div>
                         </div>

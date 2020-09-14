@@ -1,7 +1,8 @@
-
+{%- if is_block != true -%}
 <section class="collection__un-goals">
+{%- endif -%}
     <div class="row">
-        <div class="col-lg-12 col-tb">
+        <div class="col-lg-12{%- if is_block != true -%} col-tb{%- endif -%}">
             <div class="title-has-cta">
                 <h2>{{- title -}}</h2>
                 {%- include 'partial-cta'  with { cta_label: "Learn<span> More</span>", cta_url: "/pages/un-goals/" }  -%}
@@ -14,7 +15,7 @@
                 {%- assign ungoals = "" -%}
 
                 {%- if template_type == 'ungoals' -%}
-                    |{{ collection.title | replace: ".", "::" }}::{% assign img = collection.metafields.accentuate.desktop_alt_logo | first %}{{- img.cloudinary_src | append: 'w_195' -}}::{{ collection.url }}
+                    |{{ collection.title | replace: ".", "::" }}::{% assign img = collection.metafields.accentuate.desktop_alt_logo | first %}{{- img.cloudinary_src | append: 'w_195,h_195' -}}::{{ collection.url }}
                 {%- else -%}
                     {%- continue -%}
                 {%- endif -%}
@@ -29,8 +30,8 @@
                 {%- assign postitems = post | split: '::' -%}
                 {%- assign un_id = postitems[0] | strip | plus: 0 -%}
                 {%- if un_id < 10 and un_id > 0 -%}
-                <a {% if filters_artists == true -%}href="/pages/all-artists/"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="ungoal__item" {% if filters_artists == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
-                    <img src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                <a {% if filter_type == 'artist' -%}href="/pages/all-artists/"{%- elsif filter_type == 'product' -%}href="/collections/all"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="ungoal__item" {% if is_filter == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
+                    <img class="lazyload" src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
                 </a>
                 {%- else -%} {%- continue -%} {%- endif -%}
 
@@ -40,23 +41,24 @@
                 {% assign postitems = post | split: '::' %}
                 {% assign un_id = postitems[0] | strip | plus: 0 %}
                 {%- if un_id > 9 -%}
-                <a {% if filters_artists == true -%}href="/pages/all-artists/"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="ungoal__item" {% if filters_artists == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
+                <a {% if filter_type == 'artist' -%}href="/pages/all-artists/"{%- elsif filter_type == 'product' -%}href="/collections/all"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="ungoal__item" {% if is_filter == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
 
-                    <img src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                    <img class="lazyload" src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
                 </a>
                 {%- else -%} {%- continue -%} {% endif %}
 
             {% endfor %}
 
             <a href="/pages/un-goals">
-                <img class="all-impact-logo" src="{{ 'all-sdgs.png' | asset_url }}" alt="UN Goals">
+                <img class="all-impact-logo lazyload" src="{{ 'all-sdgs.png' | asset_url }}" alt="UN Goals">
             </a>
             </div>
 
         </div>
     </div>
 
-    <script type="text/javascript">
+    {% if is_filter == true -%}
+        <script type="text/javascript">
         $( ".ungoal__item" ).each(function(index) {
             $(this).on("click", function(){
                 var ungoal_val = $(this).attr('ungoal');
@@ -65,5 +67,9 @@
                 window.sessionStorage.setItem('value_ungoal', ungoal_filter);
             });
         });
-    </script>
+        </script>
+    {%- endif -%}
+
+{%- if is_block != true -%}
 </section>
+{%- endif -%}

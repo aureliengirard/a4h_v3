@@ -1,16 +1,42 @@
-<div class="sidebarBlog block">
-    <h4 class="title_block">{{ 'blogs.sidebar.recent_articles' | t }}</h4>
-  	<div class="block_content">
-        <ul class="listSidebar list-unstyled">
-            {% for article in blogs[blog.handle].articles limit:10 %}
-                <li>
-                    <a href="{{ article.url }}">{{ article.title }}</a>
-                    <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>
-                </li>
-            {% endfor %}
-        </ul>
-  	</div>
+<div class="sidebar sidebar__article">
+    <div class="sidebar__section article__feed">
+
+        <h3 class="sidebar__title">{{ 'blogs.sidebar.recent_articles' | t }}</h3>
+        {% for article in blogs[blog.handle].articles limit:10 %}
+            {% assign featured_article = article.metafields.accentuate.featured_article %}
+
+            {%- if featured_article -%}
+                {%- continue -%}
+            {%- else -%}
+                <article id="{{article.id}}"  class="">
+
+                    <div class="teaser__img">
+                        <a href="{{ article.url }}">
+                            <img
+                            alt="article.title"
+                            srcset="{{- article.image | img_url: '181x125', crop: 'center' }} 181w,
+                            {{- article.image | img_url: '290x200', crop: 'center' }} 290w"
+                            sizes="(max-width: 767px) 181px, 25w"
+                            src="{{ article.image | img_url: '290x200', crop: 'center' }}"
+                            class="lazyload" />
+                        </a>
+                    </div>
+                    <div class="teaser__meta">
+                        <a href="{{ article.url }}">
+                            <h6>{{ article.title }}</h6>
+                        </a>
+                        <a href="{{ article.url }}">
+                            <time datetime="{{ article.published_at | date: '%m-%d-%Y' }}">{{ article.published_at | date: '%b %d %Y' }}</time>
+                        </a>
+                    </div>
+
+                </article>
+            {%- endif -%}
+        {% endfor %}
+
+    </div>
 </div>
+{% comment %}
 {% if settings.blogsidebar_html_enable %}
 	<div id="blogsidebar-html" class="sidebarBlog block">
 		{% if settings.blogsidebar_html_title %}
@@ -48,3 +74,4 @@
         </div>
     </div>
 {% endif %}
+{% endcomment %}

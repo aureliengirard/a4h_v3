@@ -1,0 +1,111 @@
+<div id="product__inquire"  class="inquiry__popup popup__box mfp-hide">
+    <div class="popup__header popup__section">
+        <h3>Make an Inquiry</h3>
+    </div>
+    <div class="popup__content popup__section">
+        {%- assign template_type = "" -%}
+        {%- assign gallery_name = "" -%}
+        {%- assign gallery_url = "" -%}
+        {%- assign ungoals_name = "" -%}
+        {%- assign artist_name = "" -%}
+        {%- assign artist_url = "" -%}
+        {%- assign artist_ungoals = "" -%}
+        {% assign has_un_goals = false %}
+
+        {% for collection in product.collections %}
+
+            {% assign template_type = collection.template_suffix | strip %}
+
+            {% if template_type == 'gallery' %}
+                {% assign gallery_name = collection.title %}
+                {% assign gallery_url = collection.url %}
+
+            {% elsif template_type == 'ungoals' %}
+                {% assign ungoals_name = collection.title | split: '. ' %}
+            {% elsif template_type == 'artist' %}
+                {% assign artist_name = collection.title %}
+                {% assign artist_url = collection.url %}
+                {% assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' %}
+
+                {%- for ungoals in artist_ungoals -%}
+                    {%- if forloop.length > 0 -%}
+                        {% assign has_un_goals = true %}
+
+                    {%- endif -%}
+                {% endfor %}
+
+            {% endif %}
+
+        {% endfor %}
+
+        {%- capture un_goals_filter -%}
+            {%- for ungoals in artist_ungoals -%}
+                {%- assign ungoal = collections[ungoals] -%}
+                {%- assign ungoals_name = ungoal.title | split: '. ' -%}
+                {%- if forloop.first == true -%}{%- else -%},{%- endif -%}
+                {{- ungoals_name[1] | handleize -}}
+            {%- endfor -%}
+        {%- endcapture -%}
+
+        <article
+            {% if filter == true -%}
+                {%- if variable_price == 'true' -%}
+                    price="{%- include 'partial-product-variable-price-filter' -%}"
+                {%- else -%}
+                    price="{{product.price}}"
+                {%- endif -%}
+                type="{{ product.type | handleize }}"
+                vendor="{{ product.vendor | handleize }}"
+                gallery="{{ gallery_name | handleize }}"
+                un-goals="{%- if has_un_goals == true -%}{{-un_goals_filter-}}{%- else -%}all-un-goals{%- endif -%}"
+            {%- endif -%}
+            class="card-item product-item">
+            <div class="img-container">
+                <img
+                alt="{{ product.title }}"
+                src="{{ product.featured_image.src | img_url: '140x140' }}"
+                class="lazyload" />
+                            </div>
+            <div class="card-details product-details">
+                <h4 class="card__price">
+                        {%- if product.available -%}
+                            {%- if variable_price == 'true' -%}
+                                {%- include 'partial-product-variable-price' -%}
+                            {%- else -%}
+                                {{ product.price | money }}
+                            {%- endif -%}
+                        {%- else -%}
+                            SOLD OUT
+                        {%- endif -%}
+                </h4>
+                <h4 class="card__artist">{%- if artist_name != "" -%}{{ artist_name }}{%- else -%}{{ product.vendor }}{%- endif -%}</h4>
+                <div class="card__title">{{ product.title }}{% if product.metafields.product.date %}, {{ product.metafields.product.date | date: "%Y" }}{% endif %}</div>
+                <div class="card__gallery">{{ gallery_name }}</div>
+
+                <div class="card__un-goals">
+
+                    {%- if has_un_goals == true -%}
+                    {%- for ungoals in artist_ungoals -%}
+                        {% assign ungoal = collections[ungoals] %}
+                        {% assign ungoals_name = ungoal.title | split: '. ' %}
+
+                        <div class="un-goals" title="{{- ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img class="lazyload" src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</div>
+
+                    {%- endfor -%}
+                    {%- else -%}
+                        <div class="un-goals" title="Discover The UN Goals"><img class="all-impact-logo lazyload" src="{{ 'all-un-goals-small.png' | asset_url }}" alt="UN Goals"></div>
+                    {%- endif -%}
+                </div>
+
+            </div>
+        </article>
+
+    </div>
+    <div class="popup__form popup__section">
+        <div style="margin:0 auto;" class="pxFormGenerator" id="474j5STfCzs9gp1WS-UyPA"></div>
+        <div class="disclaimer">
+            <p>By clicking send, you accept our Privacy Policy.</p>
+        </div>
+    </div>
+
+</div>

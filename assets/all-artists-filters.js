@@ -119,3 +119,10 @@ function Filters() {
     }
 }
 $(document).ready(Filters);
+
+window.addEventListener('beforeunload', function (e) {
+    window.sessionStorage.removeItem('value_medium');
+    window.sessionStorage.removeItem('value_ungoal');
+    window.sessionStorage.removeItem('value_nationality');
+    window.sessionStorage.removeItem('value_name');
+});

@@ -19,7 +19,7 @@
                         {%- assign template_type = collection.template_suffix | strip -%}
 
                         {%- if template_type == 'gallery' -%}
-                            {% include 'partial-gallery-card' with filter: true %}
+                            {% include 'partial-gallery-card' with filter: true, card_per_row: 3 %}
                         {%- else -%}
                             {%- continue -%}
                         {%- endif -%}

@@ -1,0 +1,72 @@
+{% assign title = section.settings.title %}
+{% assign cta_label = section.settings.linktext %}
+{% assign cta_link = section.settings.link %}
+
+<div class="row">
+    <div class="col-12">
+        {%- if cta_link -%}
+            <div class="title-has-cta">
+                <h2>{{ title }}</h2>
+                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_url } -%}
+            </div>
+        {%- else -%}
+        <h2>{{ title }}</h2>
+        {%- endif -%}
+        <div class="collection-items featured-items">
+            {% for block in section.blocks %}
+
+                {% assign collection = collections[block.settings.gallery] %}
+                {% include 'partial-gallery-card', with card_per_row: 3 %}
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Featured Galleries",
+    "class": "collection collection-of-3",
+    "tag": "section",
+    "max_blocks": 3,
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Hello world"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA Label",
+            "default": "Explore",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Gallery",
+            "type": "gallery",
+            "settings": [
+                {
+                    "id": "gallery",
+                    "type": "collection",
+                    "label": "Art Piece"
+                }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Featured Galleries",
+        "category": "Galleries"
+      }
+    ]
+}
+{% endschema %}

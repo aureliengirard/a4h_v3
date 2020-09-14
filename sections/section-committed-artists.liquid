@@ -1,0 +1,81 @@
+{% assign title = section.settings.title %}
+{% assign cta_label = section.settings.linktext %}
+{% assign columns = section.settings.number_of_columns %}
+
+{%- capture comitted_artists -%}
+    {%- for collection in collections -%}
+        {%- assign template_type = collection.template_suffix | strip -%}
+        {%- assign collection_goals = collection.metafields.artist.un_goals -%}
+        {%- assign artist_ungoals = collection_goals | split: '|' -%}
+
+        {%- if template_type == 'artist' -%}
+
+            {{- collection.title -}}::{{- collection.url -}}
+            {%- if forloop.last == false -%},{% endif -%}
+        {%- else -%}{%- continue -%}{%- endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+<div class="row">
+    <div class="col-12 col-tb">
+        <div class="title-has-cta">
+            <h2>{{title}}</h2>
+            {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: "/pages/all-artists/" }  -%}
+        </div>
+        <div class="artists-list list-of-{{columns}}">
+            {% assign comitted_artists = comitted_artists | split:"," %}
+
+            {%- for artist in comitted_artists limit:45 -%}
+                {% assign artistitem = artist | split: '::' %}
+                {%- if artistitem[1] contains "/collections/" -%}
+                <div class="artists-list__item">
+                    <a href="{{- artistitem[1] -}}">{{- artistitem[0] -}}</a>
+                </div>
+                {%- else -%}
+                {%- endif -%}
+            {%- endfor -%}
+
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "UN Goals",
+    "class": "collection__un-goals",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Artists Committed to Transform Our World"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA Label",
+            "default": "View all<span> artist</span>",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
+        },
+        {
+           "type":      "select",
+           "id":        "number_of_columns",
+           "label":     "Number of Columns",
+           "options": [
+             { "value": "2", "label": "2" },
+             { "value": "3", "label": "3" },
+             { "value": "4", "label": "4" },
+             { "value": "5", "label": "5" }
+           ],
+           "default":   "3"
+        }
+    ],
+    "presets": [
+      {
+        "name": "Committed Artists",
+        "category": "List"
+      }
+    ]
+}
+{% endschema %}

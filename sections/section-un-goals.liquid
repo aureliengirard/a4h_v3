@@ -1,0 +1,23 @@
+{%- include 'partial-section-all-ungoals', title: section.settings.title, is_block: true, is_filter: true, filter_type: 'product' -%}
+
+{% schema %}
+{
+    "name": "UN Goals",
+    "class": "collection__un-goals",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Browse by UN-Goal"
+        }
+    ],
+    "presets": [
+      {
+        "name": "UN Goals",
+        "category": "List"
+      }
+    ]
+}
+{% endschema %}

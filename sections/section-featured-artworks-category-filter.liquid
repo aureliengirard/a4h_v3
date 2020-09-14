@@ -1,0 +1,124 @@
+{% assign title = section.settings.title %}
+{% assign cta_label = section.settings.linktext %}
+{% assign cta_link = section.settings.link %}
+{% assign filter_type = section.settings.filter_type %}
+{% assign filter_price = section.settings.filter_price %}
+{% assign filter_name = section.settings.filter_name %}
+{% assign extra_class = filter_type | append: _cta %}
+{% assign attribute = "" %}
+
+{%- if filter_type == "value_price" -%}
+    {% assign attribute = filter_price %}
+{%- else -%}
+    {% assign attribute = filter_name | handleize %}
+{%- endif -%}
+
+<div class="row">
+    <div class="col-12">
+        {%- if section.settings.link -%}
+            <div class="title-has-cta">
+                <h2>{{ title }}</h2>
+                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_link, extra_class: extra_class } -%}
+            </div>
+        {%- else -%}
+            <h2>{{ section.settings.title }}</h2>
+        {%- endif -%}
+        <div class="collection-items featured-items">
+            {% for block in section.blocks %}
+
+                {% assign product = all_products[block.settings.product] %}
+                {% include 'partial-product-card', with card_per_row: 4 %}
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $( ".{{extra_class}}" ).on("click", function(e){
+        var {{filter_type}}_key = '{{filter_type}}';
+        var {{filter_type}}_value = '{{attribute}}';
+        window.sessionStorage.setItem({{filter_type}}_key, {{filter_type}}_value);
+    });
+</script>
+
+{% schema %}
+{
+    "name": "Featured Artworks",
+    "class": "collection collection-of-4",
+    "tag": "section",
+    "max_blocks": 4,
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Hello world"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA Label",
+            "default": "Explore",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
+        },
+        {
+           "type":      "select",
+           "id":        "filter_type",
+           "label":     "Filter Type",
+           "options": [
+             { "value": "value_medium", "label": "Mediun" },
+             { "value": "value_price", "label": "Price Range" },
+             { "value": "value_ungoal", "label": "UN-Goals" },
+             { "value": "value_gallery", "label": "Gallery" }
+           ],
+           "default":   "value_medium"
+       },
+       {
+           "id": "filter_name",
+           "type": "text",
+           "label": "Filter Name",
+           "info": "Please write the name has found in the Artwork filter menu. Ex.: 'Mixed Art' for the medium mixed art"
+       },
+       {
+          "type":      "select",
+          "id":        "filter_price",
+          "label":     "Filter by Price",
+          "info":      "If price filter, select the price range",
+          "options": [
+            { "value": "$0 - $1k", "label": "$0 - $1k" },
+            { "value": "$1k - $5k", "label": "$1k - $5k" },
+            { "value": "$5k - $10k", "label": "$5k - $10k" },
+            { "value": "$10k - $20k", "label": "$10k - $20k" },
+            { "value": "$20k - $50k", "label": "$20k - $50k" },
+            { "value": "$50k+", "label": "$50k+" }
+          ],
+          "default": "$0 - $1k"
+      }
+    ],
+    "blocks": [
+        {
+            "name": "Artwork",
+            "type": "art-work",
+            "settings": [
+                {
+                    "id": "product",
+                    "type": "product",
+                    "label": "Artwork"
+                }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Featured Atwork with Category Filter",
+        "category": "Filters"
+      }
+    ]
+}
+{% endschema %}

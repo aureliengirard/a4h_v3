@@ -1,0 +1,19 @@
+<article class="card-item filter-item filter-item {{filter_type}}__filter-item" filter="{{- filter -}}">
+    <a href="{{ filter_object }}">
+        <div class="img-container">
+            <div class="img-inner-container">
+                <img
+                    alt="{{ block_title }}"
+                    srcset="{{- image | img_url: '177x124', crop: 'center' }} 177w,
+                        {{- image | img_url: '338x194', crop: 'center' }} 338w,
+                        {{- image | img_url: '384x220', crop: 'center' }} 384w"
+                    sizes="(max-width: 767px) 177px, (max-width: 991px) 360px, 384px"
+                    src="{{ image | img_url: '384x220', crop: 'center' }}"
+                    class="lazyload" />
+            </div>
+        </div>
+        <div class="card-details filter-details">
+            <h4 class="card__title">{{ block_title }}</h4>
+        </div>
+    </a>
+</article>
