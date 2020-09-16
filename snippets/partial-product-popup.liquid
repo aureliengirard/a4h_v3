@@ -103,6 +103,23 @@
     </div>
     <div class="popup__form popup__section">
         <div style="margin:0 auto;" class="pxFormGenerator" id="474j5STfCzs9gp1WS-UyPA"></div>
+
+
+      <script>
+        $(document).ready(function(){
+
+          var  proTitle = "{{product.title}} | ID: {{product.id}}";
+          var refreshIntervalId_priceMatchform = setInterval(function(){
+            var new_frame = document.getElementById('frame_474j5STfCzs9gp1WS-UyPA');
+            if(new_frame != null){
+              new_frame.contentWindow.postMessage({product_title: proTitle, form_name: "Product Inquiry" }, 'https://formbuilder.hulkapps.com/corepage/customform?id=474j5STfCzs9gp1WS-UyPA');
+              clearInterval(refreshIntervalId);
+            }
+          },2000);
+
+        });
+      </script>
+
         <div class="disclaimer">
             <p>By clicking send, you accept our Privacy Policy.</p>
         </div>

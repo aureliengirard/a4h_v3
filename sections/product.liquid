@@ -71,7 +71,7 @@
         </div>
         <div class="col-md-6 product__metas bg--white">
             <h3 class="product__vendor"><a href="{{ artist.url }}">{{ artist.title }}</a></h3>
-            <h1 class="product__title">{{ product.title }}{%- if product.metafields.product.date -%}, {{ product.metafields.product.date | date: "%Y" }}{%- endif -%}</h1>
+            <h1 class="product__title">{{ product.title }} - {{product.id}}{%- if product.metafields.product.date -%}, {{ product.metafields.product.date | date: "%Y" }}{%- endif -%}</h1>
 
             <div class="product__meta">
                 <span class="meta--details">{{product.metafields.product.artwork_details}}</span>
