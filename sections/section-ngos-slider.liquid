@@ -1,0 +1,49 @@
+{% assign title = section.settings.title %}
+{% assign cta_label = section.settings.linktext %}
+{% assign cta_link = section.settings.link %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="title-has-cta">
+            <h2>{{title}}</h2>
+            {%- include 'partial-cta'  with { cta_label: {{cta_label}}, cta_url: {{cta_link}} } -%}
+        </div>
+        <div class="slider-logos__wrapper">
+            {%- include 'partial-ngo-slider' -%}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "NGOs Slider",
+    "class": "collection__ngo",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Art 4 Humans Editorial"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA Label",
+            "default": "span>View</span> all",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
+        }
+    ],
+    "presets": [
+      {
+        "name": "NGOs Slider",
+        "category": "List"
+      }
+    ]
+}
+{% endschema %}

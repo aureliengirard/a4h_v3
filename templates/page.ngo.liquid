@@ -1,0 +1,67 @@
+<div class="content__wrapper ngo-home__wrapper">
+
+    <section class="has_centerized_content">
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="rainbow-title">
+                    <h1 class="alt">First-class NGOs</h1>
+                </div>
+                <p>Art4Humans aims to put contemporary art back at the heart of social and environmental issues, to streamline awareness and action towards the challenges of our time. As such, 10% of each sale supports the UN Goal of your choice. The amount collected is sent to a partnered organization acting towards the UN Goal selected, according to the artist's choice.</p>
+                <p>We are building a global network of NGOs, charities, and foundations having a significant impact across all UN Goals internationally. Each partnered NGO is carefully selected based on their track record, their performance indicators and overhead ratios, to ensure maximum impact.</p>
+
+            </div>
+
+        </div>
+    </section>
+    <section class="collection collection__logos">
+        <div id="partnered_un_entities" class="anchor"></div>
+        <div class="row">
+            <div class="col-12 col-tb">
+                <h2>Partnered UN entities</h2>
+                <div class="collection-items">
+
+                    {% assign un_entities = shop.metafields.accentuate.partnered_un_entities %}
+                    {% for image in un_entities %}
+                        {%- assign meta = image.alt | split: ',' -%}
+
+                        {%- if meta[1] -%}<a class="card-item logo-item" href="{{meta[1]}}">{%- else -%}<div class="card-item logo-item">{%- endif -%}
+                            <img src="{{ image.cloudinary_src | append: 'w_180,h_180' }}"
+                                class="lazyload"
+                                alt="{{ meta[0] }}"/>
+                        {%- if meta[1] -%}</a>{%- else -%}</div>{%- endif -%}
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="collection collection__logos">
+        <div id="partnered_ngo" class="anchor"></div>
+        <div class="row">
+            <div class="col-12 col-tb">
+                <h2>Partnered NGOs</h2>
+                <div class="collection-items">
+
+                    {% assign ngo = shop.metafields.accentuate.single_ngo %}
+                    {% for image in ngo %}
+                        {%- assign meta = image.alt | split: ',' -%}
+
+                        {%- if meta[1] -%}<a class="card-item logo-item" href="{{meta[1]}}">{%- else -%}<div class="card-item logo-item">{%- endif -%}
+                            <img src="{{ image.cloudinary_src | append: 'w_180,h_180' }}"
+                                class="lazyload"
+                                alt="{{ meta[0] }}"/>
+                        {%- if meta[1] -%}</a>{%- else -%}</div>{%- endif -%}
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {%- include 'partial-section-all-ungoals', title: "Browse UN-Goals" -%}
+
+    {%- include 'partial-section-ungoals-divider' -%}
+
+</div>

@@ -1,0 +1,64 @@
+{%- if is_block != true -%}
+    <section class="un-goals-divider no-tb">
+{%- endif -%}
+
+    <div class="row un-goals-divider__wrapper">
+
+        {%- capture un_collections -%}
+        {%- for collection in collections -%}
+
+            {%- assign template_type = collection.template_suffix | strip -%}
+            {%- assign ungoals = "" -%}
+
+            {%- if template_type == 'ungoals' -%}
+                |{{- collection.title | replace: ".", "::" -}}::{{- collection.metafields.sdg.sdg_theme_color -}}
+            {%- else -%}
+                {%- continue -%}
+            {%- endif -%}
+
+        {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- assign sortedposts = un_collections | split: '|' | sort -%}
+
+        {%- capture divider_index -%}
+        {%- for post in sortedposts -%}
+        {%- if forloop.first -%}
+
+            {{- forloop.length -}}
+            {%- else -%}
+                {%- continue -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- for post in sortedposts -%}
+            {%- assign postitems = post | split: '::' -%}
+            {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+            {%- if un_id < 10 and un_id > 0 -%}
+            <div class="divider-item"><div style="background-color: {{- postitems[2] -}};"></div></div>
+            {%- else -%} {%- continue -%} {%- endif -%}
+
+        {%- endfor -%}
+
+        {% for post in sortedposts %}
+            {% assign postitems = post | split: '::' %}
+            {% assign un_id = postitems[0] | strip | plus: 0 %}
+            {%- if un_id > 9 -%}
+            <div class="divider-item"><div style="background-color: {{- postitems[2] -}};"></div></div>
+            {%- else -%} {%- continue -%} {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    <style media="screen">
+        .divider-item{
+            flex: 1 1 calc(100% / {{-divider_index-}});
+            max-width: calc(100% / {{-divider_index-}});
+        }
+    </style>
+
+{%- if is_block != true -%}
+    </section>
+{%- endif -%}

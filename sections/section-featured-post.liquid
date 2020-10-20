@@ -1,0 +1,81 @@
+{% assign title = section.settings.title %}
+{% assign cta_label = section.settings.linktext %}
+{% assign cta_link = section.settings.link %}
+{% assign blog = blogs.editorial %}
+
+<div class="row">
+    <div class="col-12">
+        {%- if cta_link -%}
+            <div class="title-has-cta">
+                <h2>{{ title }}</h2>
+                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_link } -%}
+            </div>
+        {%- else -%}
+            <h2>{{ title }}</h2>
+        {%- endif -%}
+        <div class="collection-items featured-items">
+            {% for article in blog.articles limit:3 %}
+                {% assign source = article.metafields.accentuate.source %}
+
+                <article class="card-item post-item">
+                    <a href="{{article.url}}">
+                        <div class="img-container">
+                            <div class="img-inner-container">
+                                <img
+                                    alt="{{ article.title }}"
+                                    srcset="{{- article.image | img_url: '181x114', crop: 'center' }} 181w,
+                                        {{- article.image | img_url: '360x225', crop: 'center' }} 360w,
+                                        {{- article.image | img_url: '385x240', crop: 'center' }} 440w"
+                                        sizes="(max-width: 767px) 181px, (max-width: 991px) 360px, 440px"
+                                    src="{{ image.src | img_url: '440x313' }}"
+                                    class="lazyload" />
+                            </div>
+                        </div>
+                        <div class="card-details card-meta blog-meta">
+                            <span class="meta__author">Randy Kennedy</span>
+                            <h4 class="card__title">{{ article.title }}</h4>
+                            {% capture date %}{{ article.published_at | date: "%B %Y" }}{% endcapture %}
+                            <span class="meta__date">{%- if source -%}{{ source }} - {%- endif -%}{{ date }}</span>
+                            </p>
+
+                        </div>
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Featured Post",
+    "class": "collection collection-of-3",
+    "tag": "section",
+    "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Hello world"
+        },
+        {
+            "id": "link",
+            "type": "url",
+            "label": "CTA link"
+        },
+        {
+            "id": "linktext",
+            "type": "text",
+            "label": "CTA Label",
+            "default": "Explore",
+            "info": "Add <span></span> arround words that should be hidden on mobile"
+        }
+    ],
+    "presets": [
+      {
+        "name": "Featured Post",
+        "category": "Editorial"
+      }
+    ]
+}
+{% endschema %}

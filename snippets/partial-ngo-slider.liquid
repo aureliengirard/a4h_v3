@@ -1,0 +1,15 @@
+<div class="slider-logos__wrapper">
+    <div class="slider-logos">
+        {%- assign ngo = shop.metafields.accentuate.single_ngo -%}
+        {%- for image in ngo -%}
+            {%- assign meta = image.alt | split: ',' -%}
+
+            {%- if meta[1] -%}<a class="card-item logo-item" href="{{meta[1]}}" target="_blank">{%- else -%}<div class="card-item logo-item">{%- endif -%}
+                <img src="{{ image.cloudinary_src | append: 'w_125,h_125' }}"
+                    class="lazyload"
+                    alt="{{ meta[0] }}"/>
+            {%- if meta[1] -%}</a>{%- else -%}</div>{%- endif -%}
+
+        {%- endfor -%}
+    </div>
+</div>
