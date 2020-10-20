@@ -969,3 +969,160 @@ $(".see-more__cta").on("click", function(e) {
       $(this).siblings(".see-more__content").toggleClass("active");
       $(this).toggleClass("active");
 });
+
+
+// MEGA MENU FUNCTIONS
+if (window.innerWidth >= 1024){
+    $(window).click(function() {
+        var MegamenuArtworks = document.getElementById('megamenu_artworks');
+        var MegamenuArtworksClass = MegamenuArtworks.className;
+        var MegamenuUngoals = document.getElementById('megamenu_ungoals');
+        var MegamenuUngoalsClass = MegamenuUngoals.className;
+
+        switch (MegamenuArtworksClass) {
+            case "megamenu active":
+            MegamenuArtworks.classList.remove("active");
+            break;
+        }
+
+        switch (MegamenuUngoalsClass) {
+            case "megamenu active":
+            MegamenuUngoals.classList.remove("active");
+            break;
+        }
+    });
+
+    $(".site-nav__link").mouseover(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $(".megamenu.active").toggleClass("active");
+        $(this).siblings(".megamenu").toggleClass("active");
+    });
+
+    // MEGA MENU FUNCTIONS
+    $('#MainContent').mouseover(function() {
+        var MegamenuArtworks = document.getElementById('megamenu_artworks');
+        var MegamenuArtworksClass = MegamenuArtworks.className;
+        var MegamenuUngoals = document.getElementById('megamenu_ungoals');
+        var MegamenuUngoalsClass = MegamenuUngoals.className;
+
+        switch (MegamenuArtworksClass) {
+            case "megamenu active":
+                MegamenuArtworks.classList.remove("active");
+                break;
+        }
+
+        switch (MegamenuUngoalsClass) {
+            case "megamenu active":
+                MegamenuUngoals.classList.remove("active");
+                break;
+        }
+    });
+
+    $('.megamenu').click(function(event){
+        event.stopPropagation();
+    });
+}
+
+if (window.innerWidth <= 1024){
+
+    $(".has-megamenu .site-nav__link").click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $(".megamenu.active").toggleClass("active");
+        $(this).siblings(".megamenu").toggleClass("active");
+    });
+
+    $('.menu-btn').click(function(event){
+        $(this).toggleClass("active");
+        $(this).siblings('.menu-icon').toggleClass("active");
+        $(this).siblings('.menu').toggleClass("active");
+    });
+
+    $('.nav--mobile').click(function(event){
+        $(this).parent('.megamenu').toggleClass("active");
+    });
+
+    $('.inner-col h4').click(function(event){
+        $(this).siblings('.inner-col__menu').toggleClass("active");
+        $(this).toggleClass("active");
+    });
+}
+
+
+
+$(".megamenu__filter").on("click", function(e){
+    var value_medium_key = 'value_medium';
+    var value_price_key = 'value_price';
+    var value_ungoal_key = 'value_ungoal';
+    var value_medium_value = $(this).attr('medium');
+    var value_price_value = $(this).attr('price');
+    var value_ungoal_value = $(this).attr('un-goal');
+
+    if (value_medium_value !== undefined) {
+        window.sessionStorage.setItem(value_medium_key, value_medium_value);
+        console.log(value_medium_key + value_medium_value);
+    } else if (value_price_value !== undefined) {
+        window.sessionStorage.setItem(value_price_key, value_price_value);
+        console.log(value_price_key + value_price_value);
+    } else if (value_ungoal_value !== undefined) {
+        window.sessionStorage.setItem(value_ungoal_key, value_ungoal_value);
+        console.log(value_ungoal_key + value_ungoal_value);
+    }
+
+});
+
+$('#search_form').on('awesomplete-selectcomplete', function(e){
+    var form = document.getElementById("search_bar");
+    //$('#search_form_submit').addClass('active');
+    form.submit();
+
+});
+
+$(".site-nav--search").on("click", function(e){
+    $('.search__form').toggleClass("active");
+});
+
+
+$(document).ready(function() {
+
+    $(".slider-logos").slick({
+        slidesToShow: 6,
+        slidesToScroll: 3,
+        dots: false,
+        arrows: true,
+        infinite: true,
+        speed: 500,
+        cssEase: 'linear',
+        nextArrow: '<div class="slick--next"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="40" viewBox="0 0 10 40"><g><g><path fill="#999" d="M9.802 20.086a1.397 1.397 0 0 0-.017-.417 1.307 1.307 0 0 0-.052-.206c-.004-.012-.004-.02-.008-.031L3.056 1.11A1.476 1.476 0 1 0 .281 2.119L6.763 19.93.28 37.742a1.478 1.478 0 0 0 2.775 1.01L9.725 20.43c.004-.01.004-.022.008-.031a1.464 1.464 0 0 0 .069-.313"/></g></g></svg></div>',
+        prevArrow: '<div class="slick--prev"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="40" viewBox="0 0 10 40"><g><g><path fill="#999" d="M9.802 20.086a1.397 1.397 0 0 0-.017-.417 1.307 1.307 0 0 0-.052-.206c-.004-.012-.004-.02-.008-.031L3.056 1.11A1.476 1.476 0 1 0 .281 2.119L6.763 19.93.28 37.742a1.478 1.478 0 0 0 2.775 1.01L9.725 20.43c.004-.01.004-.022.008-.031a1.464 1.464 0 0 0 .069-.313"/></g></g></svg></div>',
+
+        // the magic
+        responsive: [{
+
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 5,
+                infinite: false,
+            }
+
+        }, {
+            breakpoint: 800,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                infinite: false,
+            }
+
+        }, {
+            breakpoint: 767,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                infinite: false,
+            }
+            //settings: "unslick" // destroys slick
+
+        }]
+    });
+});

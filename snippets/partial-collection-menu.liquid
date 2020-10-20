@@ -1,25 +1,33 @@
-<div class="col-lg-3 static-menu static-menu-top collection__menu">
-    {%- if template.suffix == "ungoals" -%}
-        {% assign ungoal__tag_line = collection.metafields.accentuate.tag_line %}
-        <hgroup>
-            <h1>
-                <img src="{{ collection.image | img_url: '250x' }}" alt="{{ ungoal__title }}" title="{{ ungoal__title }}">
-            </h1>
-            <h4 style="color:{{theme_color}};">{{ ungoal__tag_line }}</h4>
-        </hgroup>
-    {%- else -%}
-        <h1 class="collection__title">{{collection.title}}</h1>
-    {%- endif -%}
+<div class="static-menu static-menu-top collection__menu">
+    <div class="collection__menu--header">
 
-    <ul class="collection__menu">
         {%- if template.suffix == "ungoals" -%}
-            <li class="collection-nav__item active"><a href="#about">About</a></li>
+            {% assign ungoal__tag_line = collection.metafields.accentuate.tag_line %}
+            <hgroup>
+                <h1>
+                    <img src="{{ collection.image | img_url: '250x' }}" alt="{{ ungoal__title }}" title="{{ ungoal__title }}">
+                </h1>
+                <h4 style="color:{{theme_color}};">{{ ungoal__tag_line }}</h4>
+            </hgroup>
+        {%- else -%}
+            <h1 class="collection__title">{{collection.title}}</h1>
+        {%- endif -%}
+
+        <div class="menu--toggler">
+            {%- include 'icon-collection-menu' -%}
+            {%- include 'icon-collection-menu-close' -%}
+        </div>
+    </div>
+
+    <ul class="collection__menu--body">
+        {%- if template.suffix == "ungoals" -%}
+            <li class="collection-nav__item"><a class="active" href="#about">About</a></li>
         {%- endif -%}
         {%- if template.suffix == "artist" -%}
-            <li class="collection-nav__item active"><a href="#career-highlights">Career Highlights</a></li>
+            <li class="collection-nav__item"><a class="active" href="#career-highlights">Career Highlights</a></li>
         {%- endif -%}
         {%- if template.suffix == "gallery" -%}
-            <li class="collection-nav__item active"><a href="#overview">Overview</a></li>
+            <li class="collection-nav__item"><a class="active" href="#overview">Overview</a></li>
         {%- endif -%}
             <li class="collection-nav__item"><a href="#curated-artworks">Curated artworks</a></li>
         {%- if template.suffix == "gallery" -%}
@@ -44,13 +52,16 @@
             <li class="collection-nav__item"><a href="#major-exhibitions">Major Exhibitions</a></li>
         {%- endif -%}
         {%- if template.suffix == "artist" -%}
-            <li class="collection-nav__item"><a href="#major-media">Major Media</a></li>
+            <li class="collection-nav__item"><a href="#major-press">Major Media</a></li>
         {%- endif -%}
         {%- if template.suffix == "artist" -%}
             <li class="collection-nav__item"><a href="#market-data">Market Data</a></li>
         {%- endif -%}
         {%- if template.suffix == "artist" -%}
             <li class="collection-nav__item"><a href="#related-artists">Related Artists</a></li>
+        {%- endif -%}
+        {%- if template.suffix == "ungoals" and ngo_list -%}
+            <li class="collection-nav__item"><a href="#partnered-ngo">Partnered NGOs</a></li>
         {%- endif -%}
         {%- if template.suffix == "ungoals" -%}
             <li class="collection-nav__item"><a href="#commited-artists">Commited Artists</a></li>
@@ -64,12 +75,47 @@
 
     <script type="text/javascript">
         $(window).scroll(function() {
+
+            var scrollTop = $(window).scrollTop();
+
             $(".static-menu").addClass("static-menu-top");
             $(".static-menu").removeClass("static-menu-bottom");
-            if($(window).scrollTop() + $(window).height() > ($(document).height() - 515) ) {
+
+            if(scrollTop + $(window).height() > ($(document).height() - 515) ) {
                 //you are at bottom
                 $(".static-menu").addClass("static-menu-bottom");
                 $(".static-menu").removeClass("static-menu-top");
             }
+
+            var anchors = $('body').find('.anchor');
+
+            for (var i = 0; i < anchors.length; i++){
+                if (scrollTop > ($(anchors[i]).offset().top - 60) && scrollTop < $(anchors[i]).offset().top + $(anchors[i]).parent().height() + 20) {
+                    $('.collection-nav__item a[href="#' + $(anchors[i]).attr('id') + '"]').addClass('active');
+                } else {
+                    $('.collection-nav__item a[href="#' + $(anchors[i]).attr('id') + '"]').removeClass('active');
+                }
+            }
         });
+
+        var $document = $(document),
+        $element = $('.static-menu'),
+        className = 'static';
+
+        $document.scroll(function() {
+          $element.toggleClass(className, $document.scrollTop() >= 120);
+        });
+
+        $(".collection__menu--header").on("click", function(e){
+            $(".collection__menu--body").toggleClass("active");
+            $(this).toggleClass("active");
+        });
+
+        $(".collection-nav__item a").on("click", function(e){
+            $(".collection__menu--body").toggleClass("active");
+            $(".collection__menu--header").toggleClass("active");
+        });
+
+
+
     </script>

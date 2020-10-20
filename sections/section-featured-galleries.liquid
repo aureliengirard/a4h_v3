@@ -7,7 +7,7 @@
         {%- if cta_link -%}
             <div class="title-has-cta">
                 <h2>{{ title }}</h2>
-                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_url } -%}
+                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_link } -%}
             </div>
         {%- else -%}
         <h2>{{ title }}</h2>

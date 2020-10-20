@@ -3,17 +3,16 @@
 
 <div class="row">
     <div class="col-12">
-        {%- if section.settings.link -%}
+        {%- if cta_label -%}
             <div class="title-has-cta">
                 <h2>{{ title }}</h2>
-                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: "https://a4hproject.myshopify.com/" } -%}
+                {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: "/collections/all" } -%}
             </div>
         {%- else -%}
             <h2>{{ section.settings.title }}</h2>
         {%- endif -%}
         <div class="collection-items featured-items">
             {% for block in section.blocks %}
-
                 {% assign product = all_products[block.settings.product] %}
                 {% include 'partial-product-card', with card_per_row: 4 %}
 

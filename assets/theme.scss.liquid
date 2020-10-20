@@ -467,8 +467,8 @@ section {
 ========================================================================== */
 
 // Fonts Import
-@import url('https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600,700,800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,700;1,200;1,300;1,400;1,700&display=swap');
+//@import url('https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600,700,800&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,700;1,200;1,300;1,400;1,700&display=swap');
 
 $nunito: 'Nunito', sans-serif;
 $raleway: 'Raleway', sans-serif;
@@ -502,11 +502,11 @@ h6 {
 h1 {
     font-size: 1.5em;
     margin: 0 0 $gutter*(2/3);
-    text-transform: uppercase;
     line-height: 1.3;
     font-weight: 700;
 
     @include respond-above($md) {
+        text-transform: uppercase;
         line-height: 1.15;
         font-size: 2em;
     }
@@ -517,9 +517,17 @@ h1 {
 
     &.h1__menu,
     &.alt{
-        font-size: (28.8 / $base)+em;
-        text-transform: uppercase;
-        font-weight: 800;
+
+        @include respond-above($md){
+            font-size: (28.8 / $base)+em;
+            text-transform: uppercase;
+            font-weight: 800;
+
+            span{
+                display: block;
+                font-weight: 700;
+            }
+        }
     }
 
     &.h1__alt{
@@ -543,11 +551,15 @@ h1 {
     }
 
     .collection__menu & {
-        font-size: (48 / $base)+em;
-        line-height: 1;
-        font-weight: 400;
+        font-size: (26 / $base-mobile)+em;
         font-family: $nunito;
-        text-transform: capitalize;
+        font-weight: 400;
+
+        @include respond-above($md){
+            font-size: (48 / $base)+em;
+            line-height: 1;
+            text-transform: capitalize;
+        }
     }
 }
 
@@ -1236,7 +1248,7 @@ textarea {
         @include respond-above($lg){
             content: "";
             position: absolute;
-            width: calc(100% + $spacing-xxl);
+            //width: calc(100% + $spacing-xxl);
             left: ($spacing-xxl / 2) * -1;
             right: ($spacing-xxl / 2) * -1;
             top: $spacing-xxl * -1;
@@ -1421,6 +1433,10 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
     position: relative;
     //width: calc(100% - 33px);
 
+    @include respond-below($lg){
+        width: 100%;
+    }
+
     mark {
         background-color: transparent;
         font-weight: 600;
@@ -1528,7 +1544,7 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 
 .anchor{
-    top: -($spacing * 15);
+    top: -($spacing * 13.75);
     position: absolute;
 }
 
@@ -1688,16 +1704,6 @@ nav {
     transition: all .15s ease-in-out;
     height: $spacing-xxl * 1.5;
 
-    [class*="row"]{
-        width: 100%;
-        //width: 1400px;
-
-        @include respond-above($xxxl){
-            max-width: 92%;
-            margin: auto;
-        }
-    }
-
     &.active{
         background: rgba(0,0,0,0.9);
         height: 100vh;
@@ -1727,6 +1733,19 @@ nav {
         padding: $spacing-xxl*.75 $spacing-xxl*1.5;
     }
 
+    [class*="row"]{
+        width: 100%;
+        //width: 1400px;
+
+        @include respond-above($xxxl){
+            max-width: 92%;
+            margin: auto;
+        }
+
+        @include respond-below($lg){
+            @include justify-content(flex-start);
+        }
+    }
 
     // LOGO & COUNTRY DROPDOWN CONTAINER
     .nav__left-container{
@@ -1737,7 +1756,6 @@ nav {
         color: $black;
         text-decoration: none !important;
         font-family: $raleway;
-        font-weight: 800;
 
         &:visited, &:active{
             color: $black;
@@ -1754,12 +1772,48 @@ nav {
         width: fit-content;
 
         @include respond-below($lg) {
-            display: none;
+            &:not(.active){
+                display: none;
+            }
+
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 0;
+            background-color: $white;
+            border-top: 1px solid $gray;
         }
 
         form{
-            margin: auto;
-            padding-top: $spacing;
+
+            @include respond-above($lg){
+                margin: auto;
+                padding-top: $spacing;
+            }
+
+            @include respond-below($lg){
+                width: 100%;
+                padding: $spacing*2 $gutter;
+            }
+        }
+
+        .awesomplete{
+            float: left;
+
+            @include respond-below($lg){
+                width: calc(100% - 38px);
+            }
+
+            @include respond-below($lg){
+                width: calc(100% - 38px);
+                display: inline-block;
+            }
+
+            ul{
+                top: 100%;
+            }
         }
 
         button[type="submit"],
@@ -1770,43 +1824,77 @@ nav {
             font-family: $raleway;
             background-color: $white;
             line-height: 1.35;
+
+            @include respond-below($lg){
+                border: 1px solid transparent;
+            }
         }
 
         input[type="text"]{
             border-right: 0;
             min-width: $spacing-xxl * 6;
             padding: $spacing $spacing * 2;
+            width: 100%;
 
             @include placeholders($light-gray,$raleway, none, 400, 1em);
         }
 
         button[type="submit"]{
             border-left: 0;
-            padding: $spacing*1.25;
+            padding: $spacing*.75;
+
+            @include respond-below($lg){
+                display: inline-block;
+            }
+
+            &.active{
+
+                svg{
+                    fill: $black;
+                }
+            }
 
             svg{
-                height: $spacing * 2;
+                height: $spacing * 3;
                 width: auto;
                 vertical-align: text-top;
+                fill: $black;
+                //fill: $gray;
             }
         }
+    }
+
+    .menu-btn {
+        display: none;
+    }
+
+    .menu, .menu--mobile {
+        padding: 0;
+        list-style: none;
     }
 
     .menu {
         margin: 0 0 0 auto;
         padding: 0;
         list-style: none;
-        @include flexbox;
+
+        @include respond-above($lg){
+            @include flexbox;
+        }
 
         @include respond-below($lg){
-            overflow: hidden;
-            max-height: 0;
-            height: 0;
-            @include flex-wrap(wrap);
-            @include align-content(center);
-            text-align: center;
             background-color: $white;
-            //padding: 30px 30px 100px;
+            width: 100%;
+            height: 0;
+            max-height: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        &.active{
+            height: calc(100vh - 60px);
+            max-height: 100%;
+            padding: $gutter;
         }
 
         li{
@@ -1821,63 +1909,296 @@ nav {
                 flex: 1 1 100%;
             }
 
-            a {
-                padding: $spacing*2 $spacing*1.25;
+            a:not(.cta) {
                 font-size: 1em;
-                font-weight: 700;
 
                 @include respond-below($lg) {
                     display: block;
-                    padding: $spacing*1.5;
-                    margin: 10px 0;
-                    font-size: 18px;
-                    text-transform: uppercase;
+                    font-size: (18 / $base-mobile) + em;
                 }
 
-                @include respond-above($xl) {
-                    padding: $spacing*1.875 $spacing*2.25;
+                &.site-nav__link{
+                    padding: $spacing*2 $spacing*1.25;
+                    font-weight: 700;
+
+                    @include respond-below($lg) {
+                        padding: $spacing*1.5 0;
+                    }
+
+                    @include respond-above($xl) {
+                        padding: $spacing*1.875 $spacing*2.25;
+                    }
                 }
             }
 
-            &.site-nav--active a {
+            &.site-nav--active a.site-nav__link {
                 color: $yellow;
+            }
+
+            &.site-nav--lg-only{
+                @include respond-below($lg){
+                    display: none;
+                }
             }
         }
     }
 
-    .menu-btn {
-        display: none;
+    .has-megamenu{
 
-        &:checked ~ {
+        .site-nav__link{
+            cursor: pointer;
 
-            .menu {
-                height: calc(100vh - 66px);
-                max-height: 100%;
-            }
+            span{
 
-            .menu-icon {
-
-                .navicon {
-                    background: transparent;
-
-                    &:before {
-                        transform: rotate(-45deg);
-                    }
-
-                    &:after {
-
-                        transform: rotate(45deg);
-                    }
-                }
-
-                &:not(.steps) .navicon {
-
-                    &:before, &:after {
-                        top: 0;
+                @include respond-below($lg){
+                    &:after{
+                        content: "";
+                        background: url('{{ 'mega-menu-arrow.png' | asset_url }}') no-repeat 50% 50%;
+                        height: 1em;
+                        width: 7px;
+                        padding: 0 14px;
                     }
                 }
             }
         }
+
+    }
+
+    .megamenu{
+        transform: translatex(-100%);
+        z-index: -1;
+        transition-property: transform;
+        transition-duration: .1s;
+        transition-timing-function: ease;
+        transition-delay: 0s;
+
+        @include respond-below($lg){
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(100% + 2px);
+            z-index: 101;
+            padding: $gutter 0 $spacing-xxl $gutter;
+            border-right: 2px solid $gray;
+            height: 100%;
+            overflow-x: scroll;
+        }
+
+        @include respond-above($lg){
+            max-height: 0;
+            overflow: hidden;
+            transform: translateY(-125%);
+            border-top: 1px solid $gray;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100%);
+        }
+
+        &.active{
+            transform: translate(0);
+            max-height: inherit;
+            background-color: $white;
+
+            .col{
+                opacity: 1;
+                transition-property: opacity;
+                transition-duration: .1s;
+                transition-timing-function: ease-in;
+                transition-delay: 0.15s;
+            }
+
+        }
+
+        .nav--mobile{
+            text-align: center;
+            font-size: (18 / $base-mobile) + em;
+            position: relative;
+
+            h3{
+                padding-top: $spacing * 1.5;
+            }
+
+            &:before{
+                content: "";
+                background: url('{{ 'mega-menu-arrow.png' | asset_url }}') no-repeat 50% 50%;
+                height: 1em;
+                width: 7px;
+                padding: 0 14px;
+                transform: rotate(180deg);
+                position: absolute;
+                top: $spacing * 2;
+                left: 0;
+            }
+
+            @include respond-above($lg){
+                display: none;
+            }
+        }
+
+        .col{
+            @include respond-above($lg){
+                $first-col: 18.25%;
+                opacity: 0;
+                margin-bottom: $spacing-xxl*1.25;
+
+                &:nth-child(1){
+                    padding: $spacing-xxl 0 $spacing-xxl $spacing-xxl*2;
+                    border-right: 1px solid $gray;
+                    flex: 1 1 $first-col;
+                }
+
+                &:nth-child(2){
+                    padding: $spacing-xxl $spacing-xxl*2;
+                    flex: 1 1 (100% - $first-col);
+                }
+            }
+
+            @include respond-below($lg){
+                &:nth-child(1){
+                    //order: 101;
+                    padding-bottom: $spacing;
+                }
+            }
+        }
+
+        .inner-col__menu,
+        .inner-col{
+            flex: 100%;
+
+            @include respond-above($lg){
+                display: inherit;
+                @include flex-flow(column);
+                flex: auto;
+
+                &:nth-child(3){
+                    max-width: 60%;
+                }
+            }
+        }a
+
+        .inner-col{
+            @include respond-below($lg){
+                border-top: 1px solid $gray;
+
+                &:nth-last-of-type(1){
+                    border-bottom: 1px solid $gray;
+                }
+            }
+        }
+
+        .inner-col__menu{
+
+            @include respond-below($lg){
+                overflow: hidden;
+                height: 100%;
+                max-height: 100%;
+
+                &:not(.active){
+                    max-height: 0;
+                    border: 0;
+                }
+            }
+        }
+
+        h4{
+
+            @include respond-above($lg){
+                margin-bottom: $spacing*3;
+            }
+
+            @include respond-below($lg){
+                font-size: (18 / $base-mobile) + em;
+                font-weight: 600;
+
+                span{
+
+                    &:after{
+                        content: "";
+                        background: url('{{ 'mega-menu-arrow.png' | asset_url }}') no-repeat 50% 50%;
+                        height: 1em;
+                        width: 7px;
+                        padding: 0 14px;
+                        left: 0;
+                    }
+                }
+            }
+
+            &.active{
+                span{
+                    &:after{
+                        transform: rotate(90deg);
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+
+        .megamenu__link{
+            padding: $spacing*1.5 0;
+            width: fit-content;
+            font-weight: 400;
+
+            @include respond-above($lg){
+                font-family: $nunito;
+            }
+        }
+
+        .cta{
+            @include respond-below($lg){
+                margin: $spacing * 1.5 0;
+
+                p{
+                    font-size: (18 / $base-mobile)+em;
+                    font-style: normal;
+                }
+            }
+        }
+
+        .item-list{
+
+            @include respond-below($lg){
+                @include column(1);
+            }
+        }
+    }
+
+
+
+    .menu--mobile{
+        margin-left: auto;
+        margin-right: $spacing * 2.2;
+
+        @include respond-above($lg){
+            display: none;
+        }
+
+        li{
+            display: -webkit-inline-flex;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            margin: 0 $spacing;
+            height: 100%;
+
+            a{
+                margin: auto;
+            }
+        }
+
+        svg{
+            height:  $spacing * 2.5;
+            width: auto;
+        }
+
+        .cart-icon svg{
+            height:  $spacing * 3;
+            width: auto;
+        }
+
+        .search-icon{
+            padding-bottom: 2px;
+        }
+
     }
 
     .logo {
@@ -1900,7 +2221,7 @@ nav {
         }
 
         @include respond-below($sm) {
-            padding: 15px;
+            padding: 15px 15px 15px 0;
 
             img{
                 height: $spacing * 3.75;
@@ -1912,12 +2233,51 @@ nav {
     .menu-icon {
         float: right;
         cursor: pointer;
-        padding: 26px 18px;
+        padding: $gutter $spacing * 2;
         position: relative;
         user-select: none;
 
         @include respond-above($lg) {
             display: none;
+        }
+
+        &.active{
+
+            .navicon {
+                background: transparent;
+
+                &:before {
+                    transform: rotate(-45deg);
+                }
+
+                &:after {
+                    transform: rotate(45deg);
+                }
+            }
+
+            /*
+            &:not(.steps) .navicon {
+
+                &:before, &:after {
+                    top: 0;
+                }
+            }
+            */
+        }
+
+        &:not(.active){
+
+            .navicon {
+                background: $black;
+
+                &:before {
+                    top: 6px;
+                }
+
+                &:after {
+                    top: -6px;
+                }
+            }
         }
 
         .navicon {
@@ -1936,46 +2296,14 @@ nav {
                 width: 100%;
             }
 
-            &:before {
-                top: 6px;
-            }
-
-            &:after {
-                top: -6px;
-            }
         }
     }
 
-    .join-cntn{
-        @include flexbox;
-        @include flex-flow(row wrap);;
+    .cart-icon {
 
-        @include respond-below($lg) {
-            right: 90px;
-            position: absolute;
-            top: 32px;
-        }
-
-        @include respond-below($md) {
-            right: 60px;
-        }
-
-        .cart-icon {
-            margin: auto 2em auto auto;
-
-            svg {
-                width: 30px;
-                height: 30px;
-            }
-        }
-
-        #ly-languages-switcher{
-            font-size: 14px;
-            margin: auto 1.5em auto auto;
-            font-weight: 300;
-            .current_lang,img{
-                display: none !important;
-            }
+        svg {
+            width: $spacing*2.5;
+            height: $spacing*2.5;
         }
     }
 }
@@ -2024,16 +2352,20 @@ footer {
         padding-bottom: $spacing-xxl * .4;
 
         @include respond-above($xl){
-            padding-top: $spacing-xxl;
-            padding-bottom: $spacing-xxl;
+            padding: $spacing-xxl 0;
+        }
+
+
+        @include respond-above($xxl){
         }
 
         .row{
-            width: 100%;
-            max-width: 92%;
+            //width: 100%;
+            //max-width: 92%;
 
-            @include respond-above($xl){
-                width: 1350px;
+            @include respond-above($xxxl){
+                //max-width: 92%;
+                //width: 1350px;
             }
 
             & > div{
@@ -2092,10 +2424,10 @@ footer {
         }
 
         img{
-            margin: $spacing auto;
+            margin: auto;
 
             @include respond-above($lg){
-                margin: $spacing*2 auto;
+                margin: auto $spacing*2 auto 0;
             }
         }
 
@@ -2238,7 +2570,7 @@ main section{
     }
 
     @include respond-below($lg){
-        &:before{
+        &:not(.no-tb):before{
             content: "";
             position: absolute;
             background-color: $gray;
@@ -2257,7 +2589,18 @@ main section{
         }
     }
 
+    &.no-padding{
+        padding: 0;
+    }
+
+    &.no-tb{
+        @include respond-below($lg){
+            padding-top: 0;
+        }
+    }
+
     &.shopify-section{
+        padding: 0;
 
         .template-index &{
 
@@ -2276,15 +2619,17 @@ main section{
         }
     }
 
-    &.shopify-section{
-        padding: 0;
+    &.has_centerized_content{
+        @include respond-above($md){
+            text-align: center;
+        }
     }
 
     // Product page - main section
     &.single-product__header {
 
         .row{
-            @include align-items(flex-end)
+            @include align-items(flex-start)
         }
 
         .product__images {
@@ -2353,8 +2698,9 @@ main section{
             }
 
             .product__price-impact{
+                margin-top: $spacing/2;
                 color: $cyan;
-
+                font-weight: 700;
             }
 
             .product__shipping-info{
@@ -2364,6 +2710,14 @@ main section{
                     display: block;
                     margin: .125em 0;
                     font-weight: 400;
+                }
+
+                a{
+                    font-weight: 700;
+
+                    &:hover{
+                        color: $yellow;
+                    }
                 }
             }
 
@@ -2651,6 +3005,15 @@ main section{
         }
     }
 
+    &.collection__logos{
+        .collection-items{
+            @include respond-above($lg){
+                margin-left: $spacing-xxl * -1;
+                width: calc(100% + 40px);
+            }
+        }
+    }
+
     &.collection-limit-of-4{
         .card-item{
             &:nth-child(n + 5){
@@ -2749,30 +3112,13 @@ main section{
     }
 
     &.collection-has-filters{
+        @include respond-above($lg){
             min-height: 100vh;
+        }
     }
 
 
     &.collection__hero{
-        .row .row{
-            @include respond-above($lg){
-                //@include align-items(center);
-            }
-        }
-
-        .gallery__social{
-            @include respond-above($lg){
-                margin-bottom: $gutter;
-
-                h2{
-                    margin-bottom: 0
-                }
-
-                .social__icons{
-                    @include justify-content(flex-end);
-                }
-            }
-        }
 
         .meta__locations{
             text-align: center;
@@ -2797,7 +3143,10 @@ main section{
         .impact-logos{
             @include flexbox;
             @include flex-flow(wrap);
-            @include justify-content(space-between);
+
+            @include respond-below($md){
+                @include justify-content(space-between);
+            }
 
             a{
                 $size: 174px;
@@ -2828,6 +3177,15 @@ main section{
         }
 
         &.artist__un-commitment{
+            p{
+                a{
+                    font-weight: 700;
+
+                    &:hover{
+                        color: $yellow;
+                    }
+                }
+            }
             .impact-logos{
 
                 a{
@@ -2906,7 +3264,7 @@ main section{
             }
         }
 
-        h1,h4{
+        h1,h3{
             color: $white;
             margin: $spacing 0;
 
@@ -2916,7 +3274,17 @@ main section{
             }
         }
 
-        h4{
+        h1{
+            line-height: 1;
+
+            span{
+                font-family: $nunito;
+            }
+        }
+
+        h3{
+            font-weight: 600;
+
             @include respond-below($md){
                 font-weight: 400;
                 font-size: (18/14)+em;
@@ -3004,16 +3372,20 @@ main section{
 }
 
 .ungoal-home__wrapper{
-    @include respond-below($lg){
-        @include flexbox;
-        @include flex-flow(column wrap);
 
-        section{
-            order: 1;
+    .decade-of-action{
+        &.small{
+
+            @include respond-above($lg){
+                display: none;
+            }
         }
 
-        .decade-of-action{
-            order: 2;
+        &.large{
+
+            @include respond-below($lg){
+                display: none;
+            }
         }
     }
 
@@ -3192,6 +3564,38 @@ main section{
     }
 }
 
+.follow__banner{
+    display: none;
+    background-color: $gray;
+
+    @include respond-above($lg){
+        display: block;
+    }
+
+    .social__icons{
+        margin: $spacing-xxl/2 auto;
+    }
+
+    .social__link{
+        path{
+            fill: $yellow;
+
+        }
+        &:hover {
+
+            path{
+                fill: $black !important;
+            }
+        }
+    }
+
+    .shop__logo{
+            margin-right: $spacing-xxl;
+            display: block;
+    }
+
+}
+
 // CART
 .template-cart{
     .cart{
@@ -3358,11 +3762,8 @@ main section{
     color: $black;
     cursor: pointer;
 
-    *{
-        transition: all .15s ease;
-    }
-
     svg{
+        transition: margin-right .15s ease, margin-left .15s ease;
         margin-right: $spacing;
 
         @include respond-below($lg){
@@ -3415,6 +3816,10 @@ main section{
         flex: 0 0 auto;
         margin: auto auto auto 0;
         max-width: 75%;
+
+        @include respond-below($md){
+            max-width: 55%;
+        }
 
         span{
             @include respond-below($lg){
@@ -3511,6 +3916,8 @@ main section{
             font-size: 1em;
         }
 
+        .meta__author,
+        .meta__date,
         .card__origin,
         .card__gallery{
             font-weight: 400;
@@ -3521,6 +3928,10 @@ main section{
 
             .un-goals{
                 display: inline-block;
+
+                @include respond-below($md){
+                    width: 30%;
+                }
             }
 
             @include respond-below($md){
@@ -3528,7 +3939,6 @@ main section{
             }
 
             img{
-                width: 30%;
                 height: auto;
 
                 @include respond-above($md){
@@ -3702,15 +4112,50 @@ main section{
     }
 }
 
+
 .artist-item{
     .img-inner-container{
+
+        @include respond-above($xl){
+            height: 285px;
+        }
+
         img{
-            max-height: 265px;
+            max-height: 285px;
         }
     }
 }
 
+.no_results-item{
+    width: 100% !important;
+    height: 100%;
+    display: inherit;
+    @include justify-content(center);
+    @include align-items(center);
+
+    svg{
+        margin-bottom: $spacing-xxl * 1.5;
+
+        @include respond-below($xl){
+            width: 150px;
+            height: auto;
+            margin-bottom: $spacing-xxl;
+        }
+    }
+
+    h3{
+        text-align: center;
+        max-width: 90%
+    }
+
+    .template-collection &{
+        min-height: calc(60vh);
+    }
+}
+
 .ungoal-item{
+    width: 100%;
+
     a{
         @include flexbox;
     }
@@ -3804,6 +4249,21 @@ main section{
     }
 }
 
+.divider-item{
+    height: $spacing*2;
+    padding: $spacing/8;
+
+    @include respond-above($md){
+        height: $spacing*3.5;
+        padding: $spacing/4;
+    }
+
+    div{
+        height: 100%;
+        width: 100%;
+    }
+}
+
 .filter-item{
 
     a{
@@ -3852,27 +4312,6 @@ main section{
     }
 
     .card-meta{
-        padding: $spacing*2 $gutter;
-        @include flexbox;
-        @include flex-flow(wrap);
-
-        @include respond-above($lg){
-            padding: $gutter;
-            min-height: $gutter * 6;
-        }
-
-        & > *{
-            width: 100%;
-        }
-
-        span,h4 {
-            text-align: center;
-            display: block;
-        }
-
-        h4{
-            margin: auto 0 !important;
-        }
 
         .meta__location{
             font-weight: 400;
@@ -3882,7 +4321,84 @@ main section{
         .meta__date{
             margin-bottom: auto;
         }
+    }
+}
 
+.post-item,
+.media-item{
+    .card-meta{
+        padding: $spacing*2 $gutter;
+        @include flexbox;
+        @include flex-flow(wrap);
+
+        @include respond-above($lg){
+            padding: $gutter;
+            min-height: $gutter * 6;
+        }
+    }
+
+    .card-meta{
+
+        & > *{
+            width: 100%;
+        }
+    }
+
+    span,h4 {
+        text-align: center;
+        display: block;
+    }
+
+    h4{
+        margin: auto 0 !important;
+    }
+}
+
+.post-item{
+
+        @include respond-below($md){
+            width: 100%;
+        }
+}
+
+.logo-item{
+    height: auto;
+
+    @include respond-below($md){
+        padding: $spacing * 1.5;
+
+        .collection-items &{
+            border: 1px solid $gray;
+        }
+    }
+
+    @include respond-between($md,$lg){
+        $size: 32%;
+        margin: (100% - (32% * 3)) / 6;
+        width: $size;
+        height: auto;
+        padding: $spacing * 2;
+
+        .collection-items &{
+            border: 1px solid $gray;
+        }
+    }
+
+    @include respond-above($xl){
+        width: 150px;
+        margin: $spacing-xxl 0 $spacing-xxl $spacing-xxl;
+    }
+
+    .slider-logos &{
+        margin: $spacing-xxl auto;
+        outline: none;
+
+        img{
+            margin: auto;
+        }
+        @include respond-above($xl){
+            //margin: $spacing-xxl 0 $spacing-xxl $spacing-xxl;
+        }
 
     }
 }
@@ -3980,8 +4496,8 @@ main section{
             }
 
             svg{
-                width: $spacing-xxl/2;
-                height: auto;
+                height: $spacing * 3;
+                width: auto;
                 margin-right: $spacing;
             }
         }
@@ -4168,6 +4684,19 @@ main section{
     }
 }
 
+.gallery__social{
+    @include respond-above($lg){
+        margin-bottom: $gutter;
+
+        h2{
+            margin-bottom: 0
+        }
+
+        .social__icons{
+            @include justify-content(flex-end);
+        }
+    }
+}
 
 .social-sharing__wrapper{
     @include respond-below($lg){
@@ -4427,16 +4956,20 @@ main section{
     }
 }
 
+
+
 .static-menu{
     @include respond-below($lg){
-        display: none;
+        padding: $gutter $spacing * 3;
+        //display: none;
     }
 
     @include respond-above($lg){
         background-color: rgba(255,255,255,1);
-        height: calc(100vh - 180px);
-        top: 180px;
-        //max-height: calc(100vh - 200px);
+        height: fit-content;
+        //top: 180px;
+        max-height: calc(100vh - 180px);
+        min-height: calc(100vh - 320px);
         //height: 100%;
         z-index: 101;
         max-width: $grid-lg * .22375;
@@ -4451,23 +4984,12 @@ main section{
 
     }
 
-    &.collection__menu{
-        @include respond-above($lg){
-            //margin-bottom: 512px;
 
-            &.static-menu-bottom{
-
-            }
-
-        }
-
-    }
-
-    &.static-menu-top{
+    &:not(.static-menu-bottom){
 
         @include respond-above($lg){
-            //top: $spacing-xxl * 4.5;
             position: fixed;
+            top: 180px;
         }
     }
 
@@ -4481,52 +5003,175 @@ main section{
 }
 
 .collection__menu{
-    max-width: $spacing-xxl *6.25;
+    background-color: $white;
+    border-color: $gray !important;
+
+    @include respond-above($lg){
+        max-width: $spacing-xxl *6.25;
+    }
+
+    @include respond-below($lg){
+
+        &.static{
+            position: fixed;
+            z-index: 101;
+            left: 0;
+            right: 0;
+            border-bottom: 1px solid;
+            padding: $spacing*1.5 $gutter;
+        }
+    }
 
     *{
         transition: all .15s ease-in;
     }
 
-    ul{
-        padding-left: 0;
-        list-style: none;
-        margin-top: $spacing-xxl * 1.5;
-    }
+    .collection__menu--header{
+        @include flexbox;
+        @include justify-content(space-between);
 
-    li{
-        margin: $spacing*2 0;
-        font-family: $raleway;
-        font-weight: 400;
-        text-transform: uppercase;
+        h1, hgroup{
+            flex: 1 1 calc(100% - 26px);
+            max-width: calc(100% - 26px);
+            padding-right: $gutter;
 
-        a{
-            display: inline;
-            padding-bottom: 2px
-        }
-
-        &:hover,
-        &.active{
-            font-weight: 700;
-
-            a{
-                border-bottom: 2px solid $yellow;
+            @include respond-below($lg){
+                margin-bottom: 0;
             }
         }
+
+        &.active{
+
+            & > .menu--toggler{
+
+                svg{
+                    &:nth-child(1){
+                        opacity: 0;
+                    }
+
+                    &:nth-child(2){
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+
+        & > .menu--toggler{
+            flex: 1 1 26px;
+            max-width: 26px;
+            height: 26px;
+            margin-top: $spacing/2;
+            margin-bottom: auto;
+            position: relative;
+
+            svg{
+                margin: auto;
+                background: $white;
+
+                .template-collection-artist & {
+                    fill: $yellow;
+                }
+
+                &:nth-child(1){
+                    opacity: 1;
+                }
+
+                &:nth-child(2){
+                    position: absolute;
+                    opacity: 0;
+                    top: 0;
+                    right: 0;
+                }
+            }
+
+            @include respond-above($lg){
+                display: none;
+            }
+
+        }
     }
+
+    .collection__menu--body{
+        list-style: none;
+        padding-left: 0;
+
+        @include respond-above($lg){
+            margin-top: $spacing-xxl * 1.5;
+        }
+
+        @include respond-below($lg){
+            margin-top: $gutter;
+            background-color: #f7f7f7;
+            margin-left: $gutter * -1;
+            margin-right: $gutter * -1;
+            min-height: calc(100vh - 140px);
+
+            &:not(.active){
+                display: none;
+            }
+        }
+
+        li{
+            font-family: $raleway;
+            font-weight: 400;
+            text-transform: uppercase;
+
+            @include respond-above($lg){
+                margin: $spacing*2 0;
+            }
+
+
+            a{
+
+                @include respond-above($lg){
+                    display: inline;
+                    padding-bottom: 2px;
+
+                    &:hover,
+                    &.active{
+                        font-weight: 700;
+                        border-bottom: 2px solid $yellow;
+                    }
+                }
+
+                @include respond-below($lg){
+                    padding: $spacing*3 0;
+                    text-align: center;
+                    border-top: 1px solid #d7d7d7;
+                    display: block;
+                    padding-left: $gutter;
+                    padding-right: $gutter;
+
+
+                    &.active{
+                        font-weight: 700;
+                        background-color: #d7d7d7;
+                    }
+                }
+            }
+
+            @include respond-below($lg){
+
+                &:nth-last-child(1){
+                    a{
+                        border-bottom: 1px solid #d7d7d7;
+                    }
+                }
+            }
+
+        }
+    }
+
 }
 
+.item-list,
 .artists-list{
     @include column(2);
     column-gap: $spacing*2;
 
-    @include respond-below($md){
-        margin: $gutter 0 $gutter*-1;
-    }
-
     @include respond-above($lg){
         @include column(3);
         column-gap: $spacing-xxl;
-        padding: $spacing*2 $spacing*2.5 0 $spacing-xxl*1.5;
     }
 
     &.list-of-2{
@@ -4557,6 +5202,22 @@ main section{
         }
     }
 
+    .item-list__item{
+        display: block;
+    }
+}
+
+.artists-list{
+
+    @include respond-below($md){
+        margin: $gutter 0 $gutter*-1;
+    }
+
+    @include respond-above($lg){
+        @include column(3);
+        column-gap: $spacing-xxl;
+        padding: $spacing*2 $spacing*2.5 0 $spacing-xxl*1.5;
+    }
 
     .artists-list__item{
         display: block;
@@ -4580,14 +5241,28 @@ main section{
     h3{
         font-family: $nunito;
         font-weight: 400;
+
+        @include respond-below($md){
+            font-weight: 700;
+        }
     }
 
     ul{
-        padding-left: $gutter * 2;
+        padding-left: 0;
+
+        @include respond-above($md){
+            padding-left: $gutter * 2;
+        }
 
         li{
             list-style: none;
             margin: 1em 0;
+        }
+    }
+
+    a{
+        &:hover{
+            color: $yellow;
         }
     }
 
@@ -4718,16 +5393,24 @@ main section{
 
     &.filter-by-type{
         transition: opacity .15s ease-in-out;
-        &:not(.active){
-            height: 0;
-            overflow: hidden;
-            opacity: 0;
+
+        @include respond-above($lg){
+
+            &:not(.active){
+                height: 0;
+                overflow: hidden;
+                opacity: 0;
+            }
+
+            &.active{
+                padding: 0 0 $gutter;
+                height: 100%;
+                opacity: 1;
+            }
         }
 
-        &.active{
+        @include respond-below($lg){
             padding: 0 0 $gutter;
-            height: 100%;
-            opacity: 1;
         }
     }
 
@@ -4780,7 +5463,7 @@ main section{
 
             .filter__all,
             .filter__label{
-                color: $black;
+                color: $yellow;
             }
         }
 
@@ -4805,6 +5488,10 @@ main section{
         border: 1px solid $gray;
         border-left: 0;
         border-right: 0;
+
+        .template-collection- &{
+            display: none;
+        }
     }
 }
 
@@ -4912,8 +5599,12 @@ main section{
 
 // Collection SIDE BAR Filters
 .collection-filters__wrapper{
-    overflow-y: auto;
-    max-height: calc(100vh - 230px);
+
+    @include respond-above($lg){
+
+        overflow-y: auto;
+        max-height: calc(100vh - 230px);
+    }
 
         /* width */
     &::-webkit-scrollbar {
@@ -4948,7 +5639,7 @@ main section{
 }
 
 .collection-filters{
-    border-top: 1px solid $color-border-alt;
+    border-top: 1px solid $gray;
 
     &:first-of-type{
         margin-top: $gutter;
@@ -4960,17 +5651,25 @@ main section{
     }
 
     &:nth-last-of-type(1){
-        border-top: 1px solid $color-border-alt;
+        //border-top: 1px solid $gray;
         padding-bottom: $spacing*2;
     }
 
     .filter-by__title{
-        padding: $gutter 0;
-        cursor: pointer;
+        padding: $gutter 0 $spacing * 2;
+
+        @include respond-above($lg){
+            padding: $gutter 0;
+            cursor: pointer;
+        }
 
         h4{
             position: relative;
-            line-height: $spacing * 3.5;
+            line-height: 1.1;
+
+            @include respond-above($lg){
+                line-height: $spacing * 3.5;
+            }
 
             &:after{
                 content: "";
@@ -4982,6 +5681,10 @@ main section{
                 height: $spacing * 3.5;
                 width: $spacing * 3.5;
                 transition: background-image .15s ease-in-out;
+
+                @include respond-below($lg){
+                    display: none
+                }
             }
         }
 
@@ -5014,16 +5717,20 @@ main section{
 
     .filter{
         &:nth-child(n+2){
-            margin: $gutter 0 0;
+            margin: $spacing * 2 0 0;
+
+            @include respond-above($lg){
+                margin: $gutter 0 0;
+            }
         }
     }
 
     select{
-        border: 1px solid $color-border;
+        border: 1px solid $color-border-alt;
     }
 
     form{
-        border: 1px solid $color-border;
+        border: 1px solid $color-border-alt;
         @include inline-flex;
         width: 100%;
 
@@ -5039,6 +5746,9 @@ main section{
 
             svg{
                 margin: auto;
+                height: $spacing*2.5;
+                width: auto;
+                fill: $black;
             }
         }
     }
@@ -5148,9 +5858,13 @@ main section{
     border: 1px solid $dark-gray;
     max-width: 600px;
     width: 95%;
-    padding: $gutter $spacing-xxl;
+    padding: $gutter;
     margin: auto;
     position: relative;
+
+    @include respond-above($md){
+        padding: $gutter $spacing-xxl;
+    }
 
     h3{
         font-size: (36/18)+em;
@@ -5183,10 +5897,18 @@ main section{
             width: auto;
             margin: 0;
 
+            @include respond-below($md){
+                @include align-items(center);
+            }
+
             .img-container{
-                flex: 0 0 140px;
+                flex: 0 0 120px;
                 padding: 0;
                 display: inherit;
+
+                @include respond-above($md){
+                    flex: 0 0 140px;
+                }
 
                 img{
                     height: $spacing-xxl * 3.5;
@@ -5196,9 +5918,13 @@ main section{
             }
 
             .card-details{
+                flex: 0 0 calc(100% - 120px);
                 max-width: 50%;
-                flex: 0 0 calc(100% - 140px);
                 padding: 0 0 0 $gutter;
+
+                @include respond-above($md){
+                    flex: 0 0 calc(100% - 140px);
+                }
             }
         }
     }
@@ -5232,12 +5958,12 @@ main section{
 .rainbow-title{
     @include flexbox;
 
-    h2{
+    h1,h2{
         background-image: linear-gradient(to right, #e5243b, #dda83a, #4c9f38, #c5192d, #ff3a21, #26bde2, #fcc30b, #a21942, #fd6925, #dd1367, #fd9d24, #bf8b2e, #3f7e44, #0a97d9, #56c02b, #00689d, #19486a);
         -webkit-background-clip: text;
         color: transparent;
 
-        @include respond-above($lg){
+        @include respond-above($md){
             margin: auto;
         }
     }
@@ -5245,13 +5971,19 @@ main section{
 
 .enap-currency{
     button.btn.dropdown-toggle.seven-dropdown{
-        padding: $spacing*2 $spacing*1.25;
-        margin-left: $spacing*2;
-        font-size: 1em;
-        font-weight: 700;
         min-width: $spacing-xxl * 1.75;
         text-align: center;
         font-family: $raleway;
+        font-size: (18 / $base-mobile) + em;
+        padding: $spacing*2 0;
+        margin-left: 0;
+
+        @include respond-above($lg){
+            font-weight: 500;
+            padding: $spacing*2 $spacing*1.25;
+            margin-left: $spacing*2;
+            font-size: 1em;
+        }
 
         &:focus{
             outline: 0;
@@ -5443,6 +6175,17 @@ main section{
     }
 }
 
+// POLICIES TEMPLATE
+main .shopify-policy__container{
+    padding: $spacing-xxl $spacing * 3;
+    max-width: $grid-sm;
+
+    @include respond-above($xl){
+        width: $grid-lg;
+        max-width: 100%;
+    }
+}
+
 
 /* SLIDERS
 ========================================================================== */
@@ -5450,23 +6193,30 @@ main section{
 .slick-slider{
 
     .slick--prev {
-        transform: rotate(180deg) translateY(#{$gutter * 2});
+        transform: rotate(180deg);
+
+        .slider-items__wrapper &{
+            transform: rotate(180deg) translateY(#{$gutter * 2});
+        }
     }
 
     .slick--next{
-        transform: translateY(#{-$gutter * 2});
+
+        .slider-items__wrapper &{
+            transform: translateY(#{-$gutter * 2});
+        }
     }
 
     .slick--prev,
     .slick--next{
         cursor: pointer;
         flex: 0 0 (50px / 2);
-        margin: auto 0;
+        //margin: auto 0;
         align-self: center;
 
         @include respond-below($md){
             svg{
-                width: (50px / 2);
+                width: (50px / 4);
                 height: auto;
             }
         }
@@ -5497,6 +6247,12 @@ main section{
                 flex: 0 0 #{calc(100% - 100px)};
             }
         }
+
+        .slider-logos__wrapper &{
+            svg{
+                margin: auto;
+            }
+        }
     }
 
     .slick-list{
@@ -5510,9 +6266,10 @@ main section{
     }
 }
 
-.slider-items__wrppaer{
+.slider-logos__wrapper,
+.slider-items__wrapper{
 
-    .slider-items{
+    .slick-slider{
         @include flexbox;
     }
 

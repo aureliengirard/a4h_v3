@@ -2,6 +2,20 @@
 {%- include 'global-assets' -%}
 
 {%- assign ungoals = "" -%}
+{%- assign artist_name = collection.title -%}
+{%- assign gallery = "" -%}
+
+{% assign has_un_goals = false %}
+{% assign artist_ungoal = collection.metafields.artist.un_goals %}
+{% assign artist_ungoals = artist_ungoal | split: '|' %}
+
+{%- for ungoals in artist_ungoals -%}
+{% assign ungoal = collections[ungoals] %}
+{% assign ungoals_name = ungoal.title | split: '. ' %}
+{%- if ungoals_name[1] != "" -%}
+    {% assign has_un_goals = true %}
+{%- endif -%}
+{%- endfor -%}
 
 {%- capture un_collections -%}
 {%- for collection in collections -%}
@@ -17,6 +31,25 @@
 {%- endfor -%}
 {%- endcapture -%}
 
+{%- capture artist__galleries -%}
+{%- for collection in collections -%}
+
+    {%- assign template_type = collection.template_suffix | strip -%}
+
+    {%- if template_type == 'gallery' -%}
+        {%- assign represented_artist = collection.metafields.accentuate.represented_artists | split:"," -%}
+        {%- for artist in represented_artist -%}
+            {%- if artist_name == artist -%}
+                {{ collection.title }}::{{ collection.url }}|
+            {%- endif -%}
+        {%- endfor -%}
+    {%- else -%}
+        {%- continue -%}
+    {%- endif -%}
+
+{%- endfor -%}
+{%- endcapture -%}
+
 {%- assign sortedposts = un_collections | split: '|' | sort -%}
 <div class="content__wrapper artist__wrapper collection__artist">
     <div class="row">
@@ -25,84 +58,89 @@
         </div>
         <div class="col-lg-9">
 
-            <section class="artist__hero collection__hero">
+            <section class="no-padding">
                 <div id="career-highlights" class="anchor"></div>
-                <div class="row">
 
-                    <div class="col-12 artist__about">
+                    <section class="artist__hero collection__hero">
+                    <div class="row">
 
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
+                        <div class="col-12 artist__about">
 
-                            </div>
-                            <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
 
-                                <p><strong>Born:</strong> {{collection.metafields.artist.born}}</p>
-                                <p><strong>Studio:</strong> {{collection.metafields.artist.studio}}</p>
+                                </div>
+                                <div class="col-lg-6">
 
-                                <div class="tags ">
+                                    <p><strong>Born:</strong> {{collection.metafields.artist.born}}</p>
+                                    <p><strong>Studio:</strong> {{collection.metafields.artist.studio}}</p>
 
-                                    <div class="tags__wrapper">
-                                        <div class="tags-catgerogy">
-                                            <div class="tags-catgerogy__title">
-                                                {%- include 'icon-art-tags' -%}<span> Art</span>
+                                    <div class="tags ">
+
+                                        <div class="tags__wrapper">
+                                            <div class="tags-catgerogy">
+                                                <div class="tags-catgerogy__title">
+                                                    {%- include 'icon-art-tags' -%}<span> Art</span>
+                                                </div>
+                                                <div class="tags-catgerogy__list">
+                                                    {%- for tag in collection.all_tags | sort -%}
+                                                    {%- if impact-tags contains tag -%}
+                                                    {% continue %}
+                                                    {%- else -%}
+                                                    <a class="tag-item" href="/search?q={{tag | replace: " " , "+"  }}">{{ tag }}</a>
+                                                    {%- endif -%}
+                                                    {%- endfor -%}
+                                                </div>
                                             </div>
-                                            <div class="tags-catgerogy__list">
-                                                {%- for tag in collection.all_tags | sort -%}
-                                                {%- if impact-tags contains tag -%}
-                                                {% continue %}
-                                                {%- else -%}
-                                                <a class="tag-item" href="{{tag | handleize }}">{{ tag }}</a>
-                                                {%- endif -%}
-                                                {%- endfor -%}
-                                            </div>
-                                        </div>
 
-                                        <div class="tags-catgerogy">
-                                            <div class="tags-catgerogy__title">
-                                                {%- include 'icon-impact-tags' -%}<span> Impact</span>
-                                            </div>
-                                            <div class="tags-catgerogy__list">
-                                                {% assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' %}
+                                            {%- if has_un_goals == true -%}
+                                                <div class="tags-catgerogy">
+                                                    <div class="tags-catgerogy__title">
+                                                        {%- include 'icon-impact-tags' -%}<span> Impact</span>
+                                                    </div>
+                                                    <div class="tags-catgerogy__list">
 
-                                                {%- for ungoals in artist_ungoals -%}
-                                                {% assign ungoal = collections[ungoals] %}
-                                                {% assign ungoals_name = ungoal.title | split: '. ' %}
-                                                <a class="tag-item" href="{{ ungoal.url }}">{{- ungoals_name[1] -}}</a>
-                                                {%- endfor -%}
+                                                        {%- for ungoals in artist_ungoals -%}
+                                                        {% assign ungoal = collections[ungoals] %}
+                                                        {% assign ungoals_name = ungoal.title | split: '. ' %}
+                                                        <a class="tag-item" href="{{ ungoal.url }}">#{{- ungoals_name[0] }} {{ ungoals_name[1] -}}</a>
+                                                        {%- endfor -%}
 
-                                            </div>
+                                                    </div>
+                                                </div>
+                                            {%- endif -%}
+
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="social__icons">
-                                    {%- if collection.metafields.artist.website -%}
-                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.website }}">{% include 'icon-social-website' %}</a></div>
-                                    {%- endif -%}
-                                    {%- if collection.metafields.artist.facebook -%}
-                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.facebook }}">{% include 'icon-social-facebook' %}</a></div>
-                                    {%- endif -%}
-                                    {% if collection.metafields.artist.instagram -%}
-                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.instagram }}">{% include 'icon-social-instagram' %}</a></div>
-                                    {%- endif -%}
-                                    {%- if collection.metafields.artist.twitter -%}
-                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.twitter }}">{% include 'icon-social-twitter' %}</a></div>
-                                    {%- endif -%}
-                                    {%- if collection.metafields.artist.weibo -%}
-                                    <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.weibo }}">{% include 'icon-social-weibo' %}</a></div>
-                                    {%- endif -%}
-                                </div>
+                                    <div class="social__icons">
+                                        {%- if collection.metafields.artist.website -%}
+                                        <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.website }}">{% include 'icon-social-website' %}</a></div>
+                                        {%- endif -%}
+                                        {%- if collection.metafields.artist.facebook -%}
+                                        <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.facebook }}">{% include 'icon-social-facebook' %}</a></div>
+                                        {%- endif -%}
+                                        {% if collection.metafields.artist.instagram -%}
+                                        <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.instagram }}">{% include 'icon-social-instagram' %}</a></div>
+                                        {%- endif -%}
+                                        {%- if collection.metafields.artist.twitter -%}
+                                        <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.twitter }}">{% include 'icon-social-twitter' %}</a></div>
+                                        {%- endif -%}
+                                        {%- if collection.metafields.artist.weibo -%}
+                                        <div class="social__icon"><a class="social__link" target="_blank" href="{{ collection.metafields.artist.weibo }}">{% include 'icon-social-weibo' %}</a></div>
+                                        {%- endif -%}
+                                    </div>
 
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
+                </section>
+                {% include 'partial-artist-highlights' %}
             </section>
 
-            {% include 'partial-artist-highlights' %}
 
             <section class="collection artist__collection">
                 <div id="curated-artworks" class="anchor"></div>
@@ -139,37 +177,58 @@
 
                         </blockquote>
 
-                        <p><strong>{{ collection.title }}</strong> a in coordination with his galleries <strong>Gallery Name 1</strong>, <strong>Gallery Name 2</strong>, has decided to support the 2030 UN Sustainable Development Goals:</p>
+                        <p><strong>{{ collection.title }}</strong> a in coordination with his galleries
+                            {% assign size = artist__galleries | size | minus: 1 -%}
+                            {%- assign artist__galleries = artist__galleries | slice: 0, size -%}
+                            {%- assign artist__galleries = artist__galleries | split: '|' -%}
+                            {%- for post in artist__galleries -%}
+                                {%- assign postitems = post | split: '::' -%}
+                                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                                {%- assign forloop_length = forloop.length | minus: 1 -%}
+                                    <a class="" href="{{- postitems[1] -}}">{{postitems[0]}}</a>
+                                    {%- if forloop.index == forloop_length and forloop.last == false %} & {% else -%}, {% endif -%}
+                            {%- endfor -%}has decided to support the 2030 UN Sustainable Development Goals:</p>
 
 
 
                         <div class="impact-logos">
+                            {%- if has_un_goals == true -%}
+                                {%- for ungoals in artist_ungoals -%}
+                                {% assign ungoal = collections[ungoals] %}
+                                {% assign ungoals_name = ungoal.title | split: '. ' %}
+                                {% assign ungoals_url = ungoal.url | split: '. ' %}
+                                {% assign img = ungoal.metafields.accentuate.desktop_alt_logo | first %}
+                                    <a href="{{- ungoals_url -}}">
+                                        <img src="{{- img.cloudinary_src | append: 'w_145' -}}" alt="{{ungoals_name[1]}}" title="{{collection.title}} supports {{ungoals_name[1]}}">
+                                    </a>
+                                {%- endfor -%}
+                            {%- else -%}
 
+                                {%- for post in sortedposts -%}
+                                {%- assign postitems = post | split: '::' -%}
+                                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                                {%- if un_id < 10 and un_id > 0 -%}
+                                <a href="{{- postitems[3] -}}">
+                                    <img src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
+                                </a>
+                                {%- else -%} {%- continue -%} {%- endif -%}
 
-                            {%- for post in sortedposts -%}
-                            {%- assign postitems = post | split: '::' -%}
-                            {%- assign un_id = postitems[0] | strip | plus: 0 -%}
-                            {%- if un_id < 10 and un_id > 0 -%}
-                            <a href="{{- postitems[3] -}}">
-                                <img src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
-                            </a>
-                            {%- else -%} {%- continue -%} {%- endif -%}
+                                {%- endfor -%}
+                                {% for post in sortedposts %}
+                                {% assign postitems = post | split: '::' %}
+                                {% assign un_id = postitems[0] | strip | plus: 0 %}
+                                {%- if un_id > 9 -%}
+                                <a href="{{- postitems[3] -}}">
+                                    <img src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
+                                </a>
+                                {%- else -%} {%- continue -%} {% endif %}
 
-                            {%- endfor -%}
-                            {% for post in sortedposts %}
-                            {% assign postitems = post | split: '::' %}
-                            {% assign un_id = postitems[0] | strip | plus: 0 %}
-                            {%- if un_id > 9 -%}
-                            <a href="{{- postitems[3] -}}">
-                                <img src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
-                            </a>
-                            {%- else -%} {%- continue -%} {% endif %}
+                                {% endfor %}
 
-                            {% endfor %}
-
-                            <a href="/pages/un-goals">
-                                <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
-                            </a>
+                                <a href="/pages/un-goals">
+                                    <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
+                                </a>
+                            {%- endif -%}
                         </div>
 
                     </div>
@@ -267,7 +326,7 @@
                                     {%- if impact-tags contains tag -%}
                                     {% continue %}
                                     {%- else -%}
-                                    <a class="tag-item" href="{{tag | handleize }}">{{ tag }}</a>
+                                        <a class="tag-item" href="/search?q={{tag | replace: " " , "+"  }}">{{ tag }}</a>
                                     {%- endif -%}
                                     {%- endfor -%}
                                 </div>

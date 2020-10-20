@@ -1,30 +1,43 @@
 {%- assign ngos = settings.ngo_list_for_search | split: ',' -%}
 {%- assign prices = settings.price_list_for_search | split: ',' -%}
+{% assign page_title_pre = "Search results for" %}
+{%- capture page_title_terms -%}
+    Results for <span>"{{search.terms}}"</span>
+{%- endcapture -%}
+{% assign page_title_concat = page_title_pre | concat: page_title_terms %}
 
-<section class="collection">
+<div class="content__wrapper shop-all__wrapper collection__all">
+    <div class="row">
+        <div class="col-lg-4">
+            {% include 'partial-collection-sidebar', title: page_title_terms %}
+        </div>
+        <div class="col-lg-8">
 
-    <div class="row collection__wrapper">
-        {% include 'partial-collection-sidebar', title: "Search Results" %}
+            <section class="collection collection-of-2 collection-has-filters">
 
-        <div class="collection-items__wrapper col-lg-8 ml-auto">
-            <div class="col-lg-12 collection__options">
-                {% include 'partial-collection-options' %}
-            </div>
+                <div class="row collection__wrapper">
 
-            <div class="col-12 collection-items" data-masonry="{ "itemSelector": ".product-item", "columnWidth": 200 }">
+                    <div class="collection-items__wrapper col-12">
+                        <div class="col-lg-12 collection__options">
+                            {% include 'partial-collection-options' %}
+                        </div>
+                        <div class="col-12 collection-items">
+                            {% assign results = search.results | sort: 'created_at' | reverse %}
 
-            {% assign results = search.results | sort: 'created_at' | reverse %}
+                            {% for product in results %}
+                                {% if product.available %}
+                                    {% include 'partial-product-card' with filter: true %}
+                                {% endif %}
+                            {% endfor %}
 
-            {% for product in results %}
-            {% if product.available %}
-            {% include 'partial-product-card' with filter: true %}
-            {% endif %}
-            {% endfor %}
+                        </div>
 
-            </div>
+                    </div>
+
+                </div>
+
+            </section>
 
         </div>
-
     </div>
-
-</section>
+</div>

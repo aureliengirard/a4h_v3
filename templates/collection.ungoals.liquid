@@ -4,6 +4,7 @@
 {% assign ungoal__tag_line = collection.metafields.accentuate.tag_line %}
 {% assign ungoal__why_it_matters = collection.metafields.accentuate.why_it_matters %}
 {% assign ungoal__infographic = collection.metafields.accentuate.infographic %}
+{% assign ngo_list = collection.metafields.accentuate.related_ngos %}
 {% assign title = collection.title %}
 {% assign title = title | replace: ". ", "::" %}
 {% assign title = title | split: '::' %}
@@ -140,6 +141,33 @@
                     </div>
                 </div>
             </section>
+
+            {%- if ngo_list -%}
+                <section class="collection collection__logos">
+                    <div id="partnered-ngo" class="anchor"></div>
+                    <div class="row">
+                        <div class="col-12 col-tb">
+                            <div class="title-has-cta">
+                                <h2>NGOs Working Towards UN-Goal #{{ungoal__number}}</h2>
+                                {%- include 'partial-cta'  with { cta_label: "View all<span> partnered NGOs</span>", cta_url: "/pages/ngos" }  -%}
+                            </div>
+                            <div class="collection-items">
+
+                                {% for image in ngo_list %}
+                                {%- assign meta = image.alt | split: ',' -%}
+
+                                {%- if meta[1] -%}<a class="card-item logo-item" href="{{meta[1]}}">{%- else -%}<div class="card-item logo-item">{%- endif -%}
+                                    <img src="{{ image.cloudinary_src | append: 'w_180,h_180' }}"
+                                    class="lazyload"
+                                    alt="{{ meta[0] }}"/>
+                                    {%- if meta[1] -%}</a>{%- else -%}</div>{%- endif -%}
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {%- endif -%}
 
             <section class="">
                 <div id="commited-artists" class="anchor"></div>

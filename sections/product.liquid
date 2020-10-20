@@ -42,12 +42,12 @@
     {%- for ungoals in artist_ungoals -%}
         {%- assign ungoal = collections[ungoals] -%}
         {%- assign ungoals_name = ungoal.title | split: '. ' -%}
-            {{- ungoals_name[1] -}}::{{- ungoal.url -}}
+            #{{- ungoals_name[0] | replace: " ", "" -}}::{{- ungoals_name[1] -}}::{{- ungoal.url -}}
             {% if forloop.last == false %}|{% endif%}
     {%- endfor -%}
 {%- endcapture -%}
 
-{%- assign ungoals_sorted_list = ungoals_list | split: '|' | sort -%}
+{%- assign ungoals_sorted_list = ungoals_list | split: '|' -%}
 {%- endif -%}
 
 
@@ -71,7 +71,7 @@
         </div>
         <div class="col-md-6 product__metas bg--white">
             <h3 class="product__vendor"><a href="{{ artist.url }}">{{ artist.title }}</a></h3>
-            <h1 class="product__title">{{ product.title }} - {{product.id}}{%- if product.metafields.product.date -%}, {{ product.metafields.product.date | date: "%Y" }}{%- endif -%}</h1>
+            <h1 class="product__title">{{ product.title }}{%- if product.metafields.product.date -%}, {{ product.metafields.product.date | date: "%Y" }}{%- endif -%}</h1>
 
             <div class="product__meta">
                 <span class="meta--details">{{product.metafields.product.artwork_details}}</span>
@@ -89,14 +89,14 @@
                 {%- endif -%}
             </div>
 
-            {%- if current_variant.available and variable_price == 'false' -%}
+            {%- if product.available -%}
                 <div class="product__price-impact">
                     {{ section.settings.impact }} {{ current_variant.price | times: 0.1 | money }}
                 </div>
             {%- endif -%}
 
             <div class="product__shipping-info">
-                <span>Ships from David Zwirner, New York, NY, USA</span>
+                <span>Ships from <a href="{{ gallery.url }}">{{ gallery.title }}</a>, New York, NY, USA</span>
                 <span>Shipping: $190 domestic; $419 worldwide</span>
             </div>
 
@@ -116,7 +116,7 @@
 
                                 {%- for ungoal in ungoals_sorted_list -%}
                                     {% assign ungoal_item = ungoal | split: '::' %}
-                                    <option class="{{ ungoal_item[0] | handleize }}" value="{{ ungoal_item[0] | handleize }}">{{- ungoal_item[0] -}}</option>
+                                    <option class="{{ ungoal_item[1] | handleize }}" value="{{ ungoal_item[1] | handleize }}">{{- ungoal_item[0] }} {{ ungoal_item[1] -}}</option>
                                 {%- endfor -%}
 
                             {%- else -%}
@@ -141,7 +141,7 @@
                                     {%- assign postitems = post | split: '::' -%}
                                     {%- assign un_id = postitems[0] | strip | plus: 0 -%}
                                     {%- if un_id < 10 and un_id > 0 -%}
-                                    <option class="{{ postitems[1] | handleize }}" value="{{ postitems[1] | handleize }}">{{- postitems[1] -}}</option>
+                                    <option class="{{ postitems[1] | handleize }}" value="{{ postitems[1] | handleize }}">#{{- postitems[0] }} {{ postitems[1] -}}</option>
                                     {%- else -%} {%- continue -%} {%- endif -%}
 
                                 {%- endfor -%}
@@ -150,7 +150,7 @@
                                     {% assign postitems = post | split: '::' %}
                                     {% assign un_id = postitems[0] | strip | plus: 0 %}
                                     {%- if un_id > 9 -%}
-                                    <option class="{{ postitems[1] | handleize }}" value="{{ postitems[1] | handleize }}">{{- postitems[1] -}}</option>
+                                    <option class="{{ postitems[1] | handleize }}" value="{{ postitems[1] | handleize }}">#{{- postitems[0] }} {{ postitems[1] -}}</option>
                                     {%- else -%} {%- continue -%} {% endif %}
 
                                 {% endfor %}
@@ -389,7 +389,7 @@
                         {%- for tag in product.tags -%}
                             {%- if impact-tags contains tag -%}
                             {%- else -%}
-                                <a class="tag-item" href="#">{{ tag }}</a>
+                                <a class="tag-item" href="/search?q={{tag | replace: " " , "+"  }}">{{ tag }}</a>
                             {%- endif -%}
                         {%- endfor -%}
                     </div>
@@ -403,7 +403,7 @@
                         {%- if has_un_goals == true -%}
                             {%- for ungoal in ungoals_sorted_list -%}
                                 {% assign ungoal_item = ungoal | split: '::' %}
-                                <a class="tag-item" href="{{- ungoal_item[1] -}}">{{- ungoal_item[0] -}}</a>
+                                <a class="tag-item" href="{{- ungoal_item[2] -}}">{{- ungoal_item[0] }} {{ ungoal_item[1] -}}</a>
                             {%- endfor -%}
                         {%- for ungoals in artist_ungoals -%}
                             {% assign ungoal = collections[ungoals] %}
@@ -431,7 +431,7 @@
                                 {%- assign postitems = post | split: '::' -%}
                                 {%- assign un_id = postitems[0] | strip | plus: 0 -%}
                                 {%- if un_id < 10 and un_id > 0 -%}
-                                <a class="tag-item" href="{{- postitems[3] -}}">{{- ungoals_name[1] -}}</a>
+                                <a class="tag-item" href="{{- postitems[3] -}}">#{{- postitems[0] }} {{ postitems[1] -}}</a>
                                 {%- else -%} {%- continue -%} {%- endif -%}
 
                             {%- endfor -%}
@@ -440,7 +440,7 @@
                                 {% assign postitems = post | split: '::' %}
                                 {% assign un_id = postitems[0] | strip | plus: 0 %}
                                 {%- if un_id > 9 -%}
-                                <a class="tag-item" href="{{- postitems[3] -}}">{{- ungoals_name[1] -}}</a>
+                                <a class="tag-item" href="{{- postitems[3] -}}">#{{- postitems[0] }} {{ postitems[1] -}}</a>
                                 {%- else -%} {%- continue -%} {% endif %}
 
                             {% endfor %}

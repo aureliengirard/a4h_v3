@@ -54,43 +54,7 @@
 
         {{ content_for_header }}
 
-        {%- if request.page_type contains 'customers/' -%}
-            <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
-        {%- endif -%}
-
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
-        <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
-        <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-
-        {%- if request.page_type contains 'product' -%}
-            <script type="text/javascript" src="{{ 'products.js' | asset_url }}" defer="defer"></script>
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" defer="defer"></script>
-        {%- endif -%}
-
-        {%- unless request.path contains '/collections/all' -%}
-            {%- if request.page_type contains 'collection' -%}
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" defer="defer"></script>
-                <script type="text/javascript" src="{{ 'collections.js' | asset_url }}" defer="defer"></script>
-            {%- endif -%}
-        {%- endunless -%}
-
-        {%- if request.path contains ('artists' or 'galleries' or '/collections/all' ) -%}
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js" defer="defer"></script>
-        {%- endif -%}
-
-        {%- if request.path contains '/collections/all' -%}
-            <script type="text/javascript" src="{{ 'all-products.js' | asset_url }}" defer="defer"></script>
-        {%- elsif request.path contains 'all-galleries' -%}
-            <script type="text/javascript" src="{{ 'all-galleries-filters.js' | asset_url }}" defer="defer"></script>
-        {%- elsif request.path contains 'all-artists' -%}
-            <script type="text/javascript" src="{{ 'all-artists-filters.js' | asset_url }}" defer="defer"></script>
-        {%- if request.path contains 'pages/artists' -%}
-            <script type="text/javascript" src="{{ 'artists-filters.js' | asset_url }}" defer="defer"></script>
-        {%- elsif request.path contains 'pages/galleries' -%}
-            <script type="text/javascript" src="{{ 'galleries-filters.js' | asset_url }}" defer="defer"></script>
-        {%- endif -%}
-
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     </head>
 
@@ -111,4 +75,47 @@
 
     </body>
 
+    {%- if request.page_type contains 'customers/' -%}
+        <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
+    <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" defer="defer"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js" defer="defer"></script>
+
+    {%- if request.page_type contains 'product' -%}
+        <script type="text/javascript" src="{{ 'products.js' | asset_url }}" defer="defer"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" defer="defer"></script>
+    {%- endif -%}
+
+    {%- unless request.path contains '/collections/all' -%}
+        {%- if request.page_type contains 'collection' -%}
+            <script type="text/javascript" src="{{ 'collections.js' | asset_url }}" defer="defer"></script>
+        {%- endif -%}
+    {%- endunless -%}
+
+    {%- if request.path contains ('artists' or 'galleries' or '/collections/all') -%}
+    {%- endif -%}
+
+    {%- if request.path contains '/collections/all' -%}
+        <script type="text/javascript" src="{{ 'all-products.js' | asset_url }}" defer="defer"></script>
+    {%- elsif request.path contains 'search' -%}
+        <script type="text/javascript" src="{{ 'all-products.js' | asset_url }}" defer="defer"></script>
+    {%- elsif request.path contains 'all-galleries' -%}
+        <script type="text/javascript" src="{{ 'all-galleries-filters.js' | asset_url }}" defer="defer"></script>
+    {%- elsif request.path contains 'all-artists' -%}
+        <script type="text/javascript" src="{{ 'all-artists-filters.js' | asset_url }}" defer="defer"></script>
+    {%- elsif request.path contains 'pages/artists' -%}
+        <script type="text/javascript" src="{{ 'all-artists-filters.js' | asset_url }}" defer="defer"></script>
+        {% comment %}
+            <script type="text/javascript" src="{{ 'artists-filters.js' | asset_url }}" defer="defer"></script>
+        {% endcomment %}
+    {%- elsif request.path contains 'pages/galleries' -%}
+        <script type="text/javascript" src="{{ 'all-galleries-filters.js' | asset_url }}" defer="defer"></script>
+        {% comment %}
+            <script type="text/javascript" src="{{ 'galleries-filters.js' | asset_url }}" defer="defer"></script>
+        {% endcomment %}
+    {%- endif -%}
 </html>

@@ -199,3 +199,16 @@
 
     </div>
 </section>
+
+<section class="follow__banner">
+    <div class="row">
+        <div class="social__icons">
+            <img class="shop__logo lazyload" src="{{ settings.header_logo | img_url: 'x50' }}" alt="{{ shop.name }}">
+            <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_facebook }}">{% include 'icon-social-facebook' %}</a></div>
+            <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_instagram }}">{% include 'icon-social-instagram' %}</a></div>
+            <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_twitter }}">{% include 'icon-social-twitter' %}</a></div>
+            <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_linkedin }}">{% include 'icon-social-linkedin' %}</a></div>
+            <div class="social__icon"><a class="social__link" target="_blank" href="{{ settings.ci_weibo }}">{% include 'icon-social-weibo' %}</a></div>
+        </div>
+    </div>
+</section>

@@ -18,7 +18,7 @@
 {%- assign loop_index = loop_indexes | strip -%}
 {%- assign loop_in = loop_index | split: '::'  -%}
 
-<div class="slider-items__wrppaer">
+<div class="slider-items__wrapper">
     <div class="slider-items">
 
         {%- for loop in loop_in -%}
@@ -44,7 +44,7 @@
                         {%- assign loop_sub =  forloop.index0 | strip  -%}
                         {%- if loop_sub == loop_strip -%}
                             {% for image in images %}
-                            <img src="{{ image.cloudinary_src | append: 'c_fill_pad,g_auto,w_400,h_290' }}" alt="{{ image.alt }}"/>
+                            <img class="lazyload" src="{{ image.cloudinary_src | append: 'c_fill_pad,g_auto,w_400,h_240' }}" alt="{{ image.alt }}"/>
                             {% endfor %}
 
                         {%- else -%}{% continue %}{%- endif -%}

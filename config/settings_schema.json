@@ -44,51 +44,6 @@
     ]
   },
   {
-    "name": "Hero Images",
-    "settings": [
-      {
-        "type": "image_picker",
-        "id": "homepage_hero_image",
-        "label": "Homepage Hero Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "shop_hero_image",
-        "label": "Shop Hero Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "ngo_hero_image",
-        "label": "Non-Profits Hero Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "artists_hero_image",
-        "label": "Artists Hero Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "concept_hero_image",
-        "label": "Concept Hero Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "about_hero_image",
-        "label": "About Hero Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "enterprise_hero_image",
-        "label": "Enterprise Hero Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "join_hero_image",
-        "label": "Join Hero Image"
-      }
-    ]
-  },
-  {
     "name": "Contact Info",
     "settings": [
       {
@@ -167,6 +122,12 @@
         "type": "text",
         "id": "price_filters",
         "label": "Comma separated list of Price Ranges. eg: 10-50, 50-100"
+    },
+      {
+        "type": "text",
+        "id": "no_results",
+        "label": "No results message",
+        "default": "No Results for this combination of filters. Try another combination."
       }
     ]
   },

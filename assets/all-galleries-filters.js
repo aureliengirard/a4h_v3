@@ -1,5 +1,7 @@
 // Collection filters
 function Filters() {
+    jQuery('.no_results-item').hide();
+
     var region_filter = '';
     var country_filter = '';
     var city_filter = '';
@@ -82,11 +84,11 @@ function Filters() {
     };
 
     function upFilter() {
-        jQuery('.card-item').hide();
-        jQuery('.card-item').addClass( "hidden" ).removeClass( "active" );
+        jQuery('.gallery-item').hide();
+        jQuery('.gallery-item').addClass( "hidden" ).removeClass( "active" );
 
 
-        jQuery('.card-item').each(function(){
+        jQuery('.gallery-item').each(function(){
             //console.log(min);
             //console.log(max);
             var region_val = $(this).attr('region');
@@ -106,11 +108,14 @@ function Filters() {
             }
         });
 
-        var card_displayed = $(".card-item.active");
+        var card_displayed = $(".gallery-item.active");
         //console.log(card_displayed.length);
         var card_displayed_length = card_displayed.length;
+        
         if (card_displayed_length < 1) {
-            //alert("There is no products avalaible in your filter combinaison (" + card_displayed.length + ")");
+            jQuery('.no_results-item').show();
+        } else {
+            jQuery('.no_results-item').hide();
         }
     }
 }

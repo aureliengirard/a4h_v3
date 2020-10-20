@@ -9,12 +9,15 @@ if(location.search.length) {
   }
 }
 
-// Filter menu expand
-$(".filter-by__title").on("click", function(e) {
-  e.preventDefault();
-  $(this).siblings(".filter-by__filters").toggleClass("active");
-  $(this).toggleClass("active");
-});
+if (window.innerWidth >= 1024){
+
+    // Filter menu expand
+    $(".filter-by__title").on("click", function(e) {
+        e.preventDefault();
+        $(this).siblings(".filter-by__filters").toggleClass("active");
+        $(this).toggleClass("active");
+    });
+}
 
 
 // Collection filters
@@ -35,6 +38,10 @@ function Filters() {
     var value_price = sessionStorage.getItem("value_price");
     var value_gallery = sessionStorage.getItem("value_gallery");
 
+    var card_displayed = $(".product-item.active");
+    var card_displayed_length = card_displayed.length;
+
+    jQuery('.no_results-item').hide();
 
     if (value_gallery !== null) {
         gallery_select.value = value_gallery;
@@ -82,14 +89,14 @@ function Filters() {
 
         medium_selector.each(function() {
             var test_value = jQuery(this).attr('medium');
-            console.log('Value t-filter ' + test_value);
+            //console.log('Value t-filter ' + test_value);
             if ( jQuery(this).attr('medium') == value_medium ) {
                 jQuery(this).addClass('active');
             }
         });
 
         t_filter = value_medium;
-        console.log('-' + t_filter + '-');
+        //console.log('-' + t_filter + '-');
         upFilter();
     }
 
@@ -181,10 +188,14 @@ function Filters() {
         });
 
         var card_displayed = $(".product-item.active");
-        //console.log(card_displayed.length);
         var card_displayed_length = card_displayed.length;
+
         if (card_displayed_length < 1) {
             //alert("There is no products avalaible in your filter combinaison (" + card_displayed.length + ")");
+
+            jQuery('.no_results-item').show();
+        } else {
+            jQuery('.no_results-item').hide();
         }
     }
 }

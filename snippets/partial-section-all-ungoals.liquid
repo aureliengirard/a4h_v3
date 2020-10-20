@@ -1,5 +1,5 @@
 {%- if is_block != true -%}
-<section class="collection__un-goals">
+<section class="collection__un-goals collection">
 {%- endif -%}
     <div class="row">
         <div class="col-lg-12{%- if is_block != true -%} col-tb{%- endif -%}">
@@ -23,35 +23,36 @@
             {%- endfor -%}
             {%- endcapture -%}
 
-            <div class="impact-logos">
+            <div class="impact-logos collection-items">
 
-            {%- assign sortedposts = un_collections | split: '|' | sort -%}
-            {%- for post in sortedposts -%}
-                {%- assign postitems = post | split: '::' -%}
-                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
-                {%- if un_id < 10 and un_id > 0 -%}
-                <a {% if filter_type == 'artist' -%}href="/pages/all-artists/"{%- elsif filter_type == 'product' -%}href="/collections/all"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="ungoal__item" {% if is_filter == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
-                    <img class="lazyload" src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                {%- assign sortedposts = un_collections | split: '|' | sort -%}
+                {%- for post in sortedposts -%}
+                    {%- assign postitems = post | split: '::' -%}
+                    {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                    {%- if un_id < 10 and un_id > 0 -%}
+                    <a {% if filter_type == 'artist' -%}href="/pages/all-artists/"{%- elsif filter_type == 'product' -%}href="/collections/all"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="card-item ungoal-item" {% if is_filter == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
+                        <img class="lazyload" src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                    </a>
+                    {%- else -%} {%- continue -%} {%- endif -%}
+
+                {%- endfor -%}
+                {% assign sortedposts = un_collections | split: '|' | sort %}
+                {% for post in sortedposts %}
+                    {% assign postitems = post | split: '::' %}
+                    {% assign un_id = postitems[0] | strip | plus: 0 %}
+                    {%- if un_id > 9 -%}
+                    <a {% if filter_type == 'artist' -%}href="/pages/all-artists/"{%- elsif filter_type == 'product' -%}href="/collections/all"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="card-item ungoal-item" {% if is_filter == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
+
+                        <img class="lazyload" src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                    </a>
+                    {%- else -%} {%- continue -%} {% endif %}
+
+                {% endfor %}
+
+                <a href="/pages/un-goals">
+                    <img class="all-impact-logo lazyload" src="{{ 'all-sdgs.png' | asset_url }}" alt="UN Goals">
                 </a>
-                {%- else -%} {%- continue -%} {%- endif -%}
 
-            {%- endfor -%}
-            {% assign sortedposts = un_collections | split: '|' | sort %}
-            {% for post in sortedposts %}
-                {% assign postitems = post | split: '::' %}
-                {% assign un_id = postitems[0] | strip | plus: 0 %}
-                {%- if un_id > 9 -%}
-                <a {% if filter_type == 'artist' -%}href="/pages/all-artists/"{%- elsif filter_type == 'product' -%}href="/collections/all"{% else %}href="{{- postitems[3] -}}"{%- endif -%} class="ungoal__item" {% if is_filter == true -%}ungoal="{{postitems[1] | handleize }}"{%- endif -%}>
-
-                    <img class="lazyload" src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
-                </a>
-                {%- else -%} {%- continue -%} {% endif %}
-
-            {% endfor %}
-
-            <a href="/pages/un-goals">
-                <img class="all-impact-logo lazyload" src="{{ 'all-sdgs.png' | asset_url }}" alt="UN Goals">
-            </a>
             </div>
 
         </div>
@@ -59,7 +60,7 @@
 
     {% if is_filter == true -%}
         <script type="text/javascript">
-        $( ".ungoal__item" ).each(function(index) {
+        $( ".ungoal-item" ).each(function(index) {
             $(this).on("click", function(){
                 var ungoal_val = $(this).attr('ungoal');
                 var value_ungoal = sessionStorage.getItem("value_ungoal");

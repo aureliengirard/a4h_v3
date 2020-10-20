@@ -22,7 +22,7 @@
             <h2>{{title}}</h2>
             {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: "/pages/all-artists/" }  -%}
         </div>
-        <div class="artists-list list-of-{{columns}}">
+        <div class="item-list artists-list list-of-{{columns}}">
             {% assign comitted_artists = comitted_artists | split:"," %}
 
             {%- for artist in comitted_artists limit:45 -%}

@@ -108,7 +108,7 @@
                     {%- assign postitems = post | split: '::' -%}
                     {%- assign un_id = postitems[0] | strip | plus: 0 -%}
                     {%- if un_id < 10 and un_id > 0 -%}
-                        <option class="un-filter filter" value="{{ postitems[1] | handleize }}">{{postitems[1]}}</option>
+                        <option class="un-filter filter" value="{{ postitems[1] | handleize }}">#{{postitems[0]}} {{postitems[1]}}</option>
                     {%- else -%} {%- continue -%} {%- endif -%}
 
                 {%- endfor -%}
@@ -117,7 +117,7 @@
                     {% assign postitems = post | split: '::' %}
                     {% assign un_id = postitems[0] | strip | plus: 0 %}
                     {%- if un_id > 9 -%}
-                        <option class="un-filter filter" value="{{ postitems[1] | handleize }}">{{postitems[1]}}</option>
+                    <option class="un-filter filter" value="{{ postitems[1] | handleize }}">#{{postitems[0]}} {{postitems[1]}}</option>
                     {%- else -%} {%- continue -%} {% endif %}
 
                 {% endfor %}

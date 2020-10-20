@@ -60,23 +60,7 @@
         </div>
     </section>
 
-    <section class="decade-of-action">
-        <div class="row">
-
-            <div class="col-12">
-
-                <h2>Decade of Action To Deliver The Goals.</h2>
-                <p>The Sustainable Development Goals are gaining global momentum.<br>
-                    With just 10 years to go, 2020 needs to usher in a decade of ambitious action to deliver the Goals by 2030.</p>
-                <p>In response to this decisive decade, Art4Humans has designed a marketplace placing art as a catalyst for impact and sustainable development.<br>
-                    We are on a mission to provide unique awareness to those defining challenges of our time, global exposure & accessibility to art, while generating funding opportunities for charities.</p>
-                    <div class="cta__wrapper">
-                        {%- include 'partial-cta'  with { cta_label: "Brose Artworks", cta_url: "/collections/all" }  -%}
-                    </div>
-            </div>
-
-        </div>
-    </section>
+    {%- include 'partial-ungoals-decade-of-action' with { device: "large" } -%}
 
     <section class="make-those-goals-your-own">
         <div class="row">
@@ -100,56 +84,68 @@
 
         <div class="row">
             <div class="col-12">
-                <div class="collection-items__wrapper">
-                    <div class="col-12 collection-items">
 
-                        {%- assign sortedposts = un_collections | split: '|' | sort -%}
-                        {%- for post in sortedposts -%}
-                        {%- assign postitems = post | split: '::' -%}
-                        {%- assign un_id = postitems[0] | strip | plus: 0 -%}
-                        {%- if un_id < 10 and un_id > 0 -%}
+                {%- assign sortedposts = un_collections | split: '|' | sort -%}
+                {%- for post in sortedposts -%}
+                {%- assign postitems = post | split: '::' -%}
+                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                {%- if un_id < 10 and un_id > 0 -%}
 
-                        <article class="card-item ungoal-item">
-                            <a href="{{postitems[2]}}">
-                                <div class="img-container">
-                                    <img class="img--mobile" src="{{postitems[5]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
-                                    <img class="img--desktop" src="{{postitems[4]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
-                                </div>
-                                <div class="card-details ungoal-details">
-                                    <h4 class="card__tagline" style="color:{{postitems[6]}}">{{postitems[3]}} {%- include 'icon-arrow-right', fill_color: postitems[6] -%}</h4>
-                                </div>
-                            </a>
-                        </article>
+                <article class="card-item ungoal-item">
+                    <a href="{{postitems[2]}}">
+                        <div class="img-container">
+                            <img class="img--mobile" src="{{postitems[5]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                            <img class="img--desktop" src="{{postitems[4]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                        </div>
+                        <div class="card-details ungoal-details">
+                            <h4 class="card__tagline" style="color:{{postitems[6]}}">{{postitems[3]}} {%- include 'icon-arrow-right', fill_color: postitems[6] -%}</h4>
+                        </div>
+                    </a>
+                </article>
 
-                        {%- else -%} {%- continue -%} {%- endif -%}
-                        {%- endfor -%}
+                {%- else -%} {%- continue -%} {%- endif -%}
+                {%- endfor -%}
 
-                        {%- for post in sortedposts -%}
-                        {%- assign postitems = post | split: '::' -%}
-                        {%- assign un_id = postitems[0] | strip | plus: 0 -%}
-                        {%- if un_id > 9 -%}
+                {%- for post in sortedposts -%}
+                {%- assign postitems = post | split: '::' -%}
+                {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                {%- if un_id > 9 -%}
 
-                        <article class="card-item ungoal-item">
-                            <a href="{{postitems[2]}}">
-                                <div class="img-container">
-                                    <img class="img--mobile" src="{{postitems[5]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
-                                    <img class="img--desktop" src="{{postitems[4]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
-                                </div>
-                                <div class="card-details ungoal-details">
-                                    <h4 class="card__tagline" style="color:{{postitems[6]}}">{{postitems[3]}} {%- include 'icon-arrow-right', fill_color: postitems[6] -%}</h4>
-                                </div>
-                            </a>
-                        </article>
+                <article class="card-item ungoal-item">
+                    <a href="{{postitems[2]}}">
+                        <div class="img-container">
+                            <img class="img--mobile" src="{{postitems[5]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                            <img class="img--desktop" src="{{postitems[4]}}" alt="{{postitems[1]}}" title="{{postitems[1]}}">
+                        </div>
+                        <div class="card-details ungoal-details">
+                            <h4 class="card__tagline" style="color:{{postitems[6]}}">{{postitems[3]}} {%- include 'icon-arrow-right', fill_color: postitems[6] -%}</h4>
+                        </div>
+                    </a>
+                </article>
 
-                        {%- else -%} {%- continue -%} {%- endif -%}
-                        {%- endfor -%}
+                {%- else -%} {%- continue -%} {%- endif -%}
+                {%- endfor -%}
 
-                    </div>
-                </div>
             </div>
-
         </div>
 
     </section>
 
+    <section class="collection__ngo">
+        <div class="row">
+            <div class="col-12">
+                <div class="title-has-cta">
+                    <h2>Our Partner NGOs</h2>
+                    {%- include 'partial-cta' with { cta_label: "View all", cta_url: "/pages/ngos" } -%}
+                </div>
+                <div class="slider-logos__wrapper">
+                    {%- include 'partial-ngo-slider' -%}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {%- include 'partial-ungoals-decade-of-action' with { device: "small" } -%}
+
+    {%- include 'partial-section-ungoals-divider' -%}
 </div>

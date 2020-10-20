@@ -4,7 +4,7 @@
 
 <div class="content__wrapper shop-all__wrapper collection__all">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-4 side-menu">
             {% include 'partial-collection-sidebar', title: "Home of Impact Art" %}
         </div>
         <div class="col-lg-8">
@@ -21,6 +21,9 @@
                             {% for product in collection.products %}
                             {% include 'partial-product-card' with filter: true, card_per_row: 2 %}
                             {% endfor %}
+
+                            {%- include 'partial-noresults-item' -%}
+
                         </div>
                         {% if paginate.pages > 1 %}
                         <div class="pagination-container">{{ paginate | default_pagination: next: '>>', previous: '<<' }}</div>

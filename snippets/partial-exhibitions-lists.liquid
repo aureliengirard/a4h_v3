@@ -60,7 +60,7 @@
                     {%- assign loop_sub =  forloop.index0 | strip  -%}
                     {%- if loop_sub == loop_strip and solo_show_validation == true -%}
                         {%- if item != "" -%}
-                            <a href="{{item}}">
+                            <a href="{{item}}" target="_blank">
                         {%- endif -%}
 
                     {%- else -%}{%- continue -%}{%- endif -%}

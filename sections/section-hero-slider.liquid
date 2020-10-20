@@ -9,14 +9,16 @@
     <div class="col-12">
         <hgroup>
             <h1>{{title}}</h1>
-            <h4>{{subtitle}}</h4>
+            
+            {%- if subtitle -%}
+                <h3>{{subtitle}}</h3>
+            {%- endif -%}
         </hgroup>
         <div class="btn-container hidden-xs">
             <a href="{{cta_link}}" class="generic-btn">
                 {{cta_label}}
             </a>
         </div>
-
         {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_link, extra_class: "only-xs" } -%}
     </div>
 </div>

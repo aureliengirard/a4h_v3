@@ -24,6 +24,8 @@
                         {%- endif -%}
                     {%- endfor -%}
 
+                    {%- include 'partial-noresults-item' -%}
+                    
                 </div>
             </div>
         </div>
@@ -32,4 +34,4 @@
 
 </section>
 
-{%- include 'partial-section-all-ungoals', title: 'Browse Art by UN-Goals', cta: '', is_filter: true, filter_type: 'artist' -%}
+{%- include 'partial-section-all-ungoals', title: 'Browse Art by UN-Goals', cta: '', is_filter: true -%}

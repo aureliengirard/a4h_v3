@@ -1,22 +1,81 @@
+{%- capture search_tags -%}
+    {%- for collection in collections -%}
+        {%- if collection.all_tags.size > 0 -%}
+            {%- for tag in collection.all_tags -%}
+
+                {%- if output contains tag -%}
+                {%- else -%}
+                    {{-tag-}},
+                {%- endif -%}
+
+            {%- endfor -%}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+
+
+{%- capture search_results -%}
+    {{- shop.vendors | join: ", " -}},
+    {{- shop.types | join: ", " -}},
+    {%- for collection in collections -%}
+        {%- assign template_type = collection.template_suffix | strip -%}
+        {%- if collection.title == 'All art pieces' -%}
+        {%- elsif template_type == 'ungoals' -%}
+            {{- collection.title | slice: 3,collection.title.size -}}{%- if forloop.last -%}{%- else -%},{%- endif -%}
+        {%- elsif template_type == 'artist' -%}{%- continue -%}
+        {%- else -%}
+            {{- collection.title -}}{%- if forloop.last -%}{%- else -%},{%- endif -%}
+        {%- endif -%}
+    {%- endfor -%},
+    {%- for product in collections.all.products -%}
+            {{- product.title -}}{%- if forloop.last -%}{%- else -%},{%- endif -%}
+    {%- endfor -%},
+    {%- for tag in collections.all_tags -%}
+        {{- tag.title -}}{%- if forloop.last -%}{%- else -%},{%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%}
+    {%- endcomment -%}
+    {{- search_tags | split: ',' | uniq | join: ',' -}}
+{%- endcapture -%}
+
 <nav class="header">
     <div class="row">
-
-        <div class="nav__left-container">
-            <a class="logo" href="/">
-            <img src="{{ settings.header_logo | img_url: 'master' }}" width="{{ settings.header_logo_max_width }}" alt="{{ shop.name }}"></a>
-        </div>
-        <div class="search__form">
-            <form method="get" action="/search">
-                <input
-                    type="text"
-                    name="q"
-                    placeholder="Search"
-                 />
-                 <button type="submit">{% include "icon-search" %}</button>
-            </form>
-        </div>
         <input class="menu-btn" type="checkbox" id="menu-btn">
         <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+        <div class="nav__left-container">
+            <a class="logo" href="/">
+                <img src="{{ settings.header_logo | img_url: 'master' }}" width="{{ settings.header_logo_max_width }}" alt="{{ shop.name }}">
+            </a>
+        </div>
+
+        <ul class="menu--mobile">
+            <li class="site-nav--search">
+                <a class="search-icon site-nav__link">{% include 'icon-search' %}</a>
+            </li>
+            <li class="site-nav--cart">
+                <a href="/cart" class="cart-icon site-nav__link">{% include 'Menu cart' %}</a>
+            </li>
+
+        </ul>
+        <div class="search__form">
+            <form id="search_bar" method="get" action="/search">
+                <input
+                    type="text"
+                    id="search_form"
+                    name="q"
+                    placeholder="Search"
+                    class="awesomplete"
+                    data-list="{{ search_results }}"
+                 />
+                 <button type="submit" id="search_form_submit">{% include "icon-search" %}</button>
+            </form>
+
+            <script type="text/javascript">
+
+            </script>
+        </div>
         <ul class="menu">
             {% for link in linklists[section.settings.main_linklist].links %}
             {%- assign child_list_handle = link.title | handleize -%}
@@ -34,21 +93,127 @@
                     {% endfor %}
                 </ul>
             </li>
+            {%- elsif link.title == "Artworks" or  link.title == "UN-Goals" -%}
+                <li class="{% if link.active %}site-nav--active{% endif %} has-megamenu">
+                    <a href="{{ link.url }}" class="site-nav__link"><span>{{ link.title }}</span></a>
+
+
+                    <div id="megamenu{%- if link.title == "Artworks" -%}_artworks{%- elsif link.title == "UN-Goals" -%}_ungoals{%- endif -%}" class="megamenu">
+                        <div class="nav--mobile">
+                            <h3>{{ link.title }}</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                {%- if link.title == "Artworks" -%}
+                                    {%- include 'partial-cta'  with { cta_label: "View  all artworks", cta_url: "/collections/all" } -%}
+                                {%- elsif link.title == "UN-Goals" -%}
+                                    {%- include 'partial-cta'  with { cta_label: "View  all UN-Goals", cta_url: "/pages/un-goals" } -%}
+                                {%- endif -%}
+                            </div>
+                            <div class="col row">
+
+                                {%- if link.title == "Artworks" -%}
+                                <div class="inner-col">
+                                        <h4><span>Medium</span></h4>
+
+                                        <div class="inner-col__menu">
+                                            {%- for type in shop.types -%}
+                                            {% assign type_string = type | replace: " ", "+" %}
+                                            <a href="{{link.url}}" medium="{{- type | handleize -}}" class="megamenu__link megamenu__filter">
+                                                {{- type -}}
+                                            </a>
+                                            {%- endfor -%}
+                                        </div>
+                                </div>
+                                {%- endif -%}
+
+                                {%- if link.title == "Artworks" -%}
+                                <div class="inner-col">
+
+                                    {%- assign price_filter = settings.price_filters | split: ',' -%}
+
+                                        <h4><span>Price</span></h4>
+
+                                        <div class="inner-col__menu">
+                                            {%- for price_filters in price_filter -%}
+                                            {%- if price_filters == "All" -%}
+                                            {%- continue -%}
+                                            {%- else -%}
+                                            <a href="{{link.url}}" price="{{ price_filters }}" class="megamenu__link megamenu__filter">
+                                                {{- price_filters -}}
+                                            </a>
+                                            {%- endif -%}
+
+                                            {%- endfor -%}
+                                        </div>
+                                </div>
+                                {%- endif -%}
+
+                                <div class="inner-col">
+
+                                    <h4><span>UN-Goal</span></h4>
+
+                                    <div class="inner-col__menu active">
+                                        <div class="item-list list-of-3">
+                                            {%- capture un_collections -%}
+                                            {%- for collection in collections -%}
+                                            {%- assign template_type = collection.template_suffix | strip -%}
+                                            {%- assign short_name = collection.metafields.sdg.short_name -%}
+                                            {%- assign ungoals = "" -%}
+                                            {%- if template_type == 'ungoals' -%}
+                                            |{{- collection.title | replace: ".", "::" -}}::{{short_name}}::{{- collection.url -}}
+                                            {%- else -%}{%- continue -%}{%- endif -%}
+                                            {%- endfor -%}
+                                            {%- endcapture -%}
+
+                                            {%- assign sortedposts = un_collections | split: '|' | sort -%}
+                                            {%- for post in sortedposts -%}
+                                            {%- assign postitems = post | split: '::' -%}
+                                            {%- assign un_id = postitems[0] | strip | plus: 0 -%}
+                                            {%- if un_id < 10 and un_id > 0 -%}
+                                            <a href="{%- if link.title == "Artworks" -%}{{link.url}}{%- else -%}{{ postitems[3] }}{%- endif -%}" {%- if link.title == "Artworks" -%}un-goal="{{ postitems[1] | handleize }}"{%- endif -%} class="megamenu__link item-list__item {% if link.title == "Artworks" -%}megamenu__filter{%- endif -%}">#{{ postitems[0] }} - {{postitems[2]}}</a>
+                                            {%- else -%} {%- continue -%} {%- endif -%}
+                                            {%- endfor -%}
+                                            {% assign sortedposts = un_collections | split: '|' | sort %}
+                                            {% for post in sortedposts %}
+                                            {% assign postitems = post | split: '::' %}
+                                            {% assign un_id = postitems[0] | strip | plus: 0 %}
+                                            {%- if un_id > 9 -%}
+                                            <a href="{%- if link.title == "Artworks" -%}{{link.url}}{%- else -%}{{ postitems[3] }}{%- endif -%}" {%- if link.title == "Artworks" -%}un-goal="{{ postitems[1] | handleize }}"{%- endif -%} class="megamenu__link item-list__item {% if link.title == "Artworks" -%}megamenu__filter{%- endif -%}">#{{ postitems[0] }} - {{postitems[2]}}</a>
+                                            {%- else -%} {%- continue -%}{%- endif -%}
+                                            {%- endfor -%}
+                                            {%- if link.title == "UN-Goals" -%}
+                                            <a href="/pages/un-goals" class="megamenu__link megamenu__link--all item-list__item">
+                                                All
+                                            </a>
+                                            {%- endif -%}
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
             {% else %}
             <li {% if link.active %}class="site-nav--active"{% endif %}>
                 <a href="{{ link.url }}" class="site-nav__link">{{ link.title }}</a>
             </li>
             {% endif %}
             {% endfor %}
-            <li>
+            <li class="site-nav--currency">
                 <div class="enap-currency"> </div>
             </li>
-            <li>
-                <a href="/cart" class="cart-icon">{% include 'Menu cart' %}</a>
+            <li class="site-nav--cart site-nav--lg-only">
+                <a href="/cart" class="cart-icon site-nav__link">{% include 'Menu cart' %}</a>
             </li>
         </ul>
+
     </div>
 </nav>
+
 
 
 {% schema %}

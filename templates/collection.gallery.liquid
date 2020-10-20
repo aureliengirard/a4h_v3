@@ -22,7 +22,25 @@
                                     </div>
                                         {% include 'partial-social-links' %}
                                 </div>
-                                {{ collection.description }}
+                                <div class="see-more__wrapper">
+                                    {% assign text = collection.description %}
+                                    {% assign text_size = text | size %}
+                                    {% assign text_short = text | strip_html %}
+
+                                    {%- if text != "" and text_size > 760 -%}
+                                        <div class="see-more__content see-more__short active">
+                                            <p>
+                                                {{ text_short | truncatewords: 80 }} - {{text_size}}
+                                            </p>
+                                        </div>
+                                        <div class="see-more__content see-more__full">
+                                            {{ text }}
+                                        </div>
+                                        {%- include 'partial-cta-see-more' -%}
+                                    {%- else -%}
+                                        {{ text }}
+                                    {%- endif -%}
+                                </div>
                             </div>
                             <div class="col-lg-6">
                                 <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
@@ -61,7 +79,10 @@
                 <div id="represented-artists" class="anchor"></div>
                 <div class="row">
                     <div class="col-12 col-tb">
-                        <h2>Represented Artists</h2>
+                        <div class="title-has-cta">
+                            <h2>Represented Artists</h2>
+                            {%- include 'partial-cta'  with { cta_label: "<span>Discover </span>all <span>A4H </span>artists", cta_url: "/pages/all-artists/" }  -%}
+                        </div>
                         <div class="artists-list">
                             {% assign represented-artist_legacy = "Raymond Pettibon,Tomma Abts,Isa Genzken,Njideka Akunyili Crosby,Anni Albers,Josef Albers,Francis Alÿs,Harold Ancart,Mamma Andersson,Diane Arbus,Lucas Arruda,Ruth Asawa,Michaël Borremans,Carol Bove,R. Crumb,Noah Davis,Raoul De Keyser,Roy DeCarava,Philip-Lorca diCorcia,Stan Douglas,Marlene Dumas,Marcel Dzama,William Eggleston,Dan Flavin,Suzan Frecon,Isa Genzken,Felix Gonzalez-Torres,Donald Judd,On Kawara,Toba Khedoori" | split:"," %}
                             {% assign represented_artist = collection.metafields.accentuate.represented_artists | split:"," %}
@@ -118,7 +139,14 @@
                 <div id="contact" class="anchor"></div>
                 <div class="row">
                     <div class="col-12 col-tb">
-                        <h2>Contact Information</h2>
+                        <div class="row gallery__social">
+                            <div class="col-lg-6">
+
+                                <h2>Contact Information</h2>
+
+                            </div>
+                                {% include 'partial-social-links' %}
+                        </div>
                         {% include 'partial-gallery-locations' %}
                     </div>
                 </div>

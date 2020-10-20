@@ -1,5 +1,7 @@
 // Collection filters
 function Filters() {
+    jQuery('.no_results-item').hide();
+    
     var nationality_filter = '';
     var medium_filter = '';
     var ungoal_filter = '';
@@ -85,10 +87,10 @@ function Filters() {
 
     function upFilter() {
 
-        jQuery('.card-item').hide();
-        jQuery('.card-item').addClass( "hidden" ).removeClass( "active" );
+        jQuery('.artist-item').hide();
+        jQuery('.artist-item').addClass( "hidden" ).removeClass( "active" );
 
-        jQuery('.card-item').each(function(){
+        jQuery('.artist-item').each(function(){
             var nationality_val = $(this).attr('nationality');
             var medium_val = $(this).attr('medium');
             var ungoal_val = $(this).attr('ungoal');
@@ -110,11 +112,14 @@ function Filters() {
         var value_name = sessionStorage.getItem("value_name");
         console.log('ungoal :' + value_ungoal + ', medium:' + value_medium + ', nationality:' + value_nationality + ', name:' + value_name);
 
-        var card_displayed = $(".card-item.active");
-        //console.log(card_displayed.length);
+        var card_displayed = $(".artist-item.active");
         var card_displayed_length = card_displayed.length;
+
         if (card_displayed_length < 1) {
             //alert("There is no products avalaible in your filter combinaison (" + card_displayed.length + ")");
+            jQuery('.no_results-item').show();
+        } else {
+            jQuery('.no_results-item').hide();
         }
     }
 }

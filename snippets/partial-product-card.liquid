@@ -123,7 +123,7 @@
                 {% assign ungoal = collections[ungoals] %}
                 {% assign ungoals_name = ungoal.title | split: '. ' %}
 
-                <a href="{{ ungoal.url }}" class="un-goals" title="{{- ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img class="lazyload" src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</a>
+                <a href="{{ ungoal.url }}" class="un-goals" title="#{{- ungoals_name[0] }} {{ ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img class="lazyload" src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</a>
 
             {%- endfor -%}
             {%- else -%}
