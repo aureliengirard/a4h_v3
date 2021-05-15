@@ -1,4 +1,5 @@
 {% assign title = section.settings.title %}
+{% assign mobile_title = section.settings.mobile_title %}
 {% assign cta_label = section.settings.linktext %}
 {% assign cta_link = section.settings.link %}
 {% assign filter_type = section.settings.filter_type %}
@@ -17,7 +18,8 @@
     <div class="col-12">
         {%- if section.settings.link -%}
             <div class="title-has-cta">
-                <h2>{{ title }}</h2>
+                <h2 class="hidden-xs">{{ title }}</h2>
+                <h2 class="only-xs">{{ mobile_title }}</h2>
                 {%- include 'partial-cta'  with { cta_label: cta_label, cta_url: cta_link, extra_class: extra_class } -%}
             </div>
         {%- else -%}
@@ -54,6 +56,12 @@
           "type": "text",
           "label": "Title",
           "default": "Hello world"
+        },
+        {
+          "id": "mobile_title",
+          "type": "text",
+          "label": "Mobile Title",
+          "default": "Hello mobile world"
         },
         {
             "id": "link",

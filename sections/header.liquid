@@ -151,9 +151,9 @@
 
                                 <div class="inner-col">
 
-                                    <h4><span>UN-Goal</span></h4>
+                                    <h4 {% if link.title == 'UN-Goals' -%}class="active"{%- endif -%}><span>UN-Goal</span></h4>
 
-                                    <div class="inner-col__menu active">
+                                    <div class="inner-col__menu {%- if link.title == 'UN-Goals' -%}active{%- endif -%}">
                                         <div class="item-list list-of-3">
                                             {%- capture un_collections -%}
                                             {%- for collection in collections -%}

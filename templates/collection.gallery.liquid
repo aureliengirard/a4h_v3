@@ -16,12 +16,13 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="row gallery__social">
-                                    <div class="col-lg-6">
+                                    <div class="col-xxs-6">
 
                                         <h2>About</h2>
                                     </div>
                                         {% include 'partial-social-links' %}
                                 </div>
+                                <h4 class="meta__locations only-md">{% include 'icon-locations' %}<span>{{collection.metafields.accentuate.international_locations}}</span></h4>
                                 <div class="see-more__wrapper">
                                     {% assign text = collection.description %}
                                     {% assign text_size = text | size %}
@@ -45,7 +46,7 @@
                             <div class="col-lg-6">
                                 <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
 
-                                <h4 class="meta__locations">{% include 'icon-locations' %}<span>{{collection.metafields.accentuate.international_locations}}</span></h4>
+                                <h4 class="meta__locations hidden-md">{% include 'icon-locations' %}<span>{{collection.metafields.accentuate.international_locations}}</span></h4>
                             </div>
                         </div>
 
@@ -140,7 +141,7 @@
                 <div class="row">
                     <div class="col-12 col-tb">
                         <div class="row gallery__social">
-                            <div class="col-lg-6">
+                            <div class="col-xxs-6">
 
                                 <h2>Contact Information</h2>
 

@@ -69,9 +69,8 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <img src="{{ collection.image | img_url: '580x' }}" alt="{{ collection.title }}">
-
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 hidden-xs">
 
                                     <p><strong>Born:</strong> {{collection.metafields.artist.born}}</p>
                                     <p><strong>Studio:</strong> {{collection.metafields.artist.studio}}</p>
@@ -141,7 +140,6 @@
                 {% include 'partial-artist-highlights' %}
             </section>
 
-
             <section class="collection artist__collection">
                 <div id="curated-artworks" class="anchor"></div>
                 <div class="row">
@@ -167,14 +165,15 @@
                 <div id="un-commitment" class="anchor"></div>
                 <div class="row">
                     <div class="col-12 col-tb">
+                        
                         <div class="title-has-cta">
                             <h2>Artist's support to the UN-Goals</h2>
-                            {%- include 'partial-cta' with { cta_label: "<span>Learn about </span>UN-Goals", cta_url: "/un-goals/" }  -%}
+                            {%- include 'partial-cta' with { cta_label: "Learn<span> about UN-Goals</span>", cta_url: "/un-goals/" }  -%}
                         </div>
+
                         <blockquote>
                             <p>“This situation right now in the United States with Trump makes you want to just burn it all down and start over…. I don’t censor myself. If you’re sending out a political message, it has only one interpretation. But  when I do an automatic drawing, it’s open to many interpretations.”</p>
                             <p class="author">- {{ collection.title }}</p>
-
                         </blockquote>
 
                         <p><strong>{{ collection.title }}</strong> a in coordination with his galleries
@@ -189,8 +188,6 @@
                                     {%- if forloop.index == forloop_length and forloop.last == false %} & {% else -%}, {% endif -%}
                             {%- endfor -%}has decided to support the 2030 UN Sustainable Development Goals:</p>
 
-
-
                         <div class="impact-logos">
                             {%- if has_un_goals == true -%}
                                 {%- for ungoals in artist_ungoals -%}
@@ -199,7 +196,7 @@
                                 {% assign ungoals_url = ungoal.url | split: '. ' %}
                                 {% assign img = ungoal.metafields.accentuate.desktop_alt_logo | first %}
                                     <a href="{{- ungoals_url -}}">
-                                        <img src="{{- img.cloudinary_src | append: 'w_145' -}}" alt="{{ungoals_name[1]}}" title="{{collection.title}} supports {{ungoals_name[1]}}">
+                                        <img class="lazyload" data-src="{{- img.cloudinary_src | append: 'w_145' -}}" alt="{{ungoals_name[1]}}" title="{{collection.title}} supports {{ungoals_name[1]}}">
                                     </a>
                                 {%- endfor -%}
                             {%- else -%}
@@ -209,7 +206,7 @@
                                 {%- assign un_id = postitems[0] | strip | plus: 0 -%}
                                 {%- if un_id < 10 and un_id > 0 -%}
                                 <a href="{{- postitems[3] -}}">
-                                    <img src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
+                                    <img class="lazyload" data-src="{{- postitems[2] -}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
                                 </a>
                                 {%- else -%} {%- continue -%} {%- endif -%}
 
@@ -219,14 +216,14 @@
                                 {% assign un_id = postitems[0] | strip | plus: 0 %}
                                 {%- if un_id > 9 -%}
                                 <a href="{{- postitems[3] -}}">
-                                    <img src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
+                                    <img class="lazyload" data-src="{{postitems[2]}}" alt="{{postitems[1]}}" title="{{collection.title}} supports {{postitems[1]}}">
                                 </a>
                                 {%- else -%} {%- continue -%} {% endif %}
 
                                 {% endfor %}
 
                                 <a href="/pages/un-goals">
-                                    <img class="all-impact-logo" src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
+                                    <img class="all-impact-logo lazyload" data-src="{{ 'all-un-goals.png' | asset_url }}" alt="UN Goals">
                                 </a>
                             {%- endif -%}
                         </div>
@@ -278,6 +275,7 @@
                 </div>
             </section>
 
+            {% comment %}
             <section class="">
                 <div id="market-data" class="anchor"></div>
                 <div class="row">
@@ -290,6 +288,7 @@
                     </div>
                 </div>
             </section>
+            {% endcomment %}
 
             <section class="collection collection-of-3 related-artists">
                 <div id="related-artists" class="anchor"></div>
@@ -319,7 +318,7 @@
 
                             <div class="tags-catgerogy">
                                 <div class="tags-catgerogy__title">
-                                    {%- include 'icon-art-tags' -%}
+                                    {%- include 'icon-art-tags' -%}<span class="only-xs"> Art</span>
                                 </div>
                                 <div class="tags-catgerogy__list">
                                     {%- for tag in collection.all_tags | sort -%}
@@ -331,6 +330,24 @@
                                     {%- endfor -%}
                                 </div>
                             </div>
+
+                            {%- if has_un_goals == true -%}
+                            <div class="tags-catgerogy only-xs">
+                                <div class="tags-catgerogy__title">
+                                    {%- include 'icon-impact-tags' -%}<span> Impact</span>
+                                </div>
+                                <div class="tags-catgerogy__list">
+                                    {% assign artist_ungoal = collection.metafields.artist.un_goals %}
+
+                                    {%- for ungoals in artist_ungoals -%}
+                                    {% assign ungoal = collections[ungoals] %}
+                                    {% assign ungoals_name = ungoal.title | split: '. ' %}
+                                        <a class="tag-item" href="{{ ungoal.url }}">#{{- ungoals_name[0] }} {{ ungoals_name[1] -}}</a>
+                                    {%- endfor -%}
+
+                                </div>
+                            </div>
+                            {%- endif -%}
                         </div>
                     </div>
                 </div>

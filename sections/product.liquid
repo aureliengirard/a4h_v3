@@ -163,29 +163,49 @@
                     </p>
                 </div>
 
-                {% if variable_price == 'true' %}
-                    <div class="buy-button-container right-align">
-                        <button id="inquire-button" class="buy-button generic-btn">
-                            <span data-add-to-cart-text>INQUIRE</span>
-                        </button>
+                <div class="buy-button__wrapper">
+                    <div id="buy-button__alert" class="buy-button__alert">
+                        <p>{{ section.settings.error_message }}</p>
                     </div>
-                {% else %}
-                    <form class="action cart__form" action="/cart/add" method="post" enctype="multipart/form-data">
 
-                        <select id="variant-select" name="id" data-product-select  style="display:none;">
-                            {%- for variant in product.variants -%}
-                            <option class="{{ variant.title | handleize }}" value="{{ variant.id }}">{{ variant.title }}</option>
-                            {%- endfor -%}
-                        </select>
+                        {% if variable_price == 'true' %}
+                        <div class="buy-button-container">
+                            <button id="inquire-button"
+                                class="inquire-button generic-btn"
+                                onclick="InquirePopUp()">
+                                <span data-add-to-cart-text>INQUIRE</span>
+                            </button>
+                        </div>
 
-                        <div class="buy-button-container right-align">
-                            <button
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                $('#inquire-button').magnificPopup({
+                                    items: {
+                                        src: '#product__inquire',
+                                        type: 'inline'
+                                    }
+                              });
+                            });
+                        </script>
+
+
+                        {%- include 'partial-product-popup' -%}
+                        {% else %}
+                        <form class="action cart__form" action="/cart/add" method="post" enctype="multipart/form-data">
+
+                            <select id="variant-select" name="id" data-product-select  style="display:none;">
+                                {%- for variant in product.variants -%}
+                                <option class="{{ variant.title | handleize }}" value="{{ variant.id }}">{{ variant.title }}</option>
+                                {%- endfor -%}
+                            </select>
+
+                            <div class="buy-button__Wrapper">
+                                <button
                                 id="buy-button"
-                                class="buy-button generic-btn"
+                                class="buy-button generic-btn disabled"
                                 type="submit"
                                 name="add"
-                                data-add-to-cart
-                                disabled="disabled">
+                                data-add-to-cart>
                                 <span data-add-to-cart-text>
                                     {%- if current_variant.available -%}
                                     {{ 'products.product.add_to_cart' | t }}
@@ -196,7 +216,9 @@
                             </button>
                         </div>
                     </form>
-                {% endif %}
+                    {% endif %}
+                </div>
+
             </div>
         </div>
     </div>
@@ -205,6 +227,31 @@
 <section class="single-product__about">
     <div class="row">
         <div class="col-lg-6-full">
+            <div class="about about__art-piece only-xs">
+                <h2>About the Piece</h2>
+                <table class="product-datas__table">
+                    <tbody>
+                        <tr>
+                            <th>Signature</th>
+                            <td>{{ product.metafields.product.signature }}</td>
+                        </tr>
+                        <tr>
+                            <th>Certificate of authenticity</th>
+                            <td>{{ product.metafields.product.certificate_of_authenticity }}</td>
+                        </tr>
+                        <tr>
+                            <th>Frame</th>
+                            <td>{{ product.metafields.accentuate.frame }}</td>
+                        </tr>
+                        <tr>
+                            <th>Shipping</th>
+                            <td>Learn more</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
             <div class="about about__artist">
                 <div class="title-has-cta">
                     <h2>About {{ artist.title }}</h2>
@@ -231,7 +278,7 @@
                     <h4>Artist Visibility Insights</h4>
                     <p>- Worldwide Ranking: 597</p>
                     <p>- Days of Exhibition in 2019: 1334</p>
-                    <div class="visibility-insights__graph">
+                    <div class="visibility-insights__graph hidden-xs">
 
                         {%- include 'partial-dummy-graph'  -%}
                     </div>
@@ -239,7 +286,7 @@
             </div>
         </div>
         <div class="col-lg-6-full">
-            <div class="about about__art-piece">
+            <div class="about about__art-piece hidden-xs">
                 <h2>About the Piece</h2>
                 <table class="product-datas__table">
                     <tbody>
@@ -292,6 +339,7 @@
                 </div>
 
                 <div class="impact-logos__wrapper">
+                    <img class="lazyload all-impact-logo only-xs" data-src="{{ 'all-sdgs-light.png' | asset_url }}" alt="UN Goals">
                     <p class="lg">
                         {% if variable_price == 'true' %}<strong>10%</strong>{% else %}<strong>{{ current_variant.price | times: 0.1 | money }}</strong>{% endif %} of your purchase will directly support one of the 17 <strong>Sustainable Development Goals</strong>.
                     </p>
@@ -315,18 +363,16 @@
         <div class="col-12">
             <div class="title-has-cta">
                 <h2><span>Other </span>Works by {{ artist.title }}</h2>
-                {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: artist.url }  -%}
+                {%- include 'partial-cta'  with { cta_label: "View All", cta_url: artist.url }  -%}
             </div>
             <div class="collection-items featured-items">
                 {%- for prod in artist.products limit:5 -%}
-
 
                     {%- if prod.title == product_title -%}
                         {%- continue -%}
                     {%- else -%}
                         {%- include 'partial-product-card'   with { product: prod, card_per_row: 4 }  -%}
                     {%- endif -%}
-
 
                 {%- endfor -%}
             </div>
@@ -339,7 +385,7 @@
         <div class="col-12 col-tb">
             <div class="title-has-cta">
                 <h2><span>Other </span>Works From {{ gallery.title }}</h2>
-                {%- include 'partial-cta'  with { cta_label: "<span>View </span>All", cta_url: gallery.url }  -%}
+                {%- include 'partial-cta'  with { cta_label: "View All", cta_url: gallery.url }  -%}
             </div>
             <div class="collection-items featured-items">
                 {%- for prod in gallery.products limit:5 -%}
@@ -361,7 +407,7 @@
         <div class="col-12 col-tb">
             <div class="title-has-cta">
                 <h2>Related Artists</h2>
-                {%- include 'partial-cta' with { cta_label: "<span>View </span>All", cta_url: "/pages/artists" } -%}
+                {%- include 'partial-cta' with { cta_label: "View All", cta_url: "/pages/artists" } -%}
             </div>
             <div class="collection-items featured-items">
 
@@ -453,21 +499,6 @@
     </div>
 </section>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    window.sessionStorage.setItem('product_title', '{{product.title}}');
-
-    $('#inquire-button').magnificPopup({
-        items: {
-            src: '#product__inquire',
-            type: 'inline'
-        }
-  });
-});
-
-</script>
-
-{%- include 'partial-product-popup' -%}
 
 
 
@@ -481,11 +512,16 @@ $(document).ready(function() {
         "label": "Your Impact Title",
         "default": "Your impact: "
     },
-
     {
         "type": "textarea",
         "id": "delivery",
         "label": "Delivery Text"
+    },
+    {
+        "type": "textarea",
+        "id": "error_message",
+        "label": "Impact Selection error message",
+        "default": "Please select one Sustainable Development Goal in the blue dropdown on the right prior to buy."
     }
     ]
 }

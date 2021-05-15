@@ -1,4 +1,4 @@
-{%- assign artist_ungoals = collection.metafields.artist.un_goals | split: '|' -%}
+{%- assign artist_card_ungoals = collection.metafields.artist.un_goals | split: '|' -%}
 {%- assign nationality = collection.metafields.artist.nationality -%}
 {%- assign born = collection.metafields.artist.born -%}
 {%- assign title = collection.title -%}
@@ -22,8 +22,8 @@
 {% assign medium = medium | join: "," %}
 
 {%- capture un_goal -%}
-    {%- if artist_ungoals != "" -%}
-        {%- for ungoals in artist_ungoals -%}
+    {%- if artist_card_ungoals != "" -%}
+        {%- for ungoals in artist_card_ungoals -%}
             {%- assign ungoal = collections[ungoals] -%}
             {%- assign ungoals_name = ungoal.title | split: '. ' -%}
             {{- ungoals_name[1] | handleize -}}
@@ -51,29 +51,29 @@
 
                 <img
                     alt="{{ title }}"
-                    srcset="{{- image.src | img_url: '171x' }} 171w,
+                    data-srcset="{{- image.src | img_url: '171x' }} 171w,
                         {{- image.src | img_url: '285x285' }} 285w,
                         {{- image.src | img_url: '340x340' }} 340w"
                     sizes="(max-width: 767px) 41.6vw, (max-width: 991px) 45vw, 360px"
-                    src="{{ image.src | img_url: '405x' }}"
+                    data-src="{{ image.src | img_url: '405x' }}"
                     class="lazyload" />
             {%- elsif card_per_row == 3 -%}
                 <img
                     alt="{{ title }}"
-                    srcset="{{- image.src | img_url: '171x' }} 171w,
+                    data-srcset="{{- image.src | img_url: '171x' }} 171w,
                         {{- image.src | img_url: '285x285' }} 285w,
                         {{- image.src | img_url: '340x340' }} 340w"
                     sizes="(max-width: 767px) 171px, (max-width: 991px) 340px, 285px"
-                    src="{{ image.src | img_url: '285x285' }}"
+                    data-src="{{ image.src | img_url: '285x285' }}"
                     class="lazyload" />
             {%- else -%}
                 <img
                     alt="{{ title }}"
-                    srcset="{{- image.src | img_url: '171x' }} 171w,
+                    data-srcset="{{- image.src | img_url: '171x' }} 171w,
                         {{- image.src | img_url: '285x285' }} 285w,
                         {{- image.src | img_url: '340x340' }} 340w"
                     sizes="(max-width: 767px) 171px, (max-width: 991px) 340px, 285px"
-                    src="{{ image.src | img_url: '285x285' }}"
+                    data-src="{{ image.src | img_url: '285x285' }}"
                     class="lazyload" />
             {%- endif -%}
         </div>

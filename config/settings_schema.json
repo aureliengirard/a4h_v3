@@ -201,6 +201,12 @@
         "label": "Footer Icon"
       },
       {
+        "type": "text",
+        "id": "newsletter-title-mobile",
+        "label": "Newsletter Mobile Title",
+        "default": "Newsletter"
+      },
+      {
         "type": "link_list",
         "id": "secondary-footer-menu",
         "label": "Secondary Footer Menu"

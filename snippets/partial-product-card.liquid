@@ -62,38 +62,38 @@
 
                 <img
                     alt="{{ product.title }}"
-                    srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                    data-srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
                         {{- product.featured_image.src | img_url: '340x340' }} 340w,
                         {{- product.featured_image.src | img_url: '405x405' }} 405w"
                     sizes="(max-width: 767px) 42vw, (max-width: 991px) 45vw, 405px"
-                    src="{{ product.featured_image.src | img_url: '405x405' }}"
+                    data-src="{{ product.featured_image.src | img_url: '405x405' }}"
                     class="lazyload" />
             {%- elsif card_per_row == 3 -%}
                 <img
                     alt="{{ product.title }}"
-                    srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                    data-srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
                         {{- product.featured_image.src | img_url: '340x340' }} 340w,
                         {{- product.featured_image.src | img_url: '360x360' }} 360w"
                     sizes="(max-width: 767px) 41.6vw, (max-width: 991px) 45vw, 360px"
-                    src="{{ product.featured_image.src | img_url: '360x360' }}"
+                    data-src="{{ product.featured_image.src | img_url: '360x360' }}"
                     class="lazyload" />
             {%- elsif card_per_row == 4 -%}
                 <img
                     alt="{{ product.title }}"
-                    srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                    data-srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
                     {{- product.featured_image.src | img_url: '360x360' }} 360w,
                     {{- product.featured_image.src | img_url: '280x280' }} 280w"
                     sizes="(max-width: 767px) 41.6vw, (max-width: 991px) 45vw, 360px"
-                    src="{{ product.featured_image.src | img_url: '280x280' }}"
+                    data-src="{{ product.featured_image.src | img_url: '280x280' }}"
                     class="lazyload" />
             {%- else -%}
                 <img
                 alt="{{ product.title }}"
-                srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
+                data-srcset="{{- product.featured_image.src | img_url: '171x' }} 171w,
                     {{- product.featured_image.src | img_url: '340x340' }} 340w,
                     {{- product.featured_image.src | img_url: '405x405' }} 405w"
                 sizes="(max-width: 767px) 42vw, (max-width: 991px) 45vw, 405px"
-                src="{{ product.featured_image.src | img_url: '405x405' }}"
+                data-src="{{ product.featured_image.src | img_url: '405x405' }}"
                 class="lazyload" />
             {%- endif -%}
         </div>
@@ -123,11 +123,11 @@
                 {% assign ungoal = collections[ungoals] %}
                 {% assign ungoals_name = ungoal.title | split: '. ' %}
 
-                <a href="{{ ungoal.url }}" class="un-goals" title="#{{- ungoals_name[0] }} {{ ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img class="lazyload" src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</a>
+                <a href="{{ ungoal.url }}" class="un-goals" title="#{{- ungoals_name[0] }} {{ ungoals_name[1] -}}">{% for icon in ungoal.metafields.accentuate.card_icon %}<img class="lazyload" data-src="{{ icon.cloudinary_src | append: 'w_52' }}" alt="{{- ungoals_name[1] -}}"/>{% endfor %}</a>
 
             {%- endfor -%}
             {%- else -%}
-                <a href="/pages/un-goals" class="un-goals" title="Discover The UN Goals"><img class="all-impact-logo lazyload" src="{{ 'all-un-goals-small.png' | asset_url }}" alt="UN Goals"></a>
+                <a href="/pages/un-goals" class="un-goals" title="Discover The UN Goals"><img class="all-impact-logo lazyload" data-src="{{ 'all-un-goals-small.png' | asset_url }}" alt="UN Goals"></a>
             {%- endif -%}
         </div>
 

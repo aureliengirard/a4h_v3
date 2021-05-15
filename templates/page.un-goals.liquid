@@ -47,7 +47,7 @@
             </div>
             <div class="col-lg-6">
 
-                <img class="only-xs" src="{{ 'all-sdgs.png' | asset_url }}" alt="{{ collection.title }}">
+                <img class="only-md" src="{{ 'all-sdgs.png' | asset_url }}" alt="{{ collection.title }}">
 
                 <h2>17 Goals to Transform Our World</h2>
                 <p>The Sustainable Development Goals are a universal call to action to end poverty, protect the planet and improve the lives and prospects of everyone, everywhere.</p>
@@ -128,8 +128,9 @@
 
             </div>
         </div>
-
     </section>
+
+    {%- include 'partial-ungoals-decade-of-action' with { device: "small" } -%}
 
     <section class="collection__ngo">
         <div class="row">
@@ -144,8 +145,6 @@
             </div>
         </div>
     </section>
-
-    {%- include 'partial-ungoals-decade-of-action' with { device: "small" } -%}
 
     {%- include 'partial-section-ungoals-divider' -%}
 </div>

@@ -43,11 +43,11 @@
             <div class="img-inner-container">
                 <img
                     alt="{{ title }}"
-                    srcset="{{- image.src | img_url: '181x114', crop: 'center' }} 181w,
+                    data-srcset="{{- image.src | img_url: '181x114', crop: 'center' }} 181w,
                         {{- image.src | img_url: '360x225', crop: 'center' }} 360w,
                         {{- image.src | img_url: '385x240', crop: 'center' }} 440w"
                         sizes="(max-width: 767px) 181px, (max-width: 991px) 360px, 440px"
-                    src="{{ image.src | img_url: '440x313' }}"
+                    data-src="{{ image.src | img_url: '440x313' }}"
                     class="lazyload" />
             </div>
         </div>
